@@ -3,6 +3,7 @@ import {GUI} from "dat.gui";
 import {PlaneCreator} from "./PlaneCreator";
 import {movementControlling} from "./MovementControlling";
 import {AxesHelper} from "three";
+import TerrainChunkManager from "./TerrainChunkManager";
 
 
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
@@ -21,22 +22,7 @@ camera.lookAt(1,1,1);
 
 
 const scene = new THREE.Scene();
-const loader = new THREE.TextureLoader();
-
-const plane = new PlaneCreator(loader,512,128,0,0).plane;
-const plane2 = new PlaneCreator(loader,512,128,512,0).plane;
-const plane3 = new PlaneCreator(loader,512,128,512,512).plane;
-
-
-
-const axesHelper : AxesHelper = new AxesHelper();
-axesHelper.add(plane,plane2,plane3);
-
-
-
-
-scene.add(plane,plane2,plane3,axesHelper);
-
+new TerrainChunkManager(scene);
 
 
 function resizeRendererToDisplaySize(renderer:THREE.Renderer){
