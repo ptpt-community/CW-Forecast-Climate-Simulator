@@ -7,6 +7,7 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
     new OrbitControls(camera, domElement);
 
 
+
     const onKeyDown = function (event: KeyboardEvent) {
         console.log(event.code);
         switch (event.code) {
@@ -25,5 +26,13 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
                 break
         }
     }
+
+
+    const onMouseSigmal = ()=>{
+        (controls.isLocked)? controls.unlock() : controls.lock();
+    }
+
+    document.addEventListener("keydown", onKeyDown,false);
+    document.addEventListener("dblclick", onMouseSigmal,false);
     return onKeyDown;
 }

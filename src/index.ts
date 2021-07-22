@@ -2,6 +2,7 @@ import * as THREE from "three";
 import {GUI} from "dat.gui";
 import {PlaneCreator} from "./PlaneCreator";
 import {movementControlling} from "./MovementControlling";
+import {AxesHelper} from "three";
 
 
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
@@ -9,13 +10,13 @@ const renderer = new THREE.WebGLRenderer({canvas});
 const gui = new GUI();
 const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
 
-const onKeyDown = movementControlling(camera,renderer.domElement);
+movementControlling(camera,renderer.domElement);
 
 camera.position.set(0,5,0);
 camera.lookAt(1,1,1);
-camera.up.set(0,0,1);
 
-document.addEventListener("keydown", onKeyDown,false);
+
+// document.addEventListener("keydown", onKeyDown,false);
 
 
 
@@ -23,15 +24,18 @@ const scene = new THREE.Scene();
 const loader = new THREE.TextureLoader();
 
 const plane = new PlaneCreator(loader,512,128,0,0).plane;
+const plane2 = new PlaneCreator(loader,512,128,512,0).plane;
+const plane3 = new PlaneCreator(loader,512,128,512,512).plane;
+
+
+
+const axesHelper : AxesHelper = new AxesHelper();
+axesHelper.add(plane,plane2,plane3);
 
 
 
 
-
-
-
-
-scene.add(plane);
+scene.add(plane,plane2,plane3,axesHelper);
 
 
 

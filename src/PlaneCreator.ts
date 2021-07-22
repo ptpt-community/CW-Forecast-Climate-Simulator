@@ -9,7 +9,7 @@ export class PlaneCreator {
 
     private _plane: Mesh;
 
-    constructor(loader: TextureLoader, size: number, segments: number, positionX: number, positionY: number) {
+    constructor(loader: TextureLoader, size: number, segments: number, positionX: number, positionZ: number) {
         this.loader = loader;
 
         const texture = this.loader.load("https://www.the3rdsequence.com/texturedb/download/26/texture/png/256/cracked+rock-256x256.png",()=>{
@@ -25,7 +25,9 @@ export class PlaneCreator {
             map: texture
         }));
 
-        this._plane.position.set(positionX,positionY,0);
+        this._plane.rotation.x = Math.PI*(-.5);
+
+        this._plane.position.set(positionX,0,positionZ);
 
 
 
