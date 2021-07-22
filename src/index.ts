@@ -4,6 +4,7 @@ import {PlaneCreator} from "./PlaneCreator";
 import {movementControlling} from "./MovementControlling";
 import {AxesHelper} from "three";
 import TerrainChunkManager from "./TerrainChunkManager";
+import SkyBox from "./SkyBox";
 
 
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
@@ -17,13 +18,13 @@ camera.position.set(0,5,0);
 camera.lookAt(1,1,1);
 
 
-// document.addEventListener("keydown", onKeyDown,false);
+
 
 
 
 const scene = new THREE.Scene();
 new TerrainChunkManager(scene);
-
+new SkyBox(scene);
 
 function resizeRendererToDisplaySize(renderer:THREE.Renderer){
     const canvas = renderer.domElement;
