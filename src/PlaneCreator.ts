@@ -25,6 +25,8 @@ export class PlaneCreator {
             map: texture
         }));
 
+
+
         this._plane.rotation.x = Math.PI*(-.5);
 
         this._plane.position.set(positionX,0,positionZ);

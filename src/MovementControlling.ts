@@ -24,6 +24,12 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
             case 'KeyD':
                 controls.moveRight(.1)
                 break
+            case 'Space':
+                camera.position.y +=.01;
+                break
+            case 'ShiftLeft':
+                camera.position.y -=.01;
+                break
         }
     }
 
