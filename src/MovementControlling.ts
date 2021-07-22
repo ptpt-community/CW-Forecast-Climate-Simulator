@@ -2,33 +2,33 @@ import * as THREE from "three";
 import {PointerLockControls} from "three/examples/jsm/controls/PointerLockControls";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
-export function movementControlling(camera: THREE.Camera, domElement: HTMLElement) {
+export function movementControlling(camera: THREE.Camera, domElement: HTMLElement,speed: number) {
     const controls = new PointerLockControls(camera, domElement);
     new OrbitControls(camera, domElement);
 
 
 
     const onKeyDown = function (event: KeyboardEvent) {
-        console.log(event.code);
+        console.log(camera.position);
         switch (event.code) {
 
             case 'KeyW':
-                controls.moveForward(.1)
+                controls.moveForward(speed)
                 break
             case 'KeyA':
-                controls.moveRight(-.1)
+                controls.moveRight(-speed)
                 break
             case 'KeyS':
-                controls.moveForward(-.1)
+                controls.moveForward(-speed)
                 break
             case 'KeyD':
-                controls.moveRight(.1)
+                controls.moveRight(speed)
                 break
             case 'Space':
-                camera.position.y +=.01;
+                camera.position.y += .1*speed;
                 break
             case 'ShiftLeft':
-                camera.position.y -=.01;
+                camera.position.y -=.1*speed;
                 break
         }
     }
