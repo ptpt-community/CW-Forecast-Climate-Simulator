@@ -1,4 +1,5 @@
 const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports ={
     mode: "development",
@@ -26,5 +27,12 @@ module.exports ={
 
     devServer: {
         contentBase: path.join(__dirname, 'public'),
-      }
+      },
+    plugins: [
+        new HTMLWebpackPlugin({
+            template: './src/index.html',
+            filename: 'index.html',
+            inject: "body"
+        })
+    ]
 }
