@@ -3,8 +3,8 @@ import {GUI} from "dat.gui";
 import {PlaneCreator} from "./PlaneCreator";
 import {movementControlling} from "./MovementControlling";
 import {AxesHelper} from "three";
-import TerrainChunkManager from "./TerrainChunkManager";
 import SkyBox from "./SkyBox";
+import TerrainChunkManager from "./terrain_chunk/TerrainChunkManager";
 
 
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
