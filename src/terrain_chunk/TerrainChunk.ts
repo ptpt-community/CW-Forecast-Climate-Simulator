@@ -1,5 +1,5 @@
 import {Mesh, MeshBasicMaterial, PlaneGeometry, RepeatWrapping, Scene, Texture, TextureLoader} from "three";
-import {Noisifier} from "../Noise/Noisifier";
+import {HeightGenerator} from "../Noise/HeightGenerator";
 import {PlaneCreator} from "./PlaneCreator";
 
 export class TerrainChunk {
@@ -10,7 +10,7 @@ export class TerrainChunk {
     _texture: Texture;
     private _planeMaterial: MeshBasicMaterial;
     private _planeGeometry: PlaneGeometry;
-    _noisifier: Noisifier;
+    _noisifier: HeightGenerator;
 
     constructor(scene: Scene, loader: TextureLoader, size: number) {
         this._loader = loader;
@@ -27,19 +27,19 @@ export class TerrainChunk {
 
         this._planeMaterial = new MeshBasicMaterial({
 
-            wireframe: true,
+            wireframe: false,
             map: texture
         })
         this._planeGeometry = new PlaneGeometry(size, size, 128, 128);
 
-        this._noisifier = new Noisifier();
+        this._noisifier = new HeightGenerator();
 
 
     }
 
 
-    private applyNoise = (plane: Mesh) => {
-        this._noisifier.noisify(plane)
+    private applyNoise = (plane: Mesh, offset:{x: number, z: number}) => {
+        this._noisifier.applyHeight(plane, offset)
     }
 
     generateTerrain(position: { x_position: number, z_position: number }) {
@@ -47,9 +47,10 @@ export class TerrainChunk {
             this._size,
             position.x_position * this._size,
             position.z_position * this._size,
-            this._planeGeometry.clone(),
+            new PlaneGeometry(this._size, this._size, 128, 128),
             this._planeMaterial).plane;
-        this.applyNoise(plane)
+
+        this.applyNoise(plane,{x:position.x_position * this._size, z:position.z_position * this._size})
 
         this._scene.add(plane);
     }

@@ -9,7 +9,7 @@ import {PlaneCreator} from "./terrain_chunk/PlaneCreator";
 
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
-const gui = new GUI();
+
 const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
 
 movementControlling(camera,renderer.domElement,10);

@@ -20,8 +20,10 @@
   },
   "dependencies": {
     "@types/dat.gui": "^0.7.7",
+    "@types/seedrandom": "^3.0.1",
     "@types/three": "^0.130.0",
     "dat.gui": "^0.7.7",
+    "seedrandom": "^3.0.5",
     "three": "^0.130.1"
   }
 }
