@@ -12,7 +12,7 @@ const renderer = new THREE.WebGLRenderer({canvas});
 const gui = new GUI();
 const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
 
-movementControlling(camera,renderer.domElement,.1);
+movementControlling(camera,renderer.domElement,10);
 
 camera.position.set(0,5,0);
 camera.lookAt(1,1,1);
@@ -23,7 +23,7 @@ camera.lookAt(1,1,1);
 
 
 const scene = new THREE.Scene();
-new TerrainChunkManager(scene);
+const terrainChunkManager =new TerrainChunkManager(scene,camera);
 new SkyBox(scene);
 
 function resizeRendererToDisplaySize(renderer:THREE.Renderer){
@@ -41,7 +41,7 @@ function resizeRendererToDisplaySize(renderer:THREE.Renderer){
 
 function render() {
 
-
+    terrainChunkManager.checkCameraAndAddTerrain();
     if (resizeRendererToDisplaySize(renderer)) {
         const canvas = renderer.domElement;
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
