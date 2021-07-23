@@ -61,7 +61,7 @@ export class HeightGenerator {
 
 
     private static getNoise(x: number, y: number) {
-        const seeder = seedrandom(HeightGenerator.seed + x * 30000 + y * 90000);
-        return (seeder.quick() - .5)*2;
+        const seeder = seedrandom.alea(HeightGenerator.seed + x * 30000 + y * 90000);
+        return (seeder()- .5)*2;
     }
 }
