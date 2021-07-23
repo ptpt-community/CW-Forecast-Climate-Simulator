@@ -27,7 +27,7 @@ export class TerrainChunk {
 
         this._planeMaterial = new MeshBasicMaterial({
 
-            wireframe: false,
+            wireframe: true,
             map: texture
         })
         this._planeGeometry = new PlaneGeometry(size, size, 128, 128);
@@ -47,7 +47,7 @@ export class TerrainChunk {
             this._size,
             position.x_position * this._size,
             position.z_position * this._size,
-            this._planeGeometry,
+            this._planeGeometry.clone(),
             this._planeMaterial).plane;
         this.applyNoise(plane)
 
