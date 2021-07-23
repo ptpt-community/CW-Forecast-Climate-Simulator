@@ -1,6 +1,6 @@
 import {Mesh, MeshBasicMaterial, PlaneGeometry, RepeatWrapping, Scene, Texture, TextureLoader} from "three";
 import {Noisifier} from "../Noise/Noisifier";
-import {PlaneCreator} from "../PlaneCreator";
+import {PlaneCreator} from "./PlaneCreator";
 
 export class TerrainChunk {
 
