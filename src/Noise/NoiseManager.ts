@@ -24,7 +24,10 @@ export class NoiseManager {
 
         for (let i = 0; i< position.count; i++){
             position.setZ (i, NoiseManager.getHeight( offset.x+position.getX(i), offset.z - position.getY(i)) );
+            this._biomeManager.calculateBiome(offset.x+position.getX(i),offset.z - position.getY(i));
          }
+
+        console.log(this._biomeManager.dp);
 
         position.needsUpdate = true
     }
