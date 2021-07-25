@@ -27,7 +27,6 @@ export class NoiseManager {
             this._biomeManager.calculateBiome(offset.x+position.getX(i),offset.z - position.getY(i));
          }
 
-        console.log(this._biomeManager.dp);
 
         position.needsUpdate = true
     }
