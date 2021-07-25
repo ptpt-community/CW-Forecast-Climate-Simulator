@@ -5,7 +5,7 @@ export class BiomeCalculator {
      _amplitude = 150;
 
      calculateBiome = (x: number, z: number) => {
-         const subscale =1;
+         const subscale =5;
         const factor  = this.getBiomeFactor(x/subscale,z/subscale);
         return(factor)
     }

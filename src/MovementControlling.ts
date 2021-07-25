@@ -9,6 +9,7 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
 
 
     const onKeyDown = function (event: KeyboardEvent) {
+        console.log(camera.position);
         switch (event.code) {
 
             case 'KeyW':
