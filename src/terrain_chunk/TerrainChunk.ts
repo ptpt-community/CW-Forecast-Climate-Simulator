@@ -39,7 +39,7 @@ export class TerrainChunk {
 
         this._planeMaterial = new MeshPhongMaterial({
 
-            wireframe: true,
+            wireframe: false,
             map: texture,
             shininess:3,
 

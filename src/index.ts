@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import {GUI} from "dat.gui";
 import {movementControlling} from "./MovementControlling";
-import {AxesHelper, DirectionalLight} from "three";
+import {AmbientLight, AxesHelper, CameraHelper, DirectionalLight} from "three";
 import SkyBox from "./SkyBox";
 import TerrainChunkManager from "./terrain_chunk/TerrainChunkManager";
 import {PlaneCreator} from "./terrain_chunk/PlaneCreator";
@@ -34,8 +34,21 @@ const terrainChunkManager =new TerrainChunkManager(scene,camera);
 new SkyBox(scene);
 
 const light = new DirectionalLight(0xffffff, 1.5);
+light.castShadow = true;
+light.shadow.camera.left= -1000;
+light.shadow.camera.right= 1000;
+light.shadow.camera.top= 1000;
+light.shadow.camera.bottom= -1000;
+light.shadow.camera.far = 2000;
 light.position.set(400,800,800);
+
+light.shadow.mapSize.set(512,512);
+
+
+const ambientLight = new AmbientLight(0x999999,.5);
 scene.add(light);
+const shadowHelper = new CameraHelper(light.shadow.camera);
+scene.add(shadowHelper,ambientLight);
 
 const gui = new GUI();
 // gui.add(params, "intensity").min(0).max(10).step(.001).onFinishChange(()=>{
@@ -68,6 +81,7 @@ function resizeRendererToDisplaySize(renderer:THREE.Renderer){
     return needResize;
 }
 
+renderer.shadowMap.enabled = true;
 
 function render() {
 
