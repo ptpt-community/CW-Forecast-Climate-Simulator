@@ -37,7 +37,7 @@ export class NoiseManager {
             const biome = this._biomeManager.calculateBiome(offset.x+position.getX(i),offset.z - position.getY(i));
             if(biome<50 && biome>30)
             position.setZ (i, NoiseManager.getHeight( getOffsetX(position.getX(i)), getOffsetZ(position.getY(i))) );
-           // else position.setZ(i,biome);
+            else position.setZ(i,position.getZ(i)-20);
 
          }
 
