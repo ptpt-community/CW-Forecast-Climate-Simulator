@@ -9,7 +9,7 @@ import {getInterpolatedNoise} from "../Math/GradientNoise";
 export class NoiseManager {
 
 
-    private static amplitude = 150;
+    private static amplitude = 400;
     private _biomeManager;
     constructor(biomeManager: BiomeCalculator) {
         this._biomeManager = biomeManager;
@@ -40,6 +40,7 @@ export class NoiseManager {
             else position.setZ(i,position.getZ(i)-20);
 
          }
+
 
 
         position.needsUpdate = true

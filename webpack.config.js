@@ -4,7 +4,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: "development",
     entry: "./src/index.ts",
-    devtool: "eval-source-map",
+  //  devtool: "eval-source-map",
 
     module: {
         rules: [

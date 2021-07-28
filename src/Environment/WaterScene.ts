@@ -34,6 +34,7 @@ export class  WaterScene{
         {
             vertexShader: waterVertexShader,
             fragmentShader: waterFragmentShader,
+            transparent: true,
             uniforms: {
                 uTime: {value: 0},
                 uBigWavesElevation: {value: 5},

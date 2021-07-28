@@ -123,6 +123,7 @@ const clock = new Clock();
 
 
 function render() {
+   // light.shadow.camera.position.set(camera.position.x,camera.position.y,camera.position.z+100);
     waterScene.water.position.set(camera.position.x,0,camera.position.z);
     waterScene.waterMaterial.uniforms.uTime.value = clock.getElapsedTime();
     terrainChunkManager.checkCameraAndAddTerrain();
