@@ -1,4 +1,11 @@
 import seedrandom from "seedrandom";
+import {seededRandom} from "three/src/math/MathUtils";
+
+/**
+ * TODO:
+ * To apply memoization we need to make a "Singleton" From it
+ * */
+
 
 export function getInterpolatedNoise(x:number, z:number){
     const integerX = Math.floor(x);
@@ -36,6 +43,14 @@ function getSmoothNoise(x:number, y:number){
 }
 
 function getNoise(x: number, y: number) {
-    const seeder = seedrandom.xor128(seed+ x * 30000 + y * 90000);
+
+    const seeder = getRandom(seed+ x * 30000 + y * 90000);
     return (seeder()- .5)*2;
 }
+
+function getRandom(seed:string){
+    return seedrandom.xor128(seed);
+}
+
+
+
