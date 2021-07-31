@@ -3,6 +3,7 @@ import {seededRandom} from "three/src/math/MathUtils";
 
 /**
  * TODO:
+ * A Singleton GetGradientNoise class
  * To apply memoization we need to make a "Singleton" From it
  * The getInterpolatedNoise is to be the public method
  * */
@@ -28,7 +29,6 @@ export function getInterpolatedNoise(x:number, z:number){
 
 
 const seed = ''+100100;
-
 
 function interpolate(a:number,b:number, blend: number){
     const theta = blend*Math.PI;
