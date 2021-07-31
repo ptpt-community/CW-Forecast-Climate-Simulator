@@ -4,6 +4,7 @@ import {seededRandom} from "three/src/math/MathUtils";
 /**
  * TODO:
  * To apply memoization we need to make a "Singleton" From it
+ * The getInterpolatedNoise is to be the public method
  * */
 
 
