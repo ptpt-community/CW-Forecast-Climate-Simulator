@@ -28,10 +28,10 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
                 controls.moveRight(controllableParams.speed)
                 break
             case 'Space':
-                camera.position.y += .1*controllableParams.speed;
+                camera.position.y += controllableParams.speed;
                 break
             case 'ShiftLeft':
-                camera.position.y -=.1*controllableParams.speed;
+                camera.position.y -= controllableParams.speed;
                 break
         }
     }
