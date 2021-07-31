@@ -1,7 +1,7 @@
 import {AxesHelper, CurveUtils, Mesh, Object3D, Vector3} from "three";
 import seedrandom from "seedrandom";
 import FastRandom from "../Random/FastRandom";
-import {BiomeCalculator} from "../terrain_chunk/Biome/BiomeCalculator";
+import {BiomeManager} from "../terrain_chunk/Biome/BiomeManager";
 import {getInterpolatedNoise} from "../Math/GradientNoise";
 
 
@@ -11,7 +11,7 @@ export class NoiseManager {
 
     private static amplitude = 400;
     private _biomeManager;
-    constructor(biomeManager: BiomeCalculator) {
+    constructor(biomeManager: BiomeManager) {
         this._biomeManager = biomeManager;
     }
 
@@ -35,9 +35,8 @@ export class NoiseManager {
         for (let i = 0; i< position.count; i++){
 
             const biome = this._biomeManager.calculateBiome(offset.x+position.getX(i),offset.z - position.getY(i));
-            if(biome<50 && biome>30)
-            position.setZ (i, NoiseManager.getHeight( getOffsetX(position.getX(i)), getOffsetZ(position.getY(i))) );
-            else position.setZ(i,position.getZ(i)-20);
+            position.setZ (i, biome.getHeight( getOffsetX(position.getX(i)), getOffsetZ(position.getY(i))) );
+
 
          }
 

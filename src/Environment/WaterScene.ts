@@ -4,7 +4,7 @@ import waterVertexShader from "../shaders/water/vertex.glsl";
 // @ts-ignore
 import waterFragmentShader from "../shaders/water/fragment.glsl";
 import {GUI} from "dat.gui";
-import {Mesh, Scene, ShaderMaterial} from "three";
+import {AdditiveBlending, Mesh, Scene, ShaderMaterial} from "three";
 
 export class  WaterScene{
 

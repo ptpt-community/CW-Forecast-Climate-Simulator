@@ -10,7 +10,7 @@ import {
 } from "three";
 import {NoiseManager} from "../Noise/NoiseManager";
 import {PlaneCreator} from "./PlaneCreator";
-import {BiomeCalculator} from "./Biome/BiomeCalculator";
+import {BiomeManager} from "./Biome/BiomeManager";
 
 export class TerrainChunk {
 
@@ -46,7 +46,7 @@ export class TerrainChunk {
         })
         this._planeGeometry = new PlaneGeometry(size, size, 128, 128);
 
-        this._noisifier = new NoiseManager(new BiomeCalculator());
+        this._noisifier = new NoiseManager(new BiomeManager());
 
     }
 
