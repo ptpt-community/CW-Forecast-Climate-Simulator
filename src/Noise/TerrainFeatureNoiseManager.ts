@@ -6,7 +6,7 @@ import {getInterpolatedNoise} from "../Math/GradientNoise";
 
 
 
-export class NoiseManager {
+export class TerrainFeatureNoiseManager {
 
 
     private static amplitude = 400;

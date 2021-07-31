@@ -8,7 +8,7 @@ import {
     Texture,
     TextureLoader
 } from "three";
-import {NoiseManager} from "../Noise/NoiseManager";
+import {TerrainFeatureNoiseManager} from "../Noise/TerrainFeatureNoiseManager";
 import {PlaneCreator} from "./PlaneCreator";
 import {BiomeManager} from "./Biome/BiomeManager";
 
@@ -20,7 +20,7 @@ export class TerrainChunk {
     _texture: Texture;
     private _planeMaterial: MeshBasicMaterial;
     private _planeGeometry: PlaneGeometry;
-    _noisifier: NoiseManager;
+    _noisifier: TerrainFeatureNoiseManager;
     _segment ;
 
     constructor(scene: Scene, loader: TextureLoader, size: number) {
@@ -46,7 +46,7 @@ export class TerrainChunk {
         })
         this._planeGeometry = new PlaneGeometry(size, size, 128, 128);
 
-        this._noisifier = new NoiseManager(new BiomeManager());
+        this._noisifier = new TerrainFeatureNoiseManager(new BiomeManager());
 
     }
 

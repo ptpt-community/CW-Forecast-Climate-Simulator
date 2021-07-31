@@ -14,8 +14,9 @@ let canvas = document.querySelector("#c") as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
 
 const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
+const gui = new GUI();
 
-movementControlling(camera,renderer.domElement,100);
+movementControlling(camera,renderer.domElement,100,gui);
 
 camera.position.set(0,5,0);
 camera.lookAt(1,1,1);
@@ -52,7 +53,7 @@ scene.add(light);
 const shadowHelper = new CameraHelper(light.shadow.camera);
 scene.add(shadowHelper,ambientLight);
 
-const gui = new GUI();
+
 // gui.add(params, "intensity").min(0).max(10).step(.001).onFinishChange(()=>{
 //     light.intensity = params.intensity;
 // })
