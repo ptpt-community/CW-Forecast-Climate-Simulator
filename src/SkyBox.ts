@@ -23,6 +23,17 @@ export default class SkyBox{
             'https://media.discordapp.net/attachments/871240169100038181/871240274905542677/Daylight_Box_Left.png',
 
         ];
+
+        const nightSky = [
+            'https://media.discordapp.net/attachments/838858730342580314/867682751997935626/corona_ft.png',
+            'https://media.discordapp.net/attachments/838858730342580314/867682307149266984/corona_bk.png',
+            'https://media.discordapp.net/attachments/838858730342580314/867683079619215380/corona_up.png',
+            'https://media.discordapp.net/attachments/838858730342580314/867682673391829022/corona_dn.png',
+            'https://media.discordapp.net/attachments/838858730342580314/867682971435663380/corona_rt.png',
+            'https://media.discordapp.net/attachments/838858730342580314/867682847119900672/corona_lf.png'
+
+        ];
+
         this._scene.background = new CubeTextureLoader().load(daySky);
 
 
