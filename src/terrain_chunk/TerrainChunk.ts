@@ -30,7 +30,7 @@ export class TerrainChunk {
          this._segment = 128;
 
         const texture = loader.load("https://www.the3rdsequence.com/texturedb/download/26/texture/png/256/cracked+rock-256x256.png", () => {
-            texture.repeat.set(size, size);
+            texture.repeat.set(size*4, size*4);
             texture.wrapS = RepeatWrapping;
             texture.wrapT = RepeatWrapping;
             texture.needsUpdate = true;

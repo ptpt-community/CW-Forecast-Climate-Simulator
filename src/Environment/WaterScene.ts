@@ -37,11 +37,11 @@ export class  WaterScene{
             transparent: true,
             uniforms: {
                 uTime: {value: 0},
-                uBigWavesElevation: {value: 5},
-                uBigWavesFrequency: {value: new THREE.Vector2(.05, .05)},
+                uBigWavesElevation: {value: .5},
+                uBigWavesFrequency: {value: new THREE.Vector2(.005, .005)},
 
-                uSmallWavesElevation: {value: 4},
-                uSmallWavesFrequency: {value: 0.2},
+                uSmallWavesElevation: {value: 2},
+                uSmallWavesFrequency: {value: 0.0217},
                 uSmallWavesSpeed: {value: 0.2},
                 uSmallWavesIterations: {value: 4.0},
 
