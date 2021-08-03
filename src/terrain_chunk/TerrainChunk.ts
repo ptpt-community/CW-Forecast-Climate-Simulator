@@ -8,9 +8,9 @@ import {
     Texture,
     TextureLoader
 } from "three";
-import {TerrainFeatureNoiseManager} from "../Noise/TerrainFeatureNoiseManager";
 import {PlaneCreator} from "./PlaneCreator";
 import {BiomeManager} from "./Biome/BiomeManager";
+import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
 
 export class TerrainChunk {
 
