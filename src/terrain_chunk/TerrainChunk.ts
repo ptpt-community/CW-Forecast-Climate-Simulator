@@ -52,7 +52,7 @@ export class TerrainChunk {
 
 
     private applyNoise = (plane: Mesh, offset:{x: number, z: number}) => {
-        this._noisifier.applyHeight(plane, offset);
+        this._noisifier.applyFeatures(plane, offset);
     }
 
     generateTerrain(position: { x_position: number, z_position: number }) {

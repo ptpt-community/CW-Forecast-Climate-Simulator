@@ -1,15 +1,13 @@
 import {getInterpolatedNoise} from "../../Math/GradientNoise";
 
 export class BiomeManager {
-    _mountain_biome = new MountainBiome();
-    _super_flat_biome = new SuperFlatBiome();
-    _plane_biome = new PlaneBiome();
+
      _amplitude = 300;
 
      calculateBiome = (x: number, z: number) :Biome => {
          const subscale =10;
         const biomeNumber  = this.getBiomeFactor(x/subscale,z/subscale);
-        return this._getBiome(biomeNumber);
+        return this._getBiome(x,z,biomeNumber);
     }
 
      getBiomeFactor(x:number, y:number) {
@@ -17,37 +15,47 @@ export class BiomeManager {
     }
 
 
-    private _getBiome(biomeNumber: number) :Biome{
+    private _getBiome(x:number, z: number , biomeNumber: number) :Biome{
          if(biomeNumber>200 && biomeNumber<300){
-             return this._mountain_biome;
+             return new MountainBiome(x,z,biomeNumber);
          }
          if(biomeNumber>100 && biomeNumber <200){
-             return this._plane_biome;
+             return new PlaneBiome(x,z,biomeNumber);
          }
-         else return this._super_flat_biome;
+         else return new SuperFlatBiome(x,z,biomeNumber);
     }
 
 }
 
 
 export interface Biome{
-    getHeight(x:number, z:number): number;
+    getHeight(): number;
 }
 
 
 class MountainBiome implements Biome{
-    private amplitude = 300;
-   public getHeight(x: number, z: number): number {
-        return this._getMountainHeight(x,z);
+
+    _biomeNumber;
+    _x;
+    _z;
+
+    constructor(x : number, z: number, biomeNumber :number) {
+        this._biomeNumber = biomeNumber;
+        this._x = x;
+        this._z = z;
     }
 
-    private  _getMountainHeight(x:number, z:number) {
+    private _amplitude = 300;
+
+   public getHeight(): number {
+        return this._getMountainHeight();
+    }
+
+    private  _getMountainHeight() {
         let total = 0;
-        total += getInterpolatedNoise(x/64, z/64)*this.amplitude;
-        total += getInterpolatedNoise(x/32, z/32)*this.amplitude/3;
-      //  total += getInterpolatedNoise(x/8, z/8)*this.amplitude/9;
-       // total += getInterpolatedNoise(x/4, z/4)*this.amplitude/27;
-        return 30+total;
+        total += getInterpolatedNoise(this._x/64, this._z/64)*this._amplitude;
+        total += getInterpolatedNoise(this._x/32, this._z/32)*this._amplitude/3;
+        return this._amplitude/3+total;
     }
 
 
@@ -56,17 +64,41 @@ class MountainBiome implements Biome{
 
 class SuperFlatBiome implements Biome{
 
-    public getHeight(x: number, z: number): number {
+    _biomeNumber;
+    _x;
+    _z;
+
+    constructor(x : number, z: number, biomeNumber :number) {
+        this._biomeNumber = biomeNumber;
+        this._x = x;
+        this._z = z;
+    }
+
+
+
+    public getHeight(): number {
         return -30;
     }
 }
 
 class PlaneBiome implements Biome{
     _amplitude = 40;
-    public getHeight(x: number, z: number): number {
+
+    _biomeNumber;
+    _x;
+    _z;
+
+    constructor(x : number, z: number, biomeNumber :number) {
+        this._biomeNumber = biomeNumber;
+        this._x = x;
+        this._z = z;
+    }
+
+
+    public getHeight(): number {
         let total = 0;
-        total+= getInterpolatedNoise(x/64,z/64)*this._amplitude;
-        total+= getInterpolatedNoise(x/128,z/128)*this._amplitude;
+        total+= getInterpolatedNoise(this._x/64,this._z/64)*this._amplitude;
+        total+= getInterpolatedNoise(this._x/128,this._z/128)*this._amplitude;
 
         return total;
     }
