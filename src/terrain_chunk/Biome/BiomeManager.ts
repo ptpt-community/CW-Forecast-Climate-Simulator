@@ -7,12 +7,24 @@ export class BiomeManager {
      calculateBiome = (x: number, z: number) :Biome => {
          const subscale =10;
         const biomeNumber  = this.getBiomeFactor(x/subscale,z/subscale);
-        return this._getBiome(x,z,biomeNumber);
-    }
+        const biome =  this._getBiome(x,z,biomeNumber);
 
-     getBiomeFactor(x:number, y:number) {
-         return getInterpolatedNoise(x / 128, y / 128) * this._amplitude+this._amplitude/2;
-    }
+        biome.setForestFactor(this.getForestFactor(x,z));
+
+        return biome;
+     }
+
+     getBiomeFactor(x:number, z:number) {
+         return getInterpolatedNoise(x / 128, z / 128) * this._amplitude+this._amplitude/2;
+     }
+
+
+     getForestFactor(x: number, z: number){
+         return getInterpolatedNoise((x+2000)/64,(z-1212)/64)%1;
+     }
+
+
+
 
 
     private _getBiome(x:number, z: number , biomeNumber: number) :Biome{
@@ -30,6 +42,8 @@ export class BiomeManager {
 
 export interface Biome{
     getHeight(): number;
+
+    setForestFactor(forestFactor: number): void;
 }
 
 
@@ -38,6 +52,7 @@ class MountainBiome implements Biome{
     _biomeNumber;
     _x;
     _z;
+    _forestFactor = 0;
 
     constructor(x : number, z: number, biomeNumber :number) {
         this._biomeNumber = biomeNumber;
@@ -58,6 +73,12 @@ class MountainBiome implements Biome{
         return this._amplitude/3+total;
     }
 
+    setForestFactor(forestFactor: number): void {
+       this._forestFactor = forestFactor;
+    }
+
+
+
 
 }
 
@@ -67,6 +88,7 @@ class SuperFlatBiome implements Biome{
     _biomeNumber;
     _x;
     _z;
+    _forestFactor=0;
 
     constructor(x : number, z: number, biomeNumber :number) {
         this._biomeNumber = biomeNumber;
@@ -79,6 +101,11 @@ class SuperFlatBiome implements Biome{
     public getHeight(): number {
         return -30;
     }
+
+    setForestFactor(forestFactor: number): void {
+        this._forestFactor = forestFactor+.3;
+    }
+
 }
 
 class PlaneBiome implements Biome{
@@ -87,6 +114,7 @@ class PlaneBiome implements Biome{
     _biomeNumber;
     _x;
     _z;
+    _forestFactor=0;
 
     constructor(x : number, z: number, biomeNumber :number) {
         this._biomeNumber = biomeNumber;
@@ -102,5 +130,10 @@ class PlaneBiome implements Biome{
 
         return total;
     }
+
+    setForestFactor(forestFactor: number): void {
+        this._forestFactor = forestFactor;
+    }
+
 
 }
