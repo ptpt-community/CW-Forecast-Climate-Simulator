@@ -8,9 +8,10 @@ import {
     Texture,
     TextureLoader
 } from "three";
-import {TerrainFeatureNoiseManager} from "../Noise/TerrainFeatureNoiseManager";
 import {PlaneCreator} from "./PlaneCreator";
 import {BiomeManager} from "./Biome/BiomeManager";
+import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
+import {ChunkPosition} from "./TerrainChunkManager";
 
 export class TerrainChunk {
 
@@ -52,21 +53,22 @@ export class TerrainChunk {
 
 
     private applyNoise = (plane: Mesh, offset:{x: number, z: number}) => {
-        this._noisifier.applyHeight(plane, offset);
+        this._noisifier.applyFeatures(plane, offset);
     }
 
-    generateTerrain(position: { x_position: number, z_position: number }) {
+    generateTerrain(position:ChunkPosition) : Mesh {
         const plane = new PlaneCreator(
             this._size,
-            position.x_position * this._size,
-            position.z_position * this._size,
+            position.chunk_x * this._size,
+            position.chunk_z * this._size,
             new PlaneGeometry(this._size, this._size, this._segment, this._segment),
             this._planeMaterial).plane;
 
-        this.applyNoise(plane,{x:position.x_position * this._size, z:position.z_position * this._size})
+        this.applyNoise(plane,{x:position.chunk_x * this._size, z:position.chunk_z * this._size})
         plane.castShadow = true;
         plane.receiveShadow = true;
 
         this._scene.add(plane);
+        return plane;
     }
 }
