@@ -1,5 +1,4 @@
-import seedrandom from "seedrandom";
-import {seededRandom} from "three/src/math/MathUtils";
+import {GetNoise} from "../Noise/GetNoise";
 
 /**
  * TODO:
@@ -28,7 +27,7 @@ export function getInterpolatedNoise(x:number, z:number){
 }
 
 
-const seed = ''+100100;
+
 
 function interpolate(a:number,b:number, blend: number){
     const theta = blend*Math.PI;
@@ -43,15 +42,11 @@ function getSmoothNoise(x:number, y:number){
     return corners +edges +center;
 }
 
-function getNoise(x: number, y: number) {
 
-    const seeder = getRandom(seed+ x * 30000 + y * 90000);
-    return (seeder()- .5)*2;
+function getNoise(x:number,z:number){
+    return GetNoise.getInstance().getNoise(x, z);
 }
 
-function getRandom(seed:string){
-    return seedrandom.xor128(seed);
-}
 
 
 
