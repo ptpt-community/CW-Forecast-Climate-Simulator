@@ -42,7 +42,7 @@ export class BiomeManager {
 
 export interface Biome{
     getHeight(): number;
-
+    hasPlant():boolean
     setForestFactor(forestFactor: number): void;
 }
 
@@ -58,6 +58,11 @@ class MountainBiome implements Biome{
         this._biomeNumber = biomeNumber;
         this._x = x;
         this._z = z;
+    }
+
+    hasPlant(): boolean {
+
+        return false;
     }
 
     private _amplitude = 300;
@@ -102,6 +107,11 @@ class SuperFlatBiome implements Biome{
         return -30;
     }
 
+    hasPlant(): boolean {
+
+        return false;
+    }
+
     setForestFactor(forestFactor: number): void {
         this._forestFactor = forestFactor+.3;
     }
@@ -135,5 +145,35 @@ class PlaneBiome implements Biome{
         this._forestFactor = forestFactor;
     }
 
+    hasPlant(): boolean {
+        return false;
+    }
+
+
+}
+
+class tundraBiome implements Biome{
+    _amplitude = 40;
+
+    _biomeNumber;
+    _x;
+    _z;
+    _forestFactor=0;
+    constructor(x : number, z: number, biomeNumber :number) {
+        this._biomeNumber = biomeNumber;
+        this._x = x;
+        this._z = z;
+    }
+
+    getHeight(): number {
+        return 0;
+    }
+
+    hasPlant(): boolean {
+        return false;
+    }
+
+    setForestFactor(forestFactor: number): void {
+    }
 
 }
