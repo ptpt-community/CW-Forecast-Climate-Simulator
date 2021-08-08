@@ -1,10 +1,11 @@
 import {
+    Material,
     Mesh,
     MeshBasicMaterial,
     MeshPhongMaterial,
     PlaneGeometry,
     RepeatWrapping,
-    Scene,
+    Scene, ShaderMaterial,
     Texture,
     TextureLoader
 } from "three";
@@ -13,13 +14,18 @@ import {BiomeManager} from "./Biome/BiomeManager";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
 import {ChunkPosition} from "./TerrainChunkManager";
 
+//@ts-ignore
+import groundVertexShader from "../shaders/ground/vertex.glsl"
+//@ts-ignore
+import groundFragmentShader from "../shaders/ground/fragment.glsl"
+
 export class TerrainChunk {
 
     _loader: TextureLoader;
     _scene: Scene;
     _size: number;
     _texture: Texture;
-    private _planeMaterial: MeshBasicMaterial;
+    private _planeMaterial: Material;
     private _planeGeometry: PlaneGeometry;
     _noisifier: TerrainFeatureNoiseManager;
     _segment ;
@@ -38,11 +44,13 @@ export class TerrainChunk {
         });
         this._texture = texture;
 
-        this._planeMaterial = new MeshPhongMaterial({
+        this._planeMaterial = new ShaderMaterial({
 
             wireframe: false,
-            map: texture,
-            shininess:3,
+            vertexShader: groundVertexShader,
+            fragmentShader: groundFragmentShader
+        //    map: texture,
+          //  shininess:3,
 
         })
         this._planeGeometry = new PlaneGeometry(size, size, 128, 128);
