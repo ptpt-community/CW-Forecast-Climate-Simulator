@@ -51,14 +51,30 @@ class ChunkRecord{
 
 }
 
-
 class ChunkRecordList{
+    _chunkRecords_dp: any = {};
+
+    add(chunkRecord : ChunkRecord){
+        this._chunkRecords_dp[chunkRecord.positionKey] = chunkRecord;
+    }
+
+    remove(chunkRecord:ChunkRecord){
+        delete this._chunkRecords_dp[chunkRecord.positionKey];
+    }
 
 
+    contains(position : ChunkPosition) :boolean{
+       return  this._chunkRecords_dp[ChunkRecordList.positionToKey(position)] !== undefined;
+    }
+
+    private static positionToKey(position: ChunkPosition):string{
+        return  ''+position.chunk_x+','+position.chunk_z;
+    }
 
 
 
 }
+
 
 
 
@@ -75,6 +91,9 @@ export default class TerrainChunkManager {
     _loader: TextureLoader = new TextureLoader();
 
     _chunk_records: ChunkRecord[] = [];
+    _chunk_record_list = new ChunkRecordList();
+
+
     private _terrainChunk: TerrainChunk;
 
 
@@ -91,11 +110,11 @@ export default class TerrainChunkManager {
         const camera = this._camera;
         const newChunkPosition = this._coordinateToChunkPosition(camera.position);
         let chunkAlreadyExists = false;
-        this._chunk_records.forEach((record) => {
-                chunkAlreadyExists ||= record.containsPosition(newChunkPosition);
-
-        })
-        if (!chunkAlreadyExists) {
+        // this._chunk_records.forEach((record) => {
+        //         chunkAlreadyExists ||= record.containsPosition(newChunkPosition);
+        //
+        // })
+        if (!this._chunk_record_list.contains(newChunkPosition)) {
             this.createChunk(newChunkPosition);
         }
         chunkAlreadyExists = false;
@@ -114,7 +133,7 @@ export default class TerrainChunkManager {
     _init = () => {
         const position = new ChunkPosition(0,0);
         const plane =  this._terrainChunk.generateTerrain(position);
-        this._chunk_records.push(new ChunkRecord(position,plane));
+        this._chunk_record_list.add(new ChunkRecord(position,plane));
 
     }
 
@@ -123,6 +142,6 @@ export default class TerrainChunkManager {
         console.log("Generate New Chunk");
 
         const plane = this._terrainChunk.generateTerrain(position);
-        this._chunk_records.push(new ChunkRecord(position,plane));
+        this._chunk_record_list.add(new ChunkRecord(position,plane));
     }
 }
