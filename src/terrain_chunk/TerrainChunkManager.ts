@@ -21,28 +21,48 @@ export class ChunkPosition{
 }
 
 class ChunkRecord{
-    private readonly _position:ChunkPosition;
+    private readonly _position_key:string;
     private readonly _plane: Mesh;
 
     constructor(position: ChunkPosition, plane: Mesh) {
-        this._position = position;
+        this._position_key = ChunkRecord.positionToKey(position);
         this._plane = plane;
     }
 
-    get position(): ChunkPosition {
-        return this._position;
-    }
 
     get plane(): Mesh {
         return this._plane;
     }
 
-    containsPosition (position: ChunkPosition) : boolean{
-        return this.position.chunk_x == position.chunk_x && this.position.chunk_z == position.chunk_z;
+    get positionKey():string{
+        return this._position_key;
+    }
 
+
+     private static positionToKey(position: ChunkPosition):string{
+        return  ''+position.chunk_x+','+position.chunk_z;
+    }
+
+
+    containsPosition (position: ChunkPosition) : boolean{
+        const key = ChunkRecord.positionToKey(position);
+        return key===this._position_key;
     }
 
 }
+
+
+class ChunkRecordList{
+
+
+
+
+
+}
+
+
+
+
 
 
 export default class TerrainChunkManager {
@@ -71,10 +91,9 @@ export default class TerrainChunkManager {
         const camera = this._camera;
         const newChunkPosition = this._coordinateToChunkPosition(camera.position);
         let chunkAlreadyExists = false;
-        //  console.log(newChunkPosition);
-        //if (this._chunk_positions.includes(newChunkPosition)) return;
         this._chunk_records.forEach((record) => {
-                chunkAlreadyExists = record.containsPosition(newChunkPosition);
+                chunkAlreadyExists ||= record.containsPosition(newChunkPosition);
+
         })
         if (!chunkAlreadyExists) {
             this.createChunk(newChunkPosition);

@@ -14,7 +14,6 @@ export class TerrainFeatureNoiseManager {
     applyFeatures(plane: Mesh, offset: { x: number, z: number }) {
 
         function getOffsetX(x: number) {
-            console.log(offset.x + x);
             return offset.x + x;
         }
 
