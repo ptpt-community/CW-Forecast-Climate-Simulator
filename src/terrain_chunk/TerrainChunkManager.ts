@@ -115,10 +115,7 @@ export default class TerrainChunkManager {
 
 
     _init = () => {
-        const position = new ChunkPosition(0,0);
-        const plane =  this._terrainChunk.generateTerrain(position);
-        this._chunk_record_list.add(new ChunkRecord(position,plane));
-
+       this.createChunk(new ChunkPosition(0,0));
     }
 
 
