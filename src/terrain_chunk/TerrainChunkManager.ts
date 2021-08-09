@@ -22,11 +22,11 @@ export class ChunkPosition{
 
 
 class ChunkRecord{
-    private readonly _position_key:string;
+    private readonly _position:ChunkPosition;
     private readonly _plane: Mesh;
 
     constructor(position: ChunkPosition, plane: Mesh) {
-        this._position_key = ChunkRecord.positionToKey(position);
+        this._position= position;
         this._plane = plane;
     }
 
@@ -35,13 +35,8 @@ class ChunkRecord{
         return this._plane;
     }
 
-    get positionKey():string{
-        return this._position_key;
-    }
-
-
-     private static positionToKey(position: ChunkPosition):string{
-        return  ''+position.chunk_x+','+position.chunk_z;
+    get position():ChunkPosition{
+        return this._position;
     }
 
 
@@ -51,17 +46,19 @@ class ChunkRecordList{
     _chunkRecords_dp: any = {};
 
     add(chunkRecord : ChunkRecord){
-        this._chunkRecords_dp[chunkRecord.positionKey] = chunkRecord;
+        this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)] = chunkRecord;
     }
 
     remove(chunkRecord:ChunkRecord){
-        delete this._chunkRecords_dp[chunkRecord.positionKey];
+        delete this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)];
     }
 
 
     contains(position : ChunkPosition) :boolean{
        return  this._chunkRecords_dp[ChunkRecordList.positionToKey(position)] !== undefined;
     }
+
+
 
     private static positionToKey(position: ChunkPosition):string{
         return  ''+position.chunk_x+','+position.chunk_z;
