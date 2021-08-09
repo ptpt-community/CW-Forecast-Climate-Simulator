@@ -81,6 +81,8 @@ export default class TerrainChunkManager {
 
     SIZE = 512;
 
+    private _GRID_SIZE = 3;
+
     _loader: TextureLoader = new TextureLoader();
 
     _chunk_record_list = new ChunkRecordList();
@@ -99,11 +101,19 @@ export default class TerrainChunkManager {
     }
 
     public checkCameraAndAddTerrain() {
+
         const camera = this._camera;
-        const newChunkPosition = this._coordinateToChunkPosition(camera.position);
-        if (!this._chunk_record_list.contains(newChunkPosition)) {
-            this.createChunk(newChunkPosition);
+        const cameraChunk = this._coordinateToChunkPosition(camera.position);
+
+
+        for(let i=-this._GRID_SIZE; i<this._GRID_SIZE; i++){
+            for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
+                const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
+                if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
+            }
         }
+
+
     }
 
 
