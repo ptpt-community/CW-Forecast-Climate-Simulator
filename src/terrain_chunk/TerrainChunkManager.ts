@@ -20,6 +20,7 @@ export class ChunkPosition{
     }
 }
 
+
 class ChunkRecord{
     private readonly _position_key:string;
     private readonly _plane: Mesh;
@@ -43,11 +44,6 @@ class ChunkRecord{
         return  ''+position.chunk_x+','+position.chunk_z;
     }
 
-
-    containsPosition (position: ChunkPosition) : boolean{
-        const key = ChunkRecord.positionToKey(position);
-        return key===this._position_key;
-    }
 
 }
 
@@ -90,7 +86,6 @@ export default class TerrainChunkManager {
 
     _loader: TextureLoader = new TextureLoader();
 
-    _chunk_records: ChunkRecord[] = [];
     _chunk_record_list = new ChunkRecordList();
 
 
@@ -109,17 +104,9 @@ export default class TerrainChunkManager {
     public checkCameraAndAddTerrain() {
         const camera = this._camera;
         const newChunkPosition = this._coordinateToChunkPosition(camera.position);
-        let chunkAlreadyExists = false;
-        // this._chunk_records.forEach((record) => {
-        //         chunkAlreadyExists ||= record.containsPosition(newChunkPosition);
-        //
-        // })
         if (!this._chunk_record_list.contains(newChunkPosition)) {
             this.createChunk(newChunkPosition);
         }
-        chunkAlreadyExists = false;
-
-
     }
 
 
