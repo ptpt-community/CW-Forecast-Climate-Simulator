@@ -9,7 +9,7 @@ export class PlaneCreator {
     private _plane: Mesh;
 
     constructor(size: number, positionX: number, positionZ: number, geometry: BufferGeometry, material: Material) {
-        ;
+
 
 
         this._plane = new Mesh(geometry, material);

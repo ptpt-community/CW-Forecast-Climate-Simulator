@@ -1,4 +1,6 @@
 import {GetNoise} from "../Noise/GetNoise";
+// @ts-ignore
+import SimplexNoise from  "simplex-noise"
 
 /**
  * TODO:
@@ -9,20 +11,24 @@ import {GetNoise} from "../Noise/GetNoise";
 
 
 export function getInterpolatedNoise(x:number, z:number){
-    const integerX = Math.floor(x);
-    const integerZ = Math.floor(z);
-    const fractX = x - integerX;
-    const fractZ = z - integerZ;
+    // const integerX = Math.floor(x);
+    // const integerZ = Math.floor(z);
+    // const fractX = x - integerX;
+    // const fractZ = z - integerZ;
+    //
+    // const v1 = getSmoothNoise(integerX,integerZ);
+    // const v2 = getSmoothNoise(integerX+1,integerZ);
+    // const v3 = getSmoothNoise(integerX,integerZ+1);
+    // const v4 = getSmoothNoise(integerX+1,integerZ+1);
+    //
+    // const i1 = interpolate(v1,v2,fractX);
+    // const i2 = interpolate(v3,v4,fractX);
+    //
+    // return interpolate(i1,i2,fractZ);
 
-    const v1 = getSmoothNoise(integerX,integerZ);
-    const v2 = getSmoothNoise(integerX+1,integerZ);
-    const v3 = getSmoothNoise(integerX,integerZ+1);
-    const v4 = getSmoothNoise(integerX+1,integerZ+1);
 
-    const i1 = interpolate(v1,v2,fractX);
-    const i2 = interpolate(v3,v4,fractX);
-
-    return interpolate(i1,i2,fractZ);
+    const simplex = new SimplexNoise(.2142532535);
+    return simplex.noise2D(x,z);
 
 }
 

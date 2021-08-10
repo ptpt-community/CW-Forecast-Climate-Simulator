@@ -1,5 +1,6 @@
-import {Camera, Mesh, Scene, TextureLoader, Vector3} from "three";
+import {Box2, Camera, Mesh, Scene, TextureLoader, Vector2, Vector3} from "three";
 import {TerrainChunk} from "./TerrainChunk";
+import {QuadTree} from "./QuadTree";
 
 export class ChunkPosition{
     private readonly _chunk_x: number;
@@ -69,6 +70,11 @@ class ChunkRecordList{
 }
 
 
+interface IChunkChild{
+         position: number[],
+        dimensions: number[],
+        bounds: Box2
+}
 
 
 
@@ -81,7 +87,7 @@ export default class TerrainChunkManager {
 
     SIZE = 512;
 
-    private _GRID_SIZE = 3;
+    private _GRID_SIZE = 1;
 
     _loader: TextureLoader = new TextureLoader();
 
@@ -100,13 +106,89 @@ export default class TerrainChunkManager {
 
     }
 
+    // public checkCameraAndAddTerrain() {
+    //
+    //     const camera = this._camera;
+    //     const cameraChunk = this._coordinateToChunkPosition(camera.position);
+    //
+    //
+    //     for(let i=-this._GRID_SIZE; i<=this._GRID_SIZE; i++){
+    //         for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
+    //             const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
+    //             if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
+    //         }
+    //     }
+    //
+    //
+    // }
+
+    _chunks :IChunkChild[] = [];
+
+
+
     public checkCameraAndAddTerrain() {
+
+        function _Key(c:IChunkChild) {
+            return c.position[0] + '/' + c.position[1] + ' [' + c.dimensions[0] + ']';
+        }
+
+        let newTerrainChunks: any = {}
+
+
+        const quadTree = new QuadTree({
+            bottomLeft: new Vector2(-32000,32000),
+            topRight: new Vector2(32000,32000)
+        })
+
+       function dictionaryDifference(dictA:IChunkChild[], dictB:IChunkChild[]):IChunkChild[] {
+            const diff = {...dictA};
+            for (let k in dictB) {
+                delete diff[k];
+            }
+            return diff;
+        }
+
+        quadTree.insert(this._camera.position);
+        const nodes = quadTree.getNodes();
+
+        const center = new Vector2();
+        const dimensions = new Vector2();
+
+        for(let node of nodes){
+            node.bounds.getCenter(center);
+            node.bounds.getSize(dimensions);
+            const child = {
+                position: [center.x,center.y],
+                bounds: node.bounds,
+                dimensions: [dimensions.x,dimensions.y]
+            }
+
+            const k = _Key(child);
+            newTerrainChunks[k] = child;
+
+        }
+
+
+        const difference = dictionaryDifference(newTerrainChunks,this._chunks)
+
+        for(let k in difference){
+            const [xp,zp] = difference[k].position;
+            const offset = new Vector2(xp,zp);
+            this._chunks[k] = {
+                position: [xp,zp],
+                chunk: this.createChunk()
+            }
+        }
+
+
+
+
 
         const camera = this._camera;
         const cameraChunk = this._coordinateToChunkPosition(camera.position);
 
 
-        for(let i=-this._GRID_SIZE; i<this._GRID_SIZE; i++){
+        for(let i=-this._GRID_SIZE; i<=this._GRID_SIZE; i++){
             for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
                 const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
                 if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
@@ -136,3 +218,4 @@ export default class TerrainChunkManager {
         this._chunk_record_list.add(new ChunkRecord(position,plane));
     }
 }
+

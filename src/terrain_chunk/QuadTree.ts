@@ -32,14 +32,14 @@ export class QuadTree {
     }
 
 
-    getChildren() {
+    getNodes() {
         const children: IQuadTree[] = [];
         this._GetChildren(this._root, children);
         return children;
     }
 
 
-    _GetChildren(node: IQuadTree, target: IQuadTree[]) {
+   private _GetChildren(node: IQuadTree, target: IQuadTree[]) {
         if (node.children.length == 0) {
             target.push(node);
             return
@@ -54,7 +54,7 @@ export class QuadTree {
         this._Insert(this._root, new Vector2(position.x, position.z));
     }
 
-    _Insert(node: IQuadTree, position: Vector2) {
+   private _Insert(node: IQuadTree, position: Vector2) {
         const distanceToNode = this._DistanceToNode(node, position);
 
         if (distanceToNode < node.size.x && node.size.x > _MIN_NODE_SIZE) {
@@ -66,12 +66,12 @@ export class QuadTree {
         }
     }
 
-    _DistanceToNode(node: IQuadTree, position: Vector2) {
+    private _DistanceToNode(node: IQuadTree, position: Vector2) {
         return node.center.distanceTo(position);
     }
 
 
-    _CreateChildren(node: IQuadTree) {
+    private _CreateChildren(node: IQuadTree) {
         const midpoint = node.bounds.getCenter(new Vector2());
 
         // Bottom left

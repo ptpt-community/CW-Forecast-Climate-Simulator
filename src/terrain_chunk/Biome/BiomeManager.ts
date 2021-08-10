@@ -28,13 +28,14 @@ export class BiomeManager {
 
 
     private _getBiome(x:number, z: number , biomeNumber: number) :Biome{
-         if(biomeNumber>200 && biomeNumber<300){
-             return new MountainBiome(x,z,biomeNumber);
-         }
-         if(biomeNumber>100 && biomeNumber <200){
-             return new PlaneBiome(x,z,biomeNumber);
-         }
-         else return new SuperFlatBiome(x,z,biomeNumber);
+         // if(biomeNumber>200 && biomeNumber<300){
+         //     return new MountainBiome(x,z,biomeNumber);
+         // }
+         // if(biomeNumber>100 && biomeNumber <200){
+         //     return new PlaneBiome(x,z,biomeNumber);
+         // }
+         // else return new SuperFlatBiome(x,z,biomeNumber);
+        return new MountainBiome(x,z,biomeNumber);
     }
 
 }
@@ -60,18 +61,34 @@ class MountainBiome implements Biome{
         this._z = z;
     }
 
-    private _amplitude = 300;
+    private _amplitude = 1;
 
    public getHeight(): number {
         return this._getMountainHeight();
     }
 
     private  _getMountainHeight() {
+        const xs = this._x / 1000;
+        const ys = this._z / 1000;
+
+        const G = 2.0 ** (-.7);
+        let amplitude = 1.0;
+        let frequency = 1.0;
+        let normalization = 0;
         let total = 0;
-        total += getInterpolatedNoise(this._x/64, this._z/64)*this._amplitude;
-        total += getInterpolatedNoise(this._x/32, this._z/32)*this._amplitude/3;
-        return this._amplitude/3+total;
+        for (let o = 0; o < 5; o++) {
+            const noiseValue = getInterpolatedNoise(
+                xs * frequency, ys * frequency) * 0.5 + 0.5;
+            total += noiseValue * amplitude;
+            normalization += amplitude;
+            amplitude *= G;
+            frequency *= .7;
+        }
+        total /= normalization;
+        return Math.pow(
+            total, 4) *300;
     }
+
 
     setForestFactor(forestFactor: number): void {
        this._forestFactor = forestFactor;
