@@ -32,9 +32,6 @@ export class QuadTree {
     }
 
 
-
-
-
     getChildren() {
         const children: IQuadTree[] = [];
         this._GetChildren(this._root, children);
@@ -74,24 +71,24 @@ export class QuadTree {
     }
 
 
-    _CreateChildren(child: IQuadTree) {
-        const midpoint = child.bounds.getCenter(new Vector2());
+    _CreateChildren(node: IQuadTree) {
+        const midpoint = node.bounds.getCenter(new Vector2());
 
         // Bottom left
-        const bottomLeft = new Box2(child.bounds.min, midpoint);
+        const bottomLeft = new Box2(node.bounds.min, midpoint);
 
         // Bottom right
         const bottomRight = new Box2(
-            new Vector2(midpoint.x, child.bounds.min.y),
-            new Vector2(child.bounds.max.x, midpoint.y));
+            new Vector2(midpoint.x, node.bounds.min.y),
+            new Vector2(node.bounds.max.x, midpoint.y));
 
         // Top left
         const topLeft = new Box2(
-            new Vector2(child.bounds.min.x, midpoint.y),
-            new Vector2(midpoint.x, child.bounds.max.y));
+            new Vector2(node.bounds.min.x, midpoint.y),
+            new Vector2(midpoint.x, node.bounds.max.y));
 
         // Top right
-        const topRight = new Box2(midpoint, child.bounds.max);
+        const topRight = new Box2(midpoint, node.bounds.max);
 
         const children = [bottomLeft, bottomRight, topLeft, topRight].map(
             box => {
