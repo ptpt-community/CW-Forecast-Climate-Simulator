@@ -1,14 +1,12 @@
 import {
     Box2,
     Camera, FrontSide,
-    Mesh, MeshStandardMaterial,
-    Plane,
-    PlaneBufferGeometry,
+    Mesh,
     Scene,
     ShaderMaterial,
-    TextureLoader,
+
     Vector2,
-    Vector3
+
 } from "three";
 
 import {TerrainChunk} from "./TerrainChunk";
@@ -38,54 +36,6 @@ export class ChunkPosition{
 }
 
 
-class ChunkRecord{
-    private readonly _position:ChunkPosition;
-    private readonly _plane: Mesh;
-
-    constructor(position: ChunkPosition, plane: Mesh) {
-        this._position= position;
-        this._plane = plane;
-    }
-
-
-    get plane(): Mesh {
-        return this._plane;
-    }
-
-    get position():ChunkPosition{
-        return this._position;
-    }
-
-
-}
-
-class ChunkRecordList{
-    _chunkRecords_dp: any = {};
-
-    add(chunkRecord : ChunkRecord){
-        this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)] = chunkRecord;
-    }
-
-    remove(chunkRecord:ChunkRecord){
-        delete this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)];
-    }
-
-
-    contains(position : ChunkPosition) :boolean{
-       return  this._chunkRecords_dp[ChunkRecordList.positionToKey(position)] !== undefined;
-    }
-
-
-
-    private static positionToKey(position: ChunkPosition):string{
-        return  ''+position.chunk_x+','+position.chunk_z;
-    }
-
-
-
-}
-
-
 interface IChunkChild{
          position: number[],
         dimensions: number[],
@@ -102,11 +52,6 @@ export default class TerrainChunkManager {
     _scene: Scene;
 
     _camera: Camera;
-
-    SIZE = 512;
-
-
-
 
     constructor(scene: Scene, camera: Camera) {
         this._scene = scene;
@@ -180,6 +125,9 @@ export default class TerrainChunkManager {
     }
 
 
+
+
+
     private _CreateTerrainChunk(offset: Vector2, size: number) : TerrainChunk{
         return new TerrainChunk(this._scene,size,offset,this._planeMaterial);
 
@@ -188,17 +136,8 @@ export default class TerrainChunkManager {
 
 
 
-
-    _coordinateToChunkPosition(position: Vector3) : ChunkPosition {
-        let x = Math.floor(position.x / this.SIZE);
-        let z = Math.floor(position.z / this.SIZE);
-        return new ChunkPosition(x,z);
-    }
-
-
-
     _planeMaterial = new ShaderMaterial({
-        wireframe: false,
+        wireframe: true,
         wireframeLinewidth: 1,
         side: FrontSide,
         vertexShader:groundVertexShader,
