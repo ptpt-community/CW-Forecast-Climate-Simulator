@@ -14,15 +14,15 @@ interface IQuadTree {
 
 export class QuadTree {
 
-    private _root: IQuadTree;
+    private readonly _root: IQuadTree;
 
     constructor(
         params: {
-            min: Vector2,
-            max: Vector2
+            bottomLeft: Vector2,
+            topRight: Vector2
         }
     ) {
-        const box = new Box2(params.min, params.max);
+        const box = new Box2(params.bottomLeft, params.topRight);
         this._root = {
             bounds: box,
             children: [],
@@ -30,6 +30,9 @@ export class QuadTree {
             size: box.getSize(new Vector2())
         }
     }
+
+
+
 
 
     getChildren() {
@@ -50,26 +53,24 @@ export class QuadTree {
 
     }
 
-
     insert(position: Vector3) {
         this._Insert(this._root, new Vector2(position.x, position.z));
     }
 
+    _Insert(node: IQuadTree, position: Vector2) {
+        const distanceToNode = this._DistanceToNode(node, position);
 
-    _Insert(child: IQuadTree, position: Vector2) {
-        const distToChild = this._DistanceToChild(child, position);
+        if (distanceToNode < node.size.x && node.size.x > _MIN_NODE_SIZE) {
+            node.children = this._CreateChildren(node);
 
-        if (distToChild < child.size.x && child.size.x > _MIN_NODE_SIZE) {
-            child.children = this._CreateChildren(child);
-
-            for (let c of child.children) {
+            for (let c of node.children) {
                 this._Insert(c, position);
             }
         }
     }
 
-    _DistanceToChild(child: IQuadTree, position: Vector2) {
-        return child.center.distanceTo(position);
+    _DistanceToNode(node: IQuadTree, position: Vector2) {
+        return node.center.distanceTo(position);
     }
 
 
