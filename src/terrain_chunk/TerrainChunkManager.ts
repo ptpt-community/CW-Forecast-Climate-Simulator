@@ -197,11 +197,12 @@ export default class TerrainChunkManager {
 
 
 
-    _planeMaterial = new MeshStandardMaterial({
+    _planeMaterial = new ShaderMaterial({
         wireframe: false,
         wireframeLinewidth: 1,
-        color: 0xFFFFFF,
         side: FrontSide,
+        vertexShader:groundVertexShader,
+        fragmentShader:groundFragmentShader
 
     });
 
