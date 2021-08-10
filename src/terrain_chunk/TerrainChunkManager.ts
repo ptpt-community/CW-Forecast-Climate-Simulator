@@ -1,7 +1,6 @@
 import {
     Box2,
     Camera, FrontSide,
-    Mesh,
     Scene,
     ShaderMaterial,
 
@@ -16,24 +15,6 @@ import groundVertexShader from "../shaders/ground/vertex.glsl";
 //@ts-ignore
 import groundFragmentShader from "../shaders/ground/fragment.glsl";
 
-export class ChunkPosition{
-    private readonly _chunk_x: number;
-    private readonly _chunk_z: number;
-
-
-    constructor(chunk_x: number, chunk_z: number) {
-        this._chunk_x = chunk_x;
-        this._chunk_z = chunk_z;
-    }
-
-    get chunk_x(): number {
-        return this._chunk_x;
-    }
-
-    get chunk_z(): number {
-        return this._chunk_z;
-    }
-}
 
 
 interface IChunkChild{
@@ -77,7 +58,7 @@ export default class TerrainChunkManager {
             topRight: new Vector2(32000,32000)
         })
 
-       function dictionaryDifference(dictA:IChunkChild[], dictB:IChunkChild[]):IChunkChild[] {
+       function dictionaryDifference <T>(dictA:T[], dictB:T[]):T[] {
             const diff = {...dictA};
             for (let k in dictB) {
                 delete diff[k];
