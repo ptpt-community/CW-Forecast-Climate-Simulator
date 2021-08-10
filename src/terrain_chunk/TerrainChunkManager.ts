@@ -1,14 +1,14 @@
 import {
     Box2,
-    Camera, FrontSide,
+    Camera, FrontSide, Group,
     Scene,
     ShaderMaterial,
 
-    Vector2,
+    Vector2, Vector3,
 
 } from "three";
 
-import {TerrainChunk} from "./TerrainChunk";
+import {TerrainChunk, TerrainChunkRebuilder} from "./TerrainChunk";
 import {QuadTree} from "./QuadTree";
 //@ts-ignore
 import groundVertexShader from "../shaders/ground/vertex.glsl";
@@ -21,7 +21,7 @@ interface IChunkChild{
          position: number[],
         dimensions: number[],
         bounds: Box2|undefined,
-        child: TerrainChunk|undefined
+        chunk: TerrainChunk|undefined
 
 }
 
@@ -30,12 +30,18 @@ interface IChunkChild{
 
 
 export default class TerrainChunkManager {
-    _scene: Scene;
+
+    _group: Group;
 
     _camera: Camera;
 
+    _builder =  new TerrainChunkRebuilder({});
+
+    private readonly _MIN_CELL_RESOLUTION = 64;
+
     constructor(scene: Scene, camera: Camera) {
-        this._scene = scene;
+        this._group = new Group();
+        scene.add(this._group);
         this._camera = camera;
     }
 
@@ -44,7 +50,28 @@ export default class TerrainChunkManager {
 
 
 
-    public checkCameraAndAddTerrain() {
+    private checkCameraAndAddTerrain() {
+
+        function dictionaryIntersection<T>(dictA:T[], dictB:T[]) {
+            const intersection : T[]= [];
+            for (let k in dictB) {
+                if (k in dictA) {
+                    intersection[k] = dictA[k];
+                }
+            }
+            return intersection
+        }
+
+
+        function dictionaryDifference <T>(dictA:T[], dictB:T[]):T[] {
+            const diff = {...dictA};
+            for (let k in dictB) {
+                delete diff[k];
+            }
+            return diff;
+        }
+
+
 
         function _Key(c:IChunkChild) {
             return c.position[0] + '/' + c.position[1] + ' [' + c.dimensions[0] + ']';
@@ -58,13 +85,6 @@ export default class TerrainChunkManager {
             topRight: new Vector2(32000,32000)
         })
 
-       function dictionaryDifference <T>(dictA:T[], dictB:T[]):T[] {
-            const diff = {...dictA};
-            for (let k in dictB) {
-                delete diff[k];
-            }
-            return diff;
-        }
 
         quadTree.insert(this._camera.position);
         const nodes = quadTree.getNodes();
@@ -79,7 +99,7 @@ export default class TerrainChunkManager {
                 position: [center.x,center.y],
                 bounds: node.bounds,
                 dimensions: [dimensions.x,dimensions.y],
-                child: undefined
+                chunk: undefined
             }
 
             const k = _Key(child);
@@ -87,8 +107,11 @@ export default class TerrainChunkManager {
 
         }
 
-
-        const difference = dictionaryDifference(newTerrainChunks,this._chunks)
+        const intersection = dictionaryIntersection(this._chunks, newTerrainChunks);
+        const difference = dictionaryDifference(newTerrainChunks,this._chunks);
+        const recycle = Object.values(dictionaryDifference(this._chunks, newTerrainChunks));
+        this._builder.old.push(...recycle);
+        newTerrainChunks = intersection;
 
         for(let k in difference){
             const [xp,zp] = difference[k].position;
@@ -97,7 +120,7 @@ export default class TerrainChunkManager {
                 bounds: undefined,
                 dimensions: [],
                 position: [xp,zp],
-                child:this._CreateTerrainChunk(offset,difference[k].dimensions[0])
+                chunk:this._CreateTerrainChunk(offset,difference[k].dimensions[0])
             }
         }
 
@@ -109,15 +132,32 @@ export default class TerrainChunkManager {
 
 
 
-    private _CreateTerrainChunk(offset: Vector2, size: number) : TerrainChunk{
-        return new TerrainChunk(this._scene,size,offset,this._planeMaterial);
+    private _CreateTerrainChunk(offset: Vector2, width: number) : TerrainChunk{
 
+        const params = {
+            group: this._group,
+            material: this._material,
+            width: width,
+            offset: new Vector3(offset.x, offset.y, 0),
+            resolution: this._MIN_CELL_RESOLUTION,
+            // heightGenerators: [new HeightGenerator(this._noise, offset, 100000, 100000 + 1)],
+        };
+
+        return this._builder.AllocateChunk(params);
+
+    }
+
+    Update() {
+        this._builder.Update();
+        if (!this._builder.Busy) {
+            this.checkCameraAndAddTerrain();
+        }
     }
 
 
 
 
-    _planeMaterial = new ShaderMaterial({
+    _material = new ShaderMaterial({
         wireframe: true,
         wireframeLinewidth: 1,
         side: FrontSide,
