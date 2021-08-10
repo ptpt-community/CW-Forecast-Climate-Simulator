@@ -89,6 +89,9 @@ renderer.shadowMap.enabled = true;
 
 const waterScene = new WaterScene(scene,gui);
 
+//@ts-ignore
+window.camera = camera;
+
 
 
 /**

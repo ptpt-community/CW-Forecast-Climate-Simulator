@@ -1,6 +1,22 @@
-import {Box2, Camera, Mesh, Scene, TextureLoader, Vector2, Vector3} from "three";
+import {
+    Box2,
+    Camera, FrontSide,
+    Mesh, MeshStandardMaterial,
+    Plane,
+    PlaneBufferGeometry,
+    Scene,
+    ShaderMaterial,
+    TextureLoader,
+    Vector2,
+    Vector3
+} from "three";
+
 import {TerrainChunk} from "./TerrainChunk";
 import {QuadTree} from "./QuadTree";
+//@ts-ignore
+import groundVertexShader from "../shaders/ground/vertex.glsl";
+//@ts-ignore
+import groundFragmentShader from "../shaders/ground/fragment.glsl";
 
 export class ChunkPosition{
     private readonly _chunk_x: number;
@@ -73,7 +89,9 @@ class ChunkRecordList{
 interface IChunkChild{
          position: number[],
         dimensions: number[],
-        bounds: Box2
+        bounds: Box2|undefined,
+        child: TerrainChunk|undefined
+
 }
 
 
@@ -87,40 +105,17 @@ export default class TerrainChunkManager {
 
     SIZE = 512;
 
-    private _GRID_SIZE = 1;
 
-    _loader: TextureLoader = new TextureLoader();
-
-    _chunk_record_list = new ChunkRecordList();
-
-
-    private _terrainChunk: TerrainChunk;
 
 
     constructor(scene: Scene, camera: Camera) {
 
         this._scene = scene;
-        this._terrainChunk = new TerrainChunk(this._scene, this._loader, this.SIZE);
         this._init();
         this._camera = camera;
 
     }
 
-    // public checkCameraAndAddTerrain() {
-    //
-    //     const camera = this._camera;
-    //     const cameraChunk = this._coordinateToChunkPosition(camera.position);
-    //
-    //
-    //     for(let i=-this._GRID_SIZE; i<=this._GRID_SIZE; i++){
-    //         for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
-    //             const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
-    //             if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
-    //         }
-    //     }
-    //
-    //
-    // }
 
     _chunks :IChunkChild[] = [];
 
@@ -157,10 +152,11 @@ export default class TerrainChunkManager {
         for(let node of nodes){
             node.bounds.getCenter(center);
             node.bounds.getSize(dimensions);
-            const child = {
+            const child:IChunkChild = {
                 position: [center.x,center.y],
                 bounds: node.bounds,
-                dimensions: [dimensions.x,dimensions.y]
+                dimensions: [dimensions.x,dimensions.y],
+                child: undefined
             }
 
             const k = _Key(child);
@@ -175,8 +171,12 @@ export default class TerrainChunkManager {
             const [xp,zp] = difference[k].position;
             const offset = new Vector2(xp,zp);
             this._chunks[k] = {
+                bounds: undefined,
+                dimensions: [],
                 position: [xp,zp],
-                chunk: this.createChunk()
+                child:this._CreateTerrainChunk(offset,difference[k].dimensions[0])
+
+
             }
         }
 
@@ -184,19 +184,28 @@ export default class TerrainChunkManager {
 
 
 
-        const camera = this._camera;
-        const cameraChunk = this._coordinateToChunkPosition(camera.position);
-
-
-        for(let i=-this._GRID_SIZE; i<=this._GRID_SIZE; i++){
-            for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
-                const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
-                if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
-            }
-        }
+        // const camera = this._camera;
+        // const cameraChunk = this._coordinateToChunkPosition(camera.position);
+        //
+        //
+        // for(let i=-this._GRID_SIZE; i<=this._GRID_SIZE; i++){
+        //     for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
+        //         const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
+        //         if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
+        //     }
+        // }
 
 
     }
+
+
+    private _CreateTerrainChunk(offset: Vector2, size: number) : TerrainChunk{
+        return new TerrainChunk(this._scene,size,offset,this._planeMaterial);
+
+    }
+
+
+
 
 
     _coordinateToChunkPosition(position: Vector3) : ChunkPosition {
@@ -207,15 +216,24 @@ export default class TerrainChunkManager {
 
 
     _init = () => {
-       this.createChunk(new ChunkPosition(0,0));
+      // this.createChunk(new ChunkPosition(0,0));
     }
 
+    _planeMaterial = new MeshStandardMaterial({
+        wireframe: false,
+        wireframeLinewidth: 1,
+        color: 0xFFFFFF,
+        side: FrontSide,
 
-    private createChunk(position: ChunkPosition) {
-        console.log("Generate New Chunk");
+    });
 
-        const plane = this._terrainChunk.generateTerrain(position);
-        this._chunk_record_list.add(new ChunkRecord(position,plane));
-    }
+
+
+    // private createChunk(position: ChunkPosition) {
+    //     console.log("Generate New Chunk");
+    //
+    //   //  const plane = this._terrainChunk.generateTerrain(position);
+    //     this._chunk_record_list.add(new ChunkRecord(position,plane));
+    // }
 }
 
