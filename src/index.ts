@@ -13,7 +13,7 @@ import {WaterScene} from "./Environment/WaterScene";
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
 
-const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
+const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 30000);
 const gui = new GUI();
 
 movementControlling(camera,renderer.domElement,100,gui);

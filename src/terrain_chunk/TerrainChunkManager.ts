@@ -109,11 +109,8 @@ export default class TerrainChunkManager {
 
 
     constructor(scene: Scene, camera: Camera) {
-
         this._scene = scene;
-        this._init();
         this._camera = camera;
-
     }
 
 
@@ -131,7 +128,7 @@ export default class TerrainChunkManager {
 
 
         const quadTree = new QuadTree({
-            bottomLeft: new Vector2(-32000,32000),
+            bottomLeft: new Vector2(-32000,-32000),
             topRight: new Vector2(32000,32000)
         })
 
@@ -175,25 +172,9 @@ export default class TerrainChunkManager {
                 dimensions: [],
                 position: [xp,zp],
                 child:this._CreateTerrainChunk(offset,difference[k].dimensions[0])
-
-
             }
         }
 
-
-
-
-
-        // const camera = this._camera;
-        // const cameraChunk = this._coordinateToChunkPosition(camera.position);
-        //
-        //
-        // for(let i=-this._GRID_SIZE; i<=this._GRID_SIZE; i++){
-        //     for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
-        //         const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
-        //         if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
-        //     }
-        // }
 
 
     }
@@ -215,9 +196,6 @@ export default class TerrainChunkManager {
     }
 
 
-    _init = () => {
-      // this.createChunk(new ChunkPosition(0,0));
-    }
 
     _planeMaterial = new MeshStandardMaterial({
         wireframe: false,
@@ -229,11 +207,5 @@ export default class TerrainChunkManager {
 
 
 
-    // private createChunk(position: ChunkPosition) {
-    //     console.log("Generate New Chunk");
-    //
-    //   //  const plane = this._terrainChunk.generateTerrain(position);
-    //     this._chunk_record_list.add(new ChunkRecord(position,plane));
-    // }
 }
 
