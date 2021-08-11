@@ -10,6 +10,7 @@ import waterVertexShader from './shaders/water/vertex.glsl';
 import waterFragmentShader from './shaders/water/fragment.glsl';
 import {WaterScene} from "./Environment/WaterScene";
 
+
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
 
@@ -118,7 +119,6 @@ window.addEventListener('resize', () =>
 
 
 
-
 //
 const clock = new Clock();
 
@@ -136,9 +136,24 @@ function render() {
 
     renderer.render(scene, camera);
 
-    requestAnimationFrame(render);
+   // requestAnimationFrame(render);
 }
 
 requestAnimationFrame(render);
 
+
+
+
+/*DEBUG
+*/
+import {ChunkDirector} from "./terrain_chunk/ChunkDirector";
+
+window.THREE = THREE;
+//@ts-ignore
+window.ChunkDirector = ChunkDirector;
+//@ts-ignore
+window.camera = camera;
+
+/*
+ */
 
