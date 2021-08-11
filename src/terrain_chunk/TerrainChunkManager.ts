@@ -1,6 +1,8 @@
-import {Box2, Camera, Mesh, Scene, TextureLoader, Vector2, Vector3} from "three";
+import {Box2, Camera, Group, Mesh, Scene, TextureLoader, Vector2, Vector3} from "three";
 import {TerrainChunk} from "./TerrainChunk";
 import {ChunkDirector} from "./ChunkDirector";
+import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
+import {BiomeManager} from "./Biome/BiomeManager";
 
 export class ChunkPosition extends Vector2{
 
@@ -23,15 +25,15 @@ export class ChunkPosition extends Vector2{
 
 class ChunkRecord{
     private readonly _position:ChunkPosition;
-    private readonly _plane: Mesh;
+    private readonly _plane: TerrainChunk;
 
-    constructor(position: ChunkPosition, plane: Mesh) {
+    constructor(position: ChunkPosition, terrainChunk: TerrainChunk) {
         this._position= position;
-        this._plane = plane;
+        this._plane = terrainChunk;
     }
 
 
-    get plane(): Mesh {
+    get plane(): TerrainChunk {
         return this._plane;
     }
 
@@ -78,28 +80,24 @@ class ChunkRecordList{
 
 
 export default class TerrainChunkManager {
-    _scene: Scene;
+    _group: Group;
 
     _camera: Camera;
 
-    SIZE = 512;
 
-    private _GRID_SIZE = 3;
+    private _loader: TextureLoader = new TextureLoader();
 
-    _loader: TextureLoader = new TextureLoader();
+    private _chunk_record_list = new ChunkRecordList();
 
-    _chunk_record_list = new ChunkRecordList();
+    private _noiseManager = new TerrainFeatureNoiseManager(new BiomeManager());
 
 
-    private _terrainChunk: TerrainChunk;
 
 
     constructor(scene: Scene, camera: Camera) {
-
-        this._scene = scene;
-        this._terrainChunk = new TerrainChunk(this._scene, this._loader, this.SIZE);
+        this._group = new Group();
+        scene.add(this._group);
         this._camera = camera;
-
     }
 
     chunkDirector = new ChunkDirector(64);
@@ -131,7 +129,7 @@ export default class TerrainChunkManager {
     private createChunk(position: ChunkPosition) {
         console.log("Generate New Chunk");
 
-        const plane = this._terrainChunk.generateTerrain(position);
-        this._chunk_record_list.add(new ChunkRecord(position,plane));
+        const terrainChunk = new TerrainChunk(this._group,position,this._noiseManager)
+        this._chunk_record_list.add(new ChunkRecord(position,terrainChunk));
     }
 }

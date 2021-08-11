@@ -1,4 +1,5 @@
 import {
+    Group,
     Material,
     Mesh,
     MeshBasicMaterial,
@@ -21,33 +22,22 @@ import groundFragmentShader from "../shaders/ground/fragment.glsl"
 
 export class TerrainChunk {
 
-    _loader: TextureLoader;
-    _scene: Scene;
-    _size: number;
-  //  _texture: Texture;
+    private _group: Group;
     private _planeMaterial: Material;
-    private _planeGeometry: PlaneGeometry;
-    _noisifier: TerrainFeatureNoiseManager;
-    _segment ;
+    private _noisifier: TerrainFeatureNoiseManager;
+    private _segment = 64 ;
+    private _plane: Mesh;
 
-    constructor(scene: Scene, loader: TextureLoader, size: number) {
-        this._loader = loader;
-        this._scene = scene;
-        this._size = size;
-         this._segment = 64;
+    constructor(group: Group,  position:ChunkPosition, noisifier: TerrainFeatureNoiseManager ) {
+        this._group = group;
         this._planeMaterial = new ShaderMaterial({
-
             wireframe: true,
             vertexShader: groundVertexShader,
             fragmentShader: groundFragmentShader
-        //    map: texture,
-          //  shininess:3,
-
         })
-        this._planeGeometry = new PlaneGeometry(size, size, 128, 128);
 
-        this._noisifier = new TerrainFeatureNoiseManager(new BiomeManager());
-
+        this._noisifier = noisifier;
+        this._plane =   this._generateTerrain(position);
     }
 
 
@@ -55,7 +45,7 @@ export class TerrainChunk {
         this._noisifier.applyFeatures(plane, offset);
     }
 
-    generateTerrain(position:ChunkPosition) : Mesh {
+    private _generateTerrain(position:ChunkPosition) : Mesh {
         const plane = new PlaneCreator(
             position.dimension,
             position.x,
@@ -63,11 +53,12 @@ export class TerrainChunk {
             new PlaneGeometry(position.dimension, position.dimension, this._segment,this._segment),
             this._planeMaterial).plane;
 
-        this.applyNoise(plane,{x:position.x,z:position.y})
-        plane.castShadow = true;
-        plane.receiveShadow = true;
-
-        this._scene.add(plane);
-        return plane;
+            this.applyNoise(plane,{x:position.x,z:position.y})
+            plane.receiveShadow = true;
+            this._group.add(plane);
+            return  plane;
     }
+
+
+
 }
