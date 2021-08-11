@@ -12,7 +12,7 @@ void main(){
 
 
 
-    float mixStrength = (vPosition)*.1;
+    float mixStrength = (vPosition)*.001;
     vec3 color = mix(lowColor,highColor,mixStrength);
 
 
