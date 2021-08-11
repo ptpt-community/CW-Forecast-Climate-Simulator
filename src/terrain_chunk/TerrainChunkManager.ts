@@ -4,7 +4,7 @@ import {ChunkDirector} from "./ChunkDirector";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
 import {BiomeManager} from "./Biome/BiomeManager";
 
-export class ChunkPosition extends Vector2{
+export class ChunkRecord extends Vector2{
 
     private _dimension;
     private _terrainChunk:undefined|TerrainChunk
@@ -21,8 +21,8 @@ export class ChunkPosition extends Vector2{
         return this._dimension;
     }
 
-    get terrainChunk(): TerrainChunk | undefined {
-        return this._terrainChunk;
+    get terrainChunk(): TerrainChunk  {
+        return this._terrainChunk as TerrainChunk;
     }
 
     set terrainChunk(value: TerrainChunk | undefined) {
@@ -37,6 +37,7 @@ export default class TerrainChunkManager {
     private readonly _camera: Camera;
     private _chunkPositions_DP : any = []
     private _noiseManager = new TerrainFeatureNoiseManager(new BiomeManager());
+    private _chunkBuilder = new ChunkBuilder();
 
 
     private _chunkDirector = new ChunkDirector(128);
@@ -75,11 +76,13 @@ export default class TerrainChunkManager {
             delete  this._chunkPositions_DP[key];
         }
 
+        this._chunkBuilder.build();
+
 
     }
 
 
-    private static positionToKey(position: ChunkPosition):string{
+    private static positionToKey(position: ChunkRecord):string{
         return  ''+position.x+','+position.y+','+position.dimension;
     }
 
@@ -97,11 +100,48 @@ export default class TerrainChunkManager {
 
 
 
-    private createChunk(position: ChunkPosition) {
+    private createChunk(position: ChunkRecord) {
         console.log("Generate New Chunk");
         position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
         this._chunkPositions_DP[TerrainChunkManager.positionToKey(position)] = position;
+        this._chunkBuilder.push(position);
 
         // this._currentChunkList.add(new ChunkRecord(position,terrainChunk));
     }
 }
+
+
+
+class ChunkBuilder{
+    private chunkRecords : ChunkRecord[] = [];
+    private _current : Generator | undefined
+
+    push(chunk:ChunkRecord){
+        this.chunkRecords.push(chunk);
+    }
+
+
+    build(){
+        console.log("BUILDING! CALLED");
+        if(this._current === undefined) {
+            console.log("BUILDING! UNDEFINED?");
+            const chunk = this.chunkRecords.pop();
+            console.log("BUILDING!");
+            if(chunk===undefined) return;
+            this._current = chunk.terrainChunk.noiseGenerator;
+        }
+        else {
+            console.log("BUILDING FOR REAL!");
+           const a=  this._current.next();
+           console.log(a)
+           if(a.done) this._current =undefined;
+        }
+
+    }
+
+
+
+
+
+}
+

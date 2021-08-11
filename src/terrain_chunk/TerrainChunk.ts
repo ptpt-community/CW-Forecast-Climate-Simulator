@@ -13,7 +13,7 @@ import {
 import {PlaneCreator} from "./PlaneCreator";
 import {BiomeManager} from "./Biome/BiomeManager";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
-import {ChunkPosition} from "./TerrainChunkManager";
+import {ChunkRecord} from "./TerrainChunkManager";
 
 //@ts-ignore
 import groundVertexShader from "../shaders/ground/vertex.glsl"
@@ -22,30 +22,33 @@ import groundFragmentShader from "../shaders/ground/fragment.glsl"
 
 export class TerrainChunk {
 
+
     private _group: Group;
     private _planeMaterial: Material;
     private _noisifier: TerrainFeatureNoiseManager;
     private _segment = 128 ;
     private _plane: Mesh;
+    private _noiseGenerator: Generator
 
-    constructor(group: Group,  position:ChunkPosition, noisifier: TerrainFeatureNoiseManager ) {
+    constructor(group: Group, position:ChunkRecord, noisifier: TerrainFeatureNoiseManager ) {
         this._group = group;
         this._planeMaterial = new ShaderMaterial({
             wireframe: true,
             vertexShader: groundVertexShader,
             fragmentShader: groundFragmentShader
         })
-
         this._noisifier = noisifier;
-        this._plane =   this._generateTerrain(position);
+        const a =   this._generateTerrain(position);
+        this._noiseGenerator = a.generator;
+        this._plane = a.plane;
     }
 
 
     private applyNoise = (plane: Mesh, offset:{x: number, z: number}) => {
-        this._noisifier.applyFeatures(plane, offset);
+       return  this._noisifier.applyFeatures(plane, offset);
     }
 
-    private _generateTerrain(position:ChunkPosition) : Mesh {
+    private _generateTerrain(position:ChunkRecord)  {
         const plane = new PlaneCreator(
             position.dimension,
             position.x,
@@ -53,16 +56,20 @@ export class TerrainChunk {
             new PlaneGeometry(position.dimension, position.dimension, this._segment,this._segment),
             this._planeMaterial).plane;
 
-            this.applyNoise(plane,{x:position.x,z:position.y})
+            const generator =this.applyNoise(plane,{x:position.x,z:position.y})
             plane.receiveShadow = true;
             this._group.add(plane);
-            return  plane;
+            return {plane,generator};
     }
 
 
     destroy(){
         this._plane.geometry.dispose();
         this._group.remove(this._plane);
+    }
+
+    get noiseGenerator(): Generator{
+        return this._noiseGenerator;
     }
 
 

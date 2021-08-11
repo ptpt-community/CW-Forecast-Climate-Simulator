@@ -26,13 +26,15 @@ export class TerrainFeatureNoiseManager {
         const vertex = new Vector3();
 
         const position = plane.geometry.attributes.position
+        const total_steps = 1000;
+        let steps = total_steps;
 
-        let steps = 2500;
+        console.log("T");
 
         for (let i = 0; i < position.count; i++) {
             steps--;
             if(steps==0){
-                steps = 2500;
+                steps = total_steps;
                 yield ;
             }
             const biome = this._biomeManager.calculateBiome(getOffsetX(position.getX(i)), getOffsetZ(position.getY(i)));
