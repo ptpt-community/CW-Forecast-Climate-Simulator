@@ -26,7 +26,7 @@ export class TerrainFeatureNoiseManager {
         const vertex = new Vector3();
 
         const position = plane.geometry.attributes.position
-        const total_steps = 1000;
+        const total_steps = 10000;
         let steps = total_steps;
 
         console.log("T");

@@ -58,7 +58,9 @@ export class TerrainChunk {
 
             const generator =this.applyNoise(plane,{x:position.x,z:position.y})
             plane.receiveShadow = true;
+            plane.visible = false;
             this._group.add(plane);
+
             return {plane,generator};
     }
 

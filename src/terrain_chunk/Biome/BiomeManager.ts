@@ -60,14 +60,31 @@ class TestBiome implements Biome{
 
 
     public getHeight(): number {
-        let total = 0;
-        const multiplier = 1;
-        const period = 16*100*multiplier;
-        // total+= getInterpolatedNoise(this._x/period,this._z/period)*this._amplitude;
-        total+= getGradientNoise(this._x/1600,this._z/1600)*10;
-        //total+= getGradientNoise(8*this._x/period,8*this._z/period)*this._amplitude*multiplier;
+        const persistance = .707;
+        const lacuranity = 1.8;
+        const exponentiation = 6;
+        const height = 300;
 
-        return total;
+        const G= 2**(-persistance);
+
+        let amplitude = 1.0;
+        let frequency = 0.01;
+        let normalization = 0;
+        let total = 0;
+
+        for(let o = 0; o<5; o++){
+           let noise = getGradientNoise(this._x*frequency,this._z*frequency);
+            noise = noise*.5+.5;
+            total+=noise*amplitude;
+            normalization+=amplitude;
+            amplitude *= G;
+            frequency *= lacuranity;
+        }
+        total /= normalization;
+
+        return Math.pow(
+            total, exponentiation) * height;
+
     }
 
     setForestFactor(forestFactor: number): void {
