@@ -56,15 +56,17 @@ export default class TerrainChunkManager {
         const camera = this._camera;
 
         const chunkPositions = this._chunkDirector.getChunksFrom(camera.position);
-
-
-
+        const newChunks :any = [];
         chunkPositions.forEach(chunkPosition=>{
-            if(!(TerrainChunkManager.positionToKey(chunkPosition) in this._chunkPositions_DP))
-            {
-                this.createChunk(chunkPosition);
+            const key = TerrainChunkManager.positionToKey(chunkPosition);
+            if(! (key in this._chunkPositions_DP))
+            {   newChunks[key] =chunkPosition;
             }
         })
+
+        for(let key in newChunks){
+            this.createChunk(newChunks[key])
+        }
 
 
     }
