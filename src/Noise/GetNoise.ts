@@ -42,11 +42,11 @@ export class GetNoise {
 
     getNoise(x: number, y: number) {
 
-        const key = GetNoise._key(x,y);
-        if (this._dp[key] !== undefined) return this._dp[key];
-        this._is_changed = true;
+        // const key = GetNoise._key(x,y);
+        // if (this._dp[key] !== undefined) return this._dp[key];
+        // this._is_changed = true;
         const simplexNoise = this._simplex.noise2D(x,y);
-        this._dp[key] = simplexNoise;
+        // this._dp[key] = simplexNoise;
 
         return simplexNoise;
     }

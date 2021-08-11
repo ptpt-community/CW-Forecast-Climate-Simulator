@@ -40,7 +40,7 @@ export default class TerrainChunkManager {
     private _chunkBuilder = new ChunkBuilder();
 
 
-    private _chunkDirector = new ChunkDirector(128);
+    private _chunkDirector = new ChunkDirector(1024);
     
     constructor(scene: Scene, camera: Camera) {
         this._group = new Group();
@@ -125,19 +125,15 @@ class ChunkBuilder{
 
 
     build(){
-        console.log("BUILDING! CALLED");
+
         if(this._currentGenerator === undefined) {
-            console.log("BUILDING! UNDEFINED?");
             const chunk = this.chunkRecords.pop();
-            console.log("BUILDING!");
             if(chunk===undefined) return;
             this._currentChunk = chunk;
             this._currentGenerator = chunk.terrainChunk.noiseGenerator;
         }
         else {
-            console.log("BUILDING FOR REAL!");
            const a=  this._currentGenerator.next();
-           console.log(a)
            if(a.done) this._currentGenerator =undefined;
            if(this._currentChunk!==undefined)
            this._currentChunk.terrainChunk.show();
