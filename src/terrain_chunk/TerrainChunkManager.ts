@@ -1,22 +1,22 @@
-import {Camera, Mesh, Scene, TextureLoader, Vector3} from "three";
+import {Box2, Camera, Mesh, Scene, TextureLoader, Vector2, Vector3} from "three";
 import {TerrainChunk} from "./TerrainChunk";
+import {ChunkDirector} from "./ChunkDirector";
 
-export class ChunkPosition{
-    private readonly _chunk_x: number;
-    private readonly _chunk_z: number;
+export class ChunkPosition extends Vector2{
 
+    private _dimension;
 
-    constructor(chunk_x: number, chunk_z: number) {
-        this._chunk_x = chunk_x;
-        this._chunk_z = chunk_z;
+    constructor(box:Box2) {
+        const x = Math.trunc((box.min.x+box.max.x)/2);
+        const y = Math.trunc((box.min.y+box.max.y)/2);
+        super(x,y);
+
+        this._dimension = Math.abs(Math.trunc(box.max.x-box.min.x));
+
     }
 
-    get chunk_x(): number {
-        return this._chunk_x;
-    }
-
-    get chunk_z(): number {
-        return this._chunk_z;
+    get dimension(){
+        return this._dimension;
     }
 }
 
@@ -55,13 +55,16 @@ class ChunkRecordList{
 
 
     contains(position : ChunkPosition) :boolean{
-       return  this._chunkRecords_dp[ChunkRecordList.positionToKey(position)] !== undefined;
+        const cache = this._chunkRecords_dp[ChunkRecordList.positionToKey(position)];
+
+        // console.log("Checking cache.",ChunkRecordList.positionToKey(position))
+       return cache  !== undefined;
     }
 
 
 
     private static positionToKey(position: ChunkPosition):string{
-        return  ''+position.chunk_x+','+position.chunk_z;
+        return  ''+position.x+','+position.y+','+position.dimension;
     }
 
 
@@ -100,32 +103,43 @@ export default class TerrainChunkManager {
 
     }
 
+    chunkDirector = new ChunkDirector(64);
+
     public checkCameraAndAddTerrain() {
 
         const camera = this._camera;
-        const cameraChunk = this._coordinateToChunkPosition(camera.position);
+      // const cameraChunk = this._coordinateToChunkPosition(camera.position);
+        const chunkBoxes = this.chunkDirector.getChunksFrom(camera.position);
 
+        chunkBoxes.forEach(chunkBox=>{
+            const chunkPosition = new ChunkPosition(chunkBox);
+            if(!this._chunk_record_list.contains(chunkPosition))
+            {
+                this.createChunk(chunkPosition);
 
-        for(let i=-this._GRID_SIZE; i<this._GRID_SIZE; i++){
-            for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
-                const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
-                if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
             }
-        }
+        })
+
+        // for(let i=-this._GRID_SIZE; i<this._GRID_SIZE; i++){
+        //     for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
+        //         const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
+        //         if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
+        //     }
+        // }
 
 
     }
 
 
-    _coordinateToChunkPosition(position: Vector3) : ChunkPosition {
-        let x = Math.floor(position.x / this.SIZE);
-        let z = Math.floor(position.z / this.SIZE);
-        return new ChunkPosition(x,z);
-    }
+    // _coordinateToChunkPosition(position: Vector3) : ChunkPosition {
+    //     let x = Math.floor(position.x / this.SIZE);
+    //     let z = Math.floor(position.z / this.SIZE);
+    //     return new ChunkPosition(x,z);
+    // }
 
 
     _init = () => {
-       this.createChunk(new ChunkPosition(0,0));
+    //   this.createChunk(new ChunkPosition(0,0));
     }
 
 

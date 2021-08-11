@@ -136,7 +136,7 @@ function render() {
 
     renderer.render(scene, camera);
 
-   // requestAnimationFrame(render);
+    requestAnimationFrame(render);
 }
 
 requestAnimationFrame(render);

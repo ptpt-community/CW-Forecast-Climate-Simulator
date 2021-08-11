@@ -34,7 +34,7 @@ export class TerrainChunk {
         this._loader = loader;
         this._scene = scene;
         this._size = size;
-         this._segment = 128;
+         this._segment = 64;
 
         const texture = loader.load("https://www.the3rdsequence.com/texturedb/download/26/texture/png/256/cracked+rock-256x256.png", () => {
             texture.repeat.set(size*4, size*4);
@@ -46,7 +46,7 @@ export class TerrainChunk {
 
         this._planeMaterial = new ShaderMaterial({
 
-            wireframe: false,
+            wireframe: true,
             vertexShader: groundVertexShader,
             fragmentShader: groundFragmentShader
         //    map: texture,
@@ -66,13 +66,13 @@ export class TerrainChunk {
 
     generateTerrain(position:ChunkPosition) : Mesh {
         const plane = new PlaneCreator(
-            this._size,
-            position.chunk_x * this._size,
-            position.chunk_z * this._size,
-            new PlaneGeometry(this._size, this._size, this._segment, this._segment),
+            position.dimension,
+            position.x,
+            position.y,
+            new PlaneGeometry(position.dimension, position.dimension, this._segment,this._segment),
             this._planeMaterial).plane;
 
-        this.applyNoise(plane,{x:position.chunk_x * this._size, z:position.chunk_z * this._size})
+        this.applyNoise(plane,{x:position.x,z:position.y})
         plane.castShadow = true;
         plane.receiveShadow = true;
 
