@@ -11,7 +11,7 @@ import SimplexNoise from  "simplex-noise"
  * */
 
 
-export function getInterpolatedNoise(x:number, z:number){
+export function getGradientNoise(x:number, z:number){
     return getNoise(x,z);
 }
 

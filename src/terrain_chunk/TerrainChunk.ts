@@ -25,7 +25,7 @@ export class TerrainChunk {
     private _group: Group;
     private _planeMaterial: Material;
     private _noisifier: TerrainFeatureNoiseManager;
-    private _segment = 64 ;
+    private _segment = 128 ;
     private _plane: Mesh;
 
     constructor(group: Group,  position:ChunkPosition, noisifier: TerrainFeatureNoiseManager ) {

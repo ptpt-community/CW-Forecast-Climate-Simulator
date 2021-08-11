@@ -1,4 +1,4 @@
-import {getInterpolatedNoise} from "../../Math/GradientNoise";
+import {getGradientNoise} from "../../Math/GradientNoise";
 
 export class BiomeManager {
 
@@ -15,12 +15,12 @@ export class BiomeManager {
      }
 
      getBiomeFactor(x:number, z:number) {
-         return getInterpolatedNoise(x / 128, z / 128) * this._amplitude+this._amplitude/2;
+         return getGradientNoise(x / 128, z / 128) * this._amplitude+this._amplitude/2;
      }
 
 
      getForestFactor(x: number, z: number){
-         return getInterpolatedNoise((x+2000)/64,(z-1212)/64)%1;
+         return getGradientNoise((x+2000)/64,(z-1212)/64)%1;
      }
 
 
@@ -61,9 +61,10 @@ class TestBiome implements Biome{
 
     public getHeight(): number {
         let total = 0;
-        const period = 16;
+        const multiplier = 1;
+        const period = 16*100*multiplier;
         // total+= getInterpolatedNoise(this._x/period,this._z/period)*this._amplitude;
-        total+= getInterpolatedNoise(this._x/period,this._z/period)*this._amplitude;
+        total+= getGradientNoise(this._x/period,this._z/period)*this._amplitude*multiplier;
 
         return total;
     }

@@ -39,11 +39,8 @@ export default class TerrainChunkManager {
     private _noiseManager = new TerrainFeatureNoiseManager(new BiomeManager());
 
 
-    private _chunkDirector = new ChunkDirector(64);
-
-
-
-
+    private _chunkDirector = new ChunkDirector(128);
+    
     constructor(scene: Scene, camera: Camera) {
         this._group = new Group();
         scene.add(this._group);
