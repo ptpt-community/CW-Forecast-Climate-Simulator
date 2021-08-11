@@ -52,6 +52,21 @@ export default class TerrainChunkManager {
 
     private checkCameraAndAddTerrain() {
 
+
+        function _Key(c:IChunkChild) {
+            return c.position[0] + '/' + c.position[1] + ' [' + c.dimensions[0] + ']';
+        }
+
+        const quadTree = new QuadTree({
+            bottomLeft: new Vector2(-32000,-32000),
+            topRight: new Vector2(32000,32000)
+        })
+
+        quadTree.insert(this._camera.position);
+
+        const nodes = quadTree.getNodes();
+
+
         function dictionaryIntersection<T>(dictA:T[], dictB:T[]) {
             const intersection : T[]= [];
             for (let k in dictB) {
@@ -73,21 +88,14 @@ export default class TerrainChunkManager {
 
 
 
-        function _Key(c:IChunkChild) {
-            return c.position[0] + '/' + c.position[1] + ' [' + c.dimensions[0] + ']';
-        }
-
         let newTerrainChunks: any = {}
 
 
-        const quadTree = new QuadTree({
-            bottomLeft: new Vector2(-32000,-32000),
-            topRight: new Vector2(32000,32000)
-        })
 
 
-        quadTree.insert(this._camera.position);
-        const nodes = quadTree.getNodes();
+
+
+
 
         const center = new Vector2();
         const dimensions = new Vector2();
@@ -110,19 +118,21 @@ export default class TerrainChunkManager {
         const intersection = dictionaryIntersection(this._chunks, newTerrainChunks);
         const difference = dictionaryDifference(newTerrainChunks,this._chunks);
         const recycle = Object.values(dictionaryDifference(this._chunks, newTerrainChunks));
+
         this._builder.old.push(...recycle);
+
         newTerrainChunks = intersection;
 
         for(let k in difference){
             const [xp,zp] = difference[k].position;
             const offset = new Vector2(xp,zp);
-            this._chunks[k] = {
-                bounds: undefined,
-                dimensions: [],
+            newTerrainChunks[k] = {
                 position: [xp,zp],
                 chunk:this._CreateTerrainChunk(offset,difference[k].dimensions[0])
             }
         }
+
+        this._chunks = newTerrainChunks;
 
 
 
@@ -138,7 +148,7 @@ export default class TerrainChunkManager {
             group: this._group,
             material: this._material,
             width: width,
-            offset: new Vector3(offset.x, offset.y, 0),
+            offset:offset,
             resolution: this._MIN_CELL_RESOLUTION,
             // heightGenerators: [new HeightGenerator(this._noise, offset, 100000, 100000 + 1)],
         };

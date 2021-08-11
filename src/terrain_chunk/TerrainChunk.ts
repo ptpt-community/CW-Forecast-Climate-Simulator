@@ -40,10 +40,6 @@ export class TerrainChunk {
     }
 
 
-    private applyNoise = (plane: Mesh, offset:Vector2) => {
-        this._noisifier.applyFeatures(plane, {x:offset.x,z:offset.y});
-    }
-
     private _generateTerrain(planeGeometry:PlaneGeometry,planeMaterial:Material)  {
         const plane = new Mesh(planeGeometry, planeMaterial);
         plane.position.set(this._offset.x,0,this._offset.y);
