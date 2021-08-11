@@ -55,17 +55,27 @@ export default class TerrainChunkManager {
 
         const camera = this._camera;
 
-        const chunkPositions = this._chunkDirector.getChunksFrom(camera.position);
-        const newChunks :any = [];
-        chunkPositions.forEach(chunkPosition=>{
+        const suggestedPositions = this._chunkDirector.getChunksFrom(camera.position);
+        const suggestedChunks_DP :any = [];
+        suggestedPositions.forEach(chunkPosition=>{
             const key = TerrainChunkManager.positionToKey(chunkPosition);
-            if(! (key in this._chunkPositions_DP))
-            {   newChunks[key] =chunkPosition;
-            }
+            suggestedChunks_DP[key] =chunkPosition;
         })
 
-        for(let key in newChunks){
-            this.createChunk(newChunks[key])
+
+        const deletableChunks =  TerrainChunkManager._subtractSet(this._chunkPositions_DP, suggestedChunks_DP);
+
+        for(let key in suggestedChunks_DP){
+            if(this._chunkPositions_DP[key]) continue;
+            this.createChunk(suggestedChunks_DP[key]);
+        }
+
+
+
+        for(let key in deletableChunks){
+            (this._chunkPositions_DP[key].terrainChunk==undefined)
+            this._chunkPositions_DP[key].terrainChunk.destroy();
+            delete  this._chunkPositions_DP[key];
         }
 
 
