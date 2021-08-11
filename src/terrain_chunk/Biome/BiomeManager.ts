@@ -64,8 +64,8 @@ class TestBiome implements Biome{
         const multiplier = 1;
         const period = 16*100*multiplier;
         // total+= getInterpolatedNoise(this._x/period,this._z/period)*this._amplitude;
-        total+= getGradientNoise(this._x/period,this._z/period)*this._amplitude*multiplier;
-        total+= getGradientNoise(8*this._x/period,8*this._z/period)*this._amplitude*multiplier;
+        total+= getGradientNoise(this._x/1600,this._z/1600)*10;
+        //total+= getGradientNoise(8*this._x/period,8*this._z/period)*this._amplitude*multiplier;
 
         return total;
     }
