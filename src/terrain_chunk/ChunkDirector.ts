@@ -5,8 +5,11 @@ export class ChunkDirector{
 
 
 
-    private _minChunkSize;
+    private readonly _minChunkSize;
+    private _lastPosition:undefined|Vector2 = undefined;
+
     private _subjectPosition : Vector2 | undefined;
+    private _saved: Box2[]|undefined = undefined;
 
 
     constructor(minimumChunkSize:number) {
@@ -14,10 +17,14 @@ export class ChunkDirector{
     }
 
 
-    getChunksFrom(position:Vector3) {
-        const boxes: Box2[] = [];
+    getChunksFrom(position:Vector3):Box2[] {
+
+
         this._subjectPosition = this.position3DToBaseBorder(position);
-        console.log("Lvl 1");
+        if(this._lastPosition === this._subjectPosition) return this._saved as Box2[];
+        this._lastPosition = this._subjectPosition;
+
+        const boxes: Box2[] = [];
 
         //LVL0
         const centerBox = ChunkDirector._createBoxFromBottomLeft(this._subjectPosition as Vector2,this._minChunkSize);
@@ -34,10 +41,14 @@ export class ChunkDirector{
 
         const level2Neighbors =  ChunkDirector._createNeighboringBoxes(level1Neighbors.greaterBox);
         boxes.concat(level2Neighbors.boxes);
-        console.log(level2Neighbors.greaterBox)
 
 
-        return boxes.concat(level1Neighbors.boxes,level2Neighbors.boxes);
+
+
+
+        this._saved = boxes.concat(level1Neighbors.boxes,level2Neighbors.boxes);
+
+        return this._saved;
 
     }
 
