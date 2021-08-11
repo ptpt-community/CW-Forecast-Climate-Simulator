@@ -24,7 +24,7 @@ export class TerrainChunk {
     _loader: TextureLoader;
     _scene: Scene;
     _size: number;
-    _texture: Texture;
+  //  _texture: Texture;
     private _planeMaterial: Material;
     private _planeGeometry: PlaneGeometry;
     _noisifier: TerrainFeatureNoiseManager;
@@ -35,15 +35,6 @@ export class TerrainChunk {
         this._scene = scene;
         this._size = size;
          this._segment = 64;
-
-        const texture = loader.load("https://www.the3rdsequence.com/texturedb/download/26/texture/png/256/cracked+rock-256x256.png", () => {
-            texture.repeat.set(size*4, size*4);
-            texture.wrapS = RepeatWrapping;
-            texture.wrapT = RepeatWrapping;
-            texture.needsUpdate = true;
-        });
-        this._texture = texture;
-
         this._planeMaterial = new ShaderMaterial({
 
             wireframe: true,
