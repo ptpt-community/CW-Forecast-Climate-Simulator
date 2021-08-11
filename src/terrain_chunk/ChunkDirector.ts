@@ -1,4 +1,5 @@
 import {Box2, Vector2, Vector3} from "three";
+import {ChunkPosition} from "./TerrainChunkManager";
 
 
 export class ChunkDirector {
@@ -8,7 +9,7 @@ export class ChunkDirector {
     private _lastPosition: undefined | Vector2 = undefined;
 
     private _subjectPosition: Vector2 | undefined;
-    private _saved: Box2[] | undefined = undefined;
+    private _saved: ChunkPosition[] | undefined = undefined;
 
 
     constructor(minimumChunkSize: number) {
@@ -16,33 +17,29 @@ export class ChunkDirector {
     }
 
 
-    getChunksFrom(position: Vector3): Box2[] {
+    getChunksFrom(position: Vector3): ChunkPosition[] {
 
 
         this._subjectPosition = this.position3DToBaseBorder(position);
-        if (this._lastPosition === this._subjectPosition) return [];
+        if (this._lastPosition === this._subjectPosition) return this._saved as ChunkPosition[];
         this._lastPosition = this._subjectPosition;
 
-        const boxes: Box2[] = [];
+        const chunkPositions: ChunkPosition[] = [];
 
         //LVL0
         const centerBox = ChunkDirector._createBoxFromBottomLeft(this._subjectPosition as Vector2, this._minChunkSize);
-        boxes.push(centerBox);
+        chunkPositions.push(new ChunkPosition(centerBox));
 
         //LVL1
-
-
         const level1Neighbors = ChunkDirector._createNeighboringBoxes(centerBox);
 
 
         //LVL2
-
         const level2Neighbors = ChunkDirector._createNeighboringBoxes(level1Neighbors.greaterBox);
-        boxes.concat(level2Neighbors.boxes);
 
 
-        this._saved = boxes.concat(level1Neighbors.boxes, level2Neighbors.boxes);
 
+        this._saved = chunkPositions.concat(level1Neighbors.chunkPositions, level2Neighbors.chunkPositions);
         return this._saved;
 
     }
@@ -78,7 +75,7 @@ export class ChunkDirector {
     }
 
 
-    private static _createNeighboringBoxes(center: Box2): { boxes: Box2[], greaterBox: Box2 } {
+    private static _createNeighboringBoxes(center: Box2): { chunkPositions: ChunkPosition[], greaterBox: Box2 } {
         const dimension = Math.abs((center.min.x - center.max.x));
         const bottomLeft = ChunkDirector._createBoxFromTopRight(center.min, dimension);
         const bottom = ChunkDirector._createBoxFromTopRight(new Vector2(center.max.x, center.min.y), dimension);
@@ -91,9 +88,11 @@ export class ChunkDirector {
 
 
         const greaterBox = new Box2(bottomLeft.min.clone(), topRight.max.clone());
-        const boxes = [right, topRight, top, topLeft, left, bottomLeft, bottom, bottomRight];
-
-        return {boxes, greaterBox};
+        const chunkPositions:ChunkPosition[] = [];
+        [right, topRight, top, topLeft, left, bottomLeft, bottom, bottomRight].map(box=>{
+            chunkPositions.push(new ChunkPosition(box));
+        });
+        return {chunkPositions, greaterBox};
 
     }
 }

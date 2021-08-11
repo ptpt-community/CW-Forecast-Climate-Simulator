@@ -1,4 +1,4 @@
-import {Box2, Camera, Group, Mesh, Scene, TextureLoader, Vector2, Vector3} from "three";
+import {Box2, Camera, Group, Scene, TextureLoader, Vector2} from "three";
 import {TerrainChunk} from "./TerrainChunk";
 import {ChunkDirector} from "./ChunkDirector";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
@@ -7,6 +7,7 @@ import {BiomeManager} from "./Biome/BiomeManager";
 export class ChunkPosition extends Vector2{
 
     private _dimension;
+    private _terrainChunk:undefined|TerrainChunk
 
     constructor(box:Box2) {
         const x = Math.trunc((box.min.x+box.max.x)/2);
@@ -14,82 +15,31 @@ export class ChunkPosition extends Vector2{
         super(x,y);
 
         this._dimension = Math.abs(Math.trunc(box.max.x-box.min.x));
-
     }
 
     get dimension(){
         return this._dimension;
     }
+
+    get terrainChunk(): TerrainChunk | undefined {
+        return this._terrainChunk;
+    }
+
+    set terrainChunk(value: TerrainChunk | undefined) {
+        this._terrainChunk = value;
+    }
 }
-
-
-class ChunkRecord{
-    private readonly _position:ChunkPosition;
-    private readonly _plane: TerrainChunk;
-
-    constructor(position: ChunkPosition, terrainChunk: TerrainChunk) {
-        this._position= position;
-        this._plane = terrainChunk;
-    }
-
-
-    get plane(): TerrainChunk {
-        return this._plane;
-    }
-
-    get position():ChunkPosition{
-        return this._position;
-    }
-
-
-}
-
-class ChunkRecordList{
-    _chunkRecords_dp: any = {};
-
-    add(chunkRecord : ChunkRecord){
-        this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)] = chunkRecord;
-    }
-
-    remove(chunkRecord:ChunkRecord){
-        delete this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)];
-    }
-
-
-    contains(position : ChunkPosition) :boolean{
-        const cache = this._chunkRecords_dp[ChunkRecordList.positionToKey(position)];
-
-
-       return cache  !== undefined;
-    }
-
-
-
-    private static positionToKey(position: ChunkPosition):string{
-        return  ''+position.x+','+position.y+','+position.dimension;
-    }
-
-
-
-}
-
-
-
-
 
 
 
 export default class TerrainChunkManager {
-    _group: Group;
-
-    _camera: Camera;
-
-
-    private _loader: TextureLoader = new TextureLoader();
-
-    private _chunk_record_list = new ChunkRecordList();
-
+    private readonly _group: Group;
+    private readonly _camera: Camera;
+    private _chunkPositions_DP : any = []
     private _noiseManager = new TerrainFeatureNoiseManager(new BiomeManager());
+
+
+    private _chunkDirector = new ChunkDirector(64);
 
 
 
@@ -100,25 +50,37 @@ export default class TerrainChunkManager {
         this._camera = camera;
     }
 
-    chunkDirector = new ChunkDirector(64);
 
     public checkCameraAndAddTerrain() {
 
         const camera = this._camera;
-      // const cameraChunk = this._coordinateToChunkPosition(camera.position);
-        const chunkBoxes = this.chunkDirector.getChunksFrom(camera.position);
 
-        chunkBoxes.forEach(chunkBox=>{
-            const chunkPosition = new ChunkPosition(chunkBox);
-            if(!this._chunk_record_list.contains(chunkPosition))
+        const chunkPositions = this._chunkDirector.getChunksFrom(camera.position);
+
+
+
+        chunkPositions.forEach(chunkPosition=>{
+            if(!(TerrainChunkManager.positionToKey(chunkPosition) in this._chunkPositions_DP))
             {
                 this.createChunk(chunkPosition);
-
             }
         })
 
 
+    }
 
+
+    private static positionToKey(position: ChunkPosition):string{
+        return  ''+position.x+','+position.y+','+position.dimension;
+    }
+
+
+    private static _subtractSet<T>(setA:T[], setB:T[]) {
+        const subtracted = {...setA};
+        for (let k in setB) {
+            delete subtracted[k];
+        }
+        return subtracted;
     }
 
 
@@ -128,8 +90,9 @@ export default class TerrainChunkManager {
 
     private createChunk(position: ChunkPosition) {
         console.log("Generate New Chunk");
+        position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
+        this._chunkPositions_DP[TerrainChunkManager.positionToKey(position)] = position;
 
-        const terrainChunk = new TerrainChunk(this._group,position,this._noiseManager)
-        this._chunk_record_list.add(new ChunkRecord(position,terrainChunk));
+        // this._currentChunkList.add(new ChunkRecord(position,terrainChunk));
     }
 }
