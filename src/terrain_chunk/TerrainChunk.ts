@@ -73,5 +73,14 @@ export class TerrainChunk {
     }
 
 
+    show(){
+        this._plane.visible = true;
+    }
+
+    hide(){
+        this._plane.visible =false;
+    }
+
+
 
 }

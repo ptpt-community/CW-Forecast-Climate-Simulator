@@ -114,27 +114,34 @@ export default class TerrainChunkManager {
 
 class ChunkBuilder{
     private chunkRecords : ChunkRecord[] = [];
-    private _current : Generator | undefined
+    private _currentGenerator : Generator | undefined
+    private _currentChunk :ChunkRecord|undefined;
+
 
     push(chunk:ChunkRecord){
+        chunk.terrainChunk.hide();
         this.chunkRecords.push(chunk);
     }
 
 
     build(){
         console.log("BUILDING! CALLED");
-        if(this._current === undefined) {
+        if(this._currentGenerator === undefined) {
             console.log("BUILDING! UNDEFINED?");
             const chunk = this.chunkRecords.pop();
             console.log("BUILDING!");
             if(chunk===undefined) return;
-            this._current = chunk.terrainChunk.noiseGenerator;
+            this._currentChunk = chunk;
+            this._currentGenerator = chunk.terrainChunk.noiseGenerator;
         }
         else {
             console.log("BUILDING FOR REAL!");
-           const a=  this._current.next();
+           const a=  this._currentGenerator.next();
            console.log(a)
-           if(a.done) this._current =undefined;
+           if(a.done) this._currentGenerator =undefined;
+           if(this._currentChunk!==undefined)
+           this._currentChunk.terrainChunk.show();
+
         }
 
     }
