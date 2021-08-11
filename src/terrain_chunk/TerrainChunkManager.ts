@@ -57,7 +57,7 @@ class ChunkRecordList{
     contains(position : ChunkPosition) :boolean{
         const cache = this._chunkRecords_dp[ChunkRecordList.positionToKey(position)];
 
-        // console.log("Checking cache.",ChunkRecordList.positionToKey(position))
+
        return cache  !== undefined;
     }
 
@@ -98,7 +98,6 @@ export default class TerrainChunkManager {
 
         this._scene = scene;
         this._terrainChunk = new TerrainChunk(this._scene, this._loader, this.SIZE);
-        this._init();
         this._camera = camera;
 
     }
@@ -120,27 +119,13 @@ export default class TerrainChunkManager {
             }
         })
 
-        // for(let i=-this._GRID_SIZE; i<this._GRID_SIZE; i++){
-        //     for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
-        //         const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
-        //         if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
-        //     }
-        // }
 
 
     }
 
 
-    // _coordinateToChunkPosition(position: Vector3) : ChunkPosition {
-    //     let x = Math.floor(position.x / this.SIZE);
-    //     let z = Math.floor(position.z / this.SIZE);
-    //     return new ChunkPosition(x,z);
-    // }
 
 
-    _init = () => {
-    //   this.createChunk(new ChunkPosition(0,0));
-    }
 
 
     private createChunk(position: ChunkPosition) {
