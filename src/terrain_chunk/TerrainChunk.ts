@@ -60,5 +60,11 @@ export class TerrainChunk {
     }
 
 
+    destroy(){
+        this._plane.geometry.dispose();
+        this._group.remove(this._plane);
+    }
+
+
 
 }
