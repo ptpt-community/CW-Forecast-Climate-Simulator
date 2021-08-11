@@ -17,7 +17,7 @@ const renderer = new THREE.WebGLRenderer({canvas});
 const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
 const gui = new GUI();
 
-movementControlling(camera,renderer.domElement,100,gui);
+movementControlling(camera,renderer.domElement,.1,gui);
 
 camera.position.set(0,5,0);
 camera.lookAt(1,1,1);

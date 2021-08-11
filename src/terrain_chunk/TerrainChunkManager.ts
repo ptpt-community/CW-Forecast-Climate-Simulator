@@ -40,7 +40,7 @@ export default class TerrainChunkManager {
     private _chunkBuilder = new ChunkBuilder();
 
 
-    private _chunkDirector = new ChunkDirector(128);
+    private _chunkDirector = new ChunkDirector(8);
     
     constructor(scene: Scene, camera: Camera) {
         this._group = new Group();
