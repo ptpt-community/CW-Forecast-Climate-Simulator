@@ -63,9 +63,9 @@ class TestBiome implements Biome {
 
     public getHeight(): number {
         const persistance = .707;
-        const lacuranity = 1.8;
+        const lacuranity = 2.0;
         const exponentiation = 7;
-        const height = 100;
+        const height = 50; //-->300
         const octaves = 5;
 
         let amplitude = 1.0;
@@ -89,7 +89,7 @@ class TestBiome implements Biome {
         total = Math.pow(
             total, exponentiation) * height;
 
-        total += getGradientNoise(this._x / 2000, this._z / 2000) * 10;
+        total += getGradientNoise(this._x / 2000, this._z / 2000) * 20;
         return total;
 
 
