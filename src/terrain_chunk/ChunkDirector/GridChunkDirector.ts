@@ -1,8 +1,8 @@
 import {Box2, Vector2, Vector3} from "three";
-import {ChunkRecord} from "./TerrainChunkManager";
+import {ChunkRecord} from "../TerrainChunkManager";
+import {IChunkDirector} from "./IChunkDirector";
 
-
-export class ChunkDirector {
+export class GridChunkDirector implements IChunkDirector {
 
 
     private readonly _minChunkSize;
@@ -27,16 +27,15 @@ export class ChunkDirector {
         const chunkPositions: ChunkRecord[] = [];
 
         //LVL0
-        const centerBox = ChunkDirector._createBoxFromBottomLeft(this._subjectPosition as Vector2, this._minChunkSize);
+        const centerBox = GridChunkDirector._createBoxFromBottomLeft(this._subjectPosition as Vector2, this._minChunkSize);
         chunkPositions.push(new ChunkRecord(centerBox));
 
         //LVL1
-        const level1Neighbors = ChunkDirector._createNeighboringBoxes(centerBox);
+        const level1Neighbors = GridChunkDirector._createNeighboringBoxes(centerBox);
 
 
         //LVL2
-        const level2Neighbors = ChunkDirector._createNeighboringBoxes(level1Neighbors.greaterBox);
-
+        const level2Neighbors = GridChunkDirector._createNeighboringBoxes(level1Neighbors.greaterBox);
 
 
         this._saved = chunkPositions.concat(level1Neighbors.chunkPositions, level2Neighbors.chunkPositions);
@@ -45,9 +44,9 @@ export class ChunkDirector {
     }
 
 
-    position3DToBaseBorder(position: Vector3) {
-        const x = ChunkDirector.distanceAtCycle(position.x,this._minChunkSize)
-        const z = ChunkDirector.distanceAtCycle(position.z,this._minChunkSize);
+    private position3DToBaseBorder(position: Vector3) {
+        const x = GridChunkDirector.distanceAtCycle(position.x, this._minChunkSize)
+        const z = GridChunkDirector.distanceAtCycle(position.z, this._minChunkSize);
 
 
         return new Vector2(x, z)
@@ -55,7 +54,7 @@ export class ChunkDirector {
 
     private static distanceAtCycle(distance: number, cycleLength: number) {
         const numberOfCycles = Math.floor(distance / cycleLength);
-        return numberOfCycles  * cycleLength
+        return numberOfCycles * cycleLength
     }
 
 
@@ -77,19 +76,19 @@ export class ChunkDirector {
 
     private static _createNeighboringBoxes(center: Box2): { chunkPositions: ChunkRecord[], greaterBox: Box2 } {
         const dimension = Math.abs((center.min.x - center.max.x));
-        const bottomLeft = ChunkDirector._createBoxFromTopRight(center.min, dimension);
-        const bottom = ChunkDirector._createBoxFromTopRight(new Vector2(center.max.x, center.min.y), dimension);
-        const bottomRight = ChunkDirector._createBoxFromBottomLeft(new Vector2(bottom.max.x, bottom.min.y), dimension);
-        const right = ChunkDirector._createBoxFromBottomLeft(bottom.max, dimension);
-        const topRight = ChunkDirector._createBoxFromBottomLeft(center.max, dimension);
-        const top = ChunkDirector._createBoxFromBottomLeft(new Vector2(center.min.x, center.max.y), dimension);
-        const topLeft = ChunkDirector._createBoxFromTopRight(new Vector2(top.min.x, top.max.y), dimension);
-        const left = ChunkDirector._createBoxFromTopRight(top.min, dimension);
+        const bottomLeft = GridChunkDirector._createBoxFromTopRight(center.min, dimension);
+        const bottom = GridChunkDirector._createBoxFromTopRight(new Vector2(center.max.x, center.min.y), dimension);
+        const bottomRight = GridChunkDirector._createBoxFromBottomLeft(new Vector2(bottom.max.x, bottom.min.y), dimension);
+        const right = GridChunkDirector._createBoxFromBottomLeft(bottom.max, dimension);
+        const topRight = GridChunkDirector._createBoxFromBottomLeft(center.max, dimension);
+        const top = GridChunkDirector._createBoxFromBottomLeft(new Vector2(center.min.x, center.max.y), dimension);
+        const topLeft = GridChunkDirector._createBoxFromTopRight(new Vector2(top.min.x, top.max.y), dimension);
+        const left = GridChunkDirector._createBoxFromTopRight(top.min, dimension);
 
 
         const greaterBox = new Box2(bottomLeft.min.clone(), topRight.max.clone());
-        const chunkPositions:ChunkRecord[] = [];
-        [right, topRight, top, topLeft, left, bottomLeft, bottom, bottomRight].map(box=>{
+        const chunkPositions: ChunkRecord[] = [];
+        [right, topRight, top, topLeft, left, bottomLeft, bottom, bottomRight].map(box => {
             chunkPositions.push(new ChunkRecord(box));
         });
         return {chunkPositions, greaterBox};

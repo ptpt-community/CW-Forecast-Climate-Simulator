@@ -146,11 +146,11 @@ requestAnimationFrame(render);
 
 /*DEBUG
 */
-import {ChunkDirector} from "./terrain_chunk/ChunkDirector";
+import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector";
 
 window.THREE = THREE;
 //@ts-ignore
-window.ChunkDirector = ChunkDirector;
+window.ChunkDirector = GridChunkDirector;
 //@ts-ignore
 window.camera = camera;
 
