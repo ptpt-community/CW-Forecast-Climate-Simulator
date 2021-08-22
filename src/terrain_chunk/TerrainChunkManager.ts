@@ -1,8 +1,10 @@
 import {Box2, Camera, Group, Scene, TextureLoader, Vector2} from "three";
 import {TerrainChunk} from "./TerrainChunk";
-import {ChunkDirector} from "./ChunkDirector";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
 import {BiomeManager} from "./Biome/BiomeManager";
+import {GridChunkDirector} from "./ChunkDirector/GridChunkDirector";
+import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
+import {QuadTree} from "./ChunkDirector/QuadTree";
 
 export class ChunkRecord extends Vector2{
 
@@ -40,7 +42,7 @@ export default class TerrainChunkManager {
     private _chunkBuilder = new ChunkBuilder();
 
 
-    private _chunkDirector = new ChunkDirector(8);
+    private _chunkDirector:IChunkDirector = new GridChunkDirector(32);
     
     constructor(scene: Scene, camera: Camera) {
         this._group = new Group();

@@ -125,8 +125,8 @@ const clock = new Clock();
 
 function render() {
    // light.shadow.camera.position.set(camera.position.x,camera.position.y,camera.position.z+100);
-    waterScene.water.position.set(camera.position.x,0,camera.position.z);
-    waterScene.waterMaterial.uniforms.uTime.value = clock.getElapsedTime();
+   //  waterScene.water.position.set(camera.position.x,0,camera.position.z);
+   //  waterScene.waterMaterial.uniforms.uTime.value = clock.getElapsedTime();
     terrainChunkManager.checkCameraAndAddTerrain();
     if (resizeRendererToDisplaySize(renderer)) {
         const canvas = renderer.domElement;
@@ -146,11 +146,11 @@ requestAnimationFrame(render);
 
 /*DEBUG
 */
-import {ChunkDirector} from "./terrain_chunk/ChunkDirector";
+import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector";
 
 window.THREE = THREE;
 //@ts-ignore
-window.ChunkDirector = ChunkDirector;
+window.ChunkDirector = GridChunkDirector;
 //@ts-ignore
 window.camera = camera;
 
