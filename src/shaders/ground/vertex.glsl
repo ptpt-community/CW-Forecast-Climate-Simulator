@@ -1,13 +1,7 @@
-// uniform float uSmallWavesElevation;
-// uniform float uSmallWavesFrequency;
-// uniform float uSmallWavesSpeed;
-// uniform float uSmallWavesIterations;
+varying vec4 vPosition;
+varying float vSnoise;
 
 
-varying float vPosition;
-
-// Simplex 2D noise
-//
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
 float simplex(vec2 v){
@@ -39,10 +33,12 @@ float simplex(vec2 v){
 
 
 float snoise(float x,float y){
+    float seed = 10000.0;
     vec2 v ;
     v.x = x;
     v.y = y;
-    return simplex(v);
+    vSnoise = simplex(v+seed);
+    return vSnoise;
 }
 
 
@@ -80,11 +76,14 @@ float height(vec2 pos){
     total /= normalization;
 
     total = pow(total, exponentiation) * height;
-    total += snoise(pos.x/ 2000.0, pos.y/2000.0) * 20.0;
+    total += snoise(pos.x/ 1000.0, pos.y/1000.0) * 20.0;
 
 
     return total;
 }
+
+
+
 
 
 
@@ -99,5 +98,5 @@ void main(){
 
     gl_Position = projectedPosition;
 
-    vPosition = modelPosition.y;
+    vPosition = modelPosition;
 }

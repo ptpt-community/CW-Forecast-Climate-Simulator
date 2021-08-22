@@ -42,7 +42,7 @@ export default class TerrainChunkManager {
     private _chunkBuilder = new ChunkBuilder();
 
 
-    private _chunkDirector:IChunkDirector = new GridChunkDirector(16);
+    private _chunkDirector:IChunkDirector = new GridChunkDirector(32);
     
     constructor(scene: Scene, camera: Camera) {
         this._group = new Group();

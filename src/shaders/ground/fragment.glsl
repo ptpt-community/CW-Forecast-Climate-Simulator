@@ -1,18 +1,27 @@
-//uniform vec3 uDepthColor;
-//uniform vec3 uSurfaceColor;
-//uniform float uColorOffset ;
-// uniform float uColorMultiplier;
 
-varying float vPosition;
+varying vec4 vPosition;
+varying float vSnoise;
+
+float getTemperature(vec2 position){
+    //Temperature = sin(x) ranging from -10 to + 35 which is  -22.5 to + 22.5  and offsetted +12.5
+    float temperature =  sin(distance(vec2(0,0),position/20.0));
+    return temperature*22.5 + 12.5 + vSnoise*3.0;
+}
+
+
+
 
 void main(){
 
-    vec3 highColor = vec3(.01,.9,.01);
-    vec3 lowColor = vec3(0.7922, 0.9725, 0.451);
+    vec3 highColor = vec3(1.0,0.5,0.3);
+    vec3 lowColor = vec3(0.3, 0.3, .5);
 
 
 
-    float mixStrength = (vPosition)*.001;
+    float temperature = getTemperature(vPosition.xz);
+
+    float mixStrength = temperature*.025;
+
     vec3 color = mix(lowColor,highColor,mixStrength);
 
 
