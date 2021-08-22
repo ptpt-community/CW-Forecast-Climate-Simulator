@@ -76,7 +76,7 @@ float height(vec2 pos){
     total /= normalization;
 
     total = pow(total, exponentiation) * height;
-    total += snoise(pos.x/ 1000.0, pos.y/1000.0) * 20.0;
+    total += snoise(pos.x/ 1000.0, pos.y/1000.0) * 10.0;
 
 
     return total;

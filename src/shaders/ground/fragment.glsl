@@ -2,9 +2,10 @@
 varying vec4 vPosition;
 varying float vSnoise;
 
-float getTemperature(vec2 position){
+float getTemperature(vec3 position){
     //Temperature = sin(x) ranging from -10 to + 35 which is  -22.5 to + 22.5  and offsetted +12.5
-    float temperature =  sin(distance(vec2(0,0),position/20.0));
+    float temperature =  sin(distance(vec2(0,0),position.xz/20.0));
+    temperature -= position.y*.05; /**IMPORTANT!!Need Research*/
     return temperature*22.5 + 12.5 + vSnoise*3.0;
 }
 
@@ -18,7 +19,7 @@ void main(){
 
 
 
-    float temperature = getTemperature(vPosition.xz);
+    float temperature = getTemperature(vPosition.xyz);
 
     float mixStrength = temperature*.025;
 
