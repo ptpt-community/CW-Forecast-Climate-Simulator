@@ -20,29 +20,58 @@ export class ChunkPosition{
     }
 }
 
+
 class ChunkRecord{
     private readonly _position:ChunkPosition;
     private readonly _plane: Mesh;
 
     constructor(position: ChunkPosition, plane: Mesh) {
-        this._position = position;
+        this._position= position;
         this._plane = plane;
     }
 
-    get position(): ChunkPosition {
-        return this._position;
-    }
 
     get plane(): Mesh {
         return this._plane;
     }
 
-    containsPosition (position: ChunkPosition) : boolean{
-        return this.position.chunk_x == position.chunk_x && this.position.chunk_z == position.chunk_z;
-
+    get position():ChunkPosition{
+        return this._position;
     }
 
+
 }
+
+class ChunkRecordList{
+    _chunkRecords_dp: any = {};
+
+    add(chunkRecord : ChunkRecord){
+        this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)] = chunkRecord;
+    }
+
+    remove(chunkRecord:ChunkRecord){
+        delete this._chunkRecords_dp[ChunkRecordList.positionToKey(chunkRecord.position)];
+    }
+
+
+    contains(position : ChunkPosition) :boolean{
+       return  this._chunkRecords_dp[ChunkRecordList.positionToKey(position)] !== undefined;
+    }
+
+
+
+    private static positionToKey(position: ChunkPosition):string{
+        return  ''+position.chunk_x+','+position.chunk_z;
+    }
+
+
+
+}
+
+
+
+
+
 
 
 export default class TerrainChunkManager {
@@ -52,9 +81,13 @@ export default class TerrainChunkManager {
 
     SIZE = 512;
 
+    private _GRID_SIZE = 3;
+
     _loader: TextureLoader = new TextureLoader();
 
-    _chunk_records: ChunkRecord[] = [];
+    _chunk_record_list = new ChunkRecordList();
+
+
     private _terrainChunk: TerrainChunk;
 
 
@@ -68,18 +101,17 @@ export default class TerrainChunkManager {
     }
 
     public checkCameraAndAddTerrain() {
+
         const camera = this._camera;
-        const newChunkPosition = this._coordinateToChunkPosition(camera.position);
-        let chunkAlreadyExists = false;
-        //  console.log(newChunkPosition);
-        //if (this._chunk_positions.includes(newChunkPosition)) return;
-        this._chunk_records.forEach((record) => {
-                chunkAlreadyExists = record.containsPosition(newChunkPosition);
-        })
-        if (!chunkAlreadyExists) {
-            this.createChunk(newChunkPosition);
+        const cameraChunk = this._coordinateToChunkPosition(camera.position);
+
+
+        for(let i=-this._GRID_SIZE; i<this._GRID_SIZE; i++){
+            for(let j=-this._GRID_SIZE; j<this._GRID_SIZE; j++){
+                const chunkPosition = new ChunkPosition(cameraChunk.chunk_x+i, cameraChunk.chunk_z+j);
+                if(!this._chunk_record_list.contains(chunkPosition))  this.createChunk(chunkPosition);
+            }
         }
-        chunkAlreadyExists = false;
 
 
     }
@@ -93,10 +125,7 @@ export default class TerrainChunkManager {
 
 
     _init = () => {
-        const position = new ChunkPosition(0,0);
-        const plane =  this._terrainChunk.generateTerrain(position);
-        this._chunk_records.push(new ChunkRecord(position,plane));
-
+       this.createChunk(new ChunkPosition(0,0));
     }
 
 
@@ -104,6 +133,6 @@ export default class TerrainChunkManager {
         console.log("Generate New Chunk");
 
         const plane = this._terrainChunk.generateTerrain(position);
-        this._chunk_records.push(new ChunkRecord(position,plane));
+        this._chunk_record_list.add(new ChunkRecord(position,plane));
     }
 }
