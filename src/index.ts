@@ -19,7 +19,7 @@ const gui = new GUI();
 
 movementControlling(camera,renderer.domElement,.1,gui);
 
-camera.position.set(0,5,0);
+camera.position.set(0,1000,0);
 camera.lookAt(1,1,1);
 
 

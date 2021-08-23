@@ -37,16 +37,15 @@ float simplex(vec2 v){
 float getTemperature(float offset){
     //Temperature = sin(x) ranging from -10 to + 35 which is  -22.5 to + 22.5  and offsetted +12.5
     float temperature =  sin(distance(vec2(0,0),vPosition.xz/20.0));
-    temperature -= vPosition.y*.05; /**IMPORTANT!!Need Research*/
-    return temperature*22.5 + 12.5 + vSnoise*3.0 + offset;
+    temperature -= vPosition.y*.1; /**IMPORTANT!!Need Research*/
+    return temperature*22.5 + 12.5 + offset;
 }
 
 float getPreceipitationMath(float temp){
-
-          float a=pow(10.00,(.2*(1.25*temp-30.00)));
-          float b = pow(10.00,(1.25*temp-30.00))-a+420.00;
-           return b;
-      }
+    float f = 1.25*temp - 30.0;
+    float precipitation = 10.0*f -pow(10.0,0.2*f) + 400.0;
+    return precipitation<0.0? 0.0: precipitation;
+}
 float getPrecipitation(float temperature){
     float  a = getPreceipitationMath(temperature);
     return simplex(vPosition.xz/500.0)*a;
@@ -63,10 +62,14 @@ void main(){
     vec3 highColor = vec3(1.0,0.5,0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
 
-    float temperature = getTemperature(3.0);
+    float temperature = getTemperature(0.0);
     float precipitation = getPrecipitation(temperature);
 
-    float mixStrength = precipitation*0.0025;
+
+    float temperatureStrength = temperature*.025;
+    float precipitationStrength = precipitation*.0025;
+
+    float mixStrength = precipitationStrength;
 
     vec3 color = mix(lowColor,highColor,mixStrength);
 
