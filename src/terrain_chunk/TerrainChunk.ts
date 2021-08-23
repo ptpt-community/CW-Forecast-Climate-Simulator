@@ -33,7 +33,7 @@ export class TerrainChunk {
     constructor(group: Group, position:ChunkRecord, noisifier: TerrainFeatureNoiseManager ) {
         this._group = group;
         this._planeMaterial = new ShaderMaterial({
-            wireframe: true,
+            wireframe: false,
             vertexShader: groundVertexShader,
             fragmentShader: groundFragmentShader
         })
@@ -60,6 +60,13 @@ export class TerrainChunk {
             plane.receiveShadow = true;
             plane.visible = false;
             this._group.add(plane);
+
+
+            /*
+            DEBUG
+             */
+
+
 
             return {plane,generator};
     }
