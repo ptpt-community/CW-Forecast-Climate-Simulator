@@ -42,8 +42,16 @@ float getTemperature(float offset){
 }
 
 float getPrecipitation(float temperature){
-    return simplex(vPosition.xz/500.0)*100.0;
+
+    let a = getPreceipitationMath(temperature)
+    return simplex(vPosition.xz/500.0)*a;
 }
+float function getPreceipitationMath(temp:number){
+
+          let a=Math.pow(10,(.2*(1.25*temp-30)))
+          let b=10*(1.25*temp-30)-a+420
+           return b;
+      }
 
 
 
@@ -52,8 +60,6 @@ void main(){
 
     vec3 highColor = vec3(1.0,0.5,0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
-
-
 
     float temperature = getTemperature(3.0);
     float precipitation = getPrecipitation(temperature);
