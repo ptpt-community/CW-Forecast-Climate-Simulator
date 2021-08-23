@@ -25,6 +25,7 @@
     "dat.gui": "^0.7.7",
     "raw-loader": "^4.0.2",
     "seedrandom": "^3.0.5",
+    "simplex-noise": "^3.0.0",
     "three": "^0.130.1"
   }
 }

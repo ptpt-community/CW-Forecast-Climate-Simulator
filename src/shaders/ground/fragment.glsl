@@ -41,17 +41,19 @@ float getTemperature(float offset){
     return temperature*22.5 + 12.5 + vSnoise*3.0 + offset;
 }
 
-float getPrecipitation(float temperature){
+float getPreceipitationMath(float temp){
 
-    let a = getPreceipitationMath(temperature)
-    return simplex(vPosition.xz/500.0)*a;
-}
-float function getPreceipitationMath(temp:number){
-
-          let a=Math.pow(10,(.2*(1.25*temp-30)))
-          let b=10*(1.25*temp-30)-a+420
+          float a=pow(10.00,(.2*(1.25*temp-30.00)));
+          float b = pow(10.00,(1.25*temp-30.00))-a+420.00;
            return b;
       }
+float getPrecipitation(float temperature){
+    float  a = getPreceipitationMath(temperature);
+    return simplex(vPosition.xz/500.0)*a;
+}
+
+
+
 
 
 
