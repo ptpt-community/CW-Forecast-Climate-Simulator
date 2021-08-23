@@ -1,4 +1,8 @@
 import seedrandom from "seedrandom"
+//@ts-ignore
+import SimplexNoise from "simplex-noise"
+
+
 
 
 export class GetNoise {
@@ -15,10 +19,13 @@ export class GetNoise {
     }
 
     private static _instance = new GetNoise();
+    private _simplex;
 
     private constructor() {
       //  this._loadSave();
         //setInterval(this._save,10000);
+
+        this._simplex = new SimplexNoise('SEED');
     }
 
 
@@ -27,21 +34,6 @@ export class GetNoise {
     private _dp: any = {};
     private _is_changed = false;
 
-    // private _loadSave(){
-    //     fs.readFile("/generated_randoms.json",((err, data) => {
-    //         this._dp =JSON.stringify(data);
-    //     }))
-    // }
-    //
-    // private _save(){
-    //     if(!this._is_changed) return;
-    //     fs.writeFile ("/generated_randoms.json", JSON.stringify(this._dp), function(err) {
-    //             if (err) throw err;
-    //         }
-    //     );
-    //     this._is_changed = false;
-    //
-    // }
 
 
 
@@ -50,23 +42,18 @@ export class GetNoise {
 
     getNoise(x: number, y: number) {
 
+        // const key = GetNoise._key(x,y);
+        // if (this._dp[key] !== undefined) return this._dp[key];
+        // this._is_changed = true;
+        const simplexNoise = this._simplex.noise2D(x,y);
+        // this._dp[key] = simplexNoise;
 
-        const input_seed = this._seed + x * 30000 + y * 90000;
-        if (this._dp[input_seed] !== undefined) return this._dp[input_seed];
+        return simplexNoise;
+    }
 
-        this._is_changed = true;
-
-        const seeder = this._getRandom(input_seed);
-
-        const randomNumber = (seeder() - .5) * 2;
-
-        this._dp[input_seed] = randomNumber;
-
-        return randomNumber;
+    private static _key(x:number,y:number):string{
+        return ''+x+','+y;
     }
 
 
-    private _getRandom(seed: string) {
-        return seedrandom.xor128(seed);
-    }
 }

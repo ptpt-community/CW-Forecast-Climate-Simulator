@@ -10,13 +10,14 @@ import waterVertexShader from './shaders/water/vertex.glsl';
 import waterFragmentShader from './shaders/water/fragment.glsl';
 import {WaterScene} from "./Environment/WaterScene";
 
+
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
 
 const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
 const gui = new GUI();
 
-movementControlling(camera,renderer.domElement,100,gui);
+movementControlling(camera,renderer.domElement,.1,gui);
 
 camera.position.set(0,5,0);
 camera.lookAt(1,1,1);
@@ -118,15 +119,14 @@ window.addEventListener('resize', () =>
 
 
 
-
 //
 const clock = new Clock();
 
 
 function render() {
    // light.shadow.camera.position.set(camera.position.x,camera.position.y,camera.position.z+100);
-    waterScene.water.position.set(camera.position.x,0,camera.position.z);
-    waterScene.waterMaterial.uniforms.uTime.value = clock.getElapsedTime();
+   //  waterScene.water.position.set(camera.position.x,0,camera.position.z);
+   //  waterScene.waterMaterial.uniforms.uTime.value = clock.getElapsedTime();
     terrainChunkManager.checkCameraAndAddTerrain();
     if (resizeRendererToDisplaySize(renderer)) {
         const canvas = renderer.domElement;
@@ -141,4 +141,19 @@ function render() {
 
 requestAnimationFrame(render);
 
+
+
+
+/*DEBUG
+*/
+import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector";
+
+window.THREE = THREE;
+//@ts-ignore
+window.ChunkDirector = GridChunkDirector;
+//@ts-ignore
+window.camera = camera;
+
+/*
+ */
 

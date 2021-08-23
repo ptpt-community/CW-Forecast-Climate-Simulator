@@ -11,7 +11,8 @@ export class TerrainFeatureNoiseManager {
         this._biomeManager = biomeManager;
     }
 
-    applyFeatures(plane: Mesh, offset: { x: number, z: number }) {
+    *applyFeatures(plane: Mesh, offset: { x: number, z: number }) {
+        return;
 
         function getOffsetX(x: number) {
             return offset.x + x;
@@ -25,10 +26,18 @@ export class TerrainFeatureNoiseManager {
         plane.add(axesHelper);
         const vertex = new Vector3();
 
-        const position = plane.geometry.attributes.position;
+        const position = plane.geometry.attributes.position
+        const total_steps = 10000;
+        let steps = total_steps;
+
+        console.log("T");
 
         for (let i = 0; i < position.count; i++) {
-
+            steps--;
+            if(steps==0){
+                steps = total_steps;
+                yield ;
+            }
             const biome = this._biomeManager.calculateBiome(getOffsetX(position.getX(i)), getOffsetZ(position.getY(i)));
             position.setZ(i, biome.getHeight());
 
