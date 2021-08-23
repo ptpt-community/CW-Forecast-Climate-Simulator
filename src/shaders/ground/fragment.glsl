@@ -41,9 +41,19 @@ float getTemperature(float offset){
     return temperature*22.5 + 12.5 + vSnoise*3.0 + offset;
 }
 
+float getPreceipitationMath(float temp){
+
+          float a=pow(10.00,(.2*(1.25*temp-30.00)));
+          float b = pow(10.00,(1.25*temp-30.00))-a+420.00;
+           return b;
+      }
 float getPrecipitation(float temperature){
-    return simplex(vPosition.xz/500.0)*100.0;
+    float  a = getPreceipitationMath(temperature);
+    return simplex(vPosition.xz/500.0)*a;
 }
+
+
+
 
 
 
@@ -52,8 +62,6 @@ void main(){
 
     vec3 highColor = vec3(1.0,0.5,0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
-
-
 
     float temperature = getTemperature(3.0);
     float precipitation = getPrecipitation(temperature);
