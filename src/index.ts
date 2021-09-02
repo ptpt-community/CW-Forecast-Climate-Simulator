@@ -17,53 +17,23 @@ const renderer = new THREE.WebGLRenderer({canvas});
 const cameraBasic = new CameraSettings()
 const camera = cameraBasic.getCamera()
 const gui = GuiSingleton.getGui()//3
+//renderInstantiate
+const scene = new THREE.Scene();
+
+const renderer_class =new Renderer(camera,canvas,scene)
+renderer_class.render()
+
 
 movementControlling(camera,renderer.domElement,.1,gui);
 
-camera.position.set(0,1000,0);
-camera.lookAt(1,1,1);
-
-
-const effectController = {
-    turbidity: 10,
-    rayleigh: 3,
-    mieCoefficient: 0.005,
-    mieDirectionalG: 0.7,
-    elevation: 2,
-    azimuth: 180,
-    exposure: renderer.toneMappingExposure
-};
-new THREE.Camera()
-const scene = new THREE.Scene();
-const terrainChunkManager =new TerrainChunkManager(scene,camera);
+/*new THREE.Camera()
+const terrainChunkManager =new TerrainChunkManager(scene,camera);*/
 new SkyBox(scene);
 
-
-/*const light = new DirectionalLight(0xffffff, 1.5);
-light.castShadow = true;
-light.shadow.camera.left= -1000;
-light.shadow.camera.right= 1000;
-light.shadow.camera.top= 1000;
-light.shadow.camera.bottom= -1000;
-light.shadow.camera.far = 2000;
-light.position.set(400,800,800);
-
-light.shadow.mapSize.set(512,512);
-
-
-const ambientLight = new AmbientLight(0x999999,.5);
-scene.add(light);
-const shadowHelper = new CameraHelper(light.shadow.camera);
-scene.add(shadowHelper,ambientLight);*/
 const light = new LightSettings(scene)
 light.directionalLightManager()
 
-
-
-
-
-
-function resizeRendererToDisplaySize(renderer:THREE.Renderer){
+/*function resizeRendererToDisplaySize(renderer:THREE.Renderer){
     const canvas = renderer.domElement;
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
@@ -73,7 +43,7 @@ function resizeRendererToDisplaySize(renderer:THREE.Renderer){
     }
 
     return needResize;
-}
+}*/
 
 renderer.shadowMap.enabled = true;
 
@@ -111,7 +81,7 @@ window.addEventListener('resize', () =>
 const clock = new Clock();
 
 
-function render() {
+/*function render() {
 
     terrainChunkManager.checkCameraAndAddTerrain();
     if (resizeRendererToDisplaySize(renderer)) {
@@ -125,7 +95,7 @@ function render() {
     requestAnimationFrame(render);
 }
 
-requestAnimationFrame(render);
+requestAnimationFrame(render);*/
 
 
 
@@ -136,6 +106,7 @@ import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector
 import {GuiSingleton} from "./GUI/GUI";
 import {LightSettings} from "./Environment/LightSettings";
 import {CameraSettings} from "./Environment/CameraSettings";
+import {Renderer} from "./Environment/RendererSettings";
 
 window.THREE = THREE;
 //@ts-ignore

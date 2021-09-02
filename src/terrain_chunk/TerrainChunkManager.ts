@@ -53,7 +53,7 @@ export default class TerrainChunkManager {
     public checkCameraAndAddTerrain() {
 
         const camera = this._camera;
-
+        console.log("Done First");
         const suggestedPositions = this._chunkDirector.getChunksFrom(camera.position);
         const suggestedChunks_DP :any = [];
         suggestedPositions.forEach(chunkPosition=>{
