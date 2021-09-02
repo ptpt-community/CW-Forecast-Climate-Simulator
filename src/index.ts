@@ -11,11 +11,11 @@ import waterFragmentShader from './shaders/water/fragment.glsl';
 import {WaterScene} from "./Environment/WaterScene";
 
 
-let canvas = document.querySelector("#c") as HTMLCanvasElement;
-const renderer = new THREE.WebGLRenderer({canvas});
+let canvas = document.querySelector("#c") as HTMLCanvasElement;//1
+const renderer = new THREE.WebGLRenderer({canvas});//2
 
 const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
-const gui = new GUI();
+const gui = GuiSingleton.getGui()//3
 
 movementControlling(camera,renderer.domElement,.1,gui);
 
@@ -36,6 +36,7 @@ const effectController = {
 const scene = new THREE.Scene();
 const terrainChunkManager =new TerrainChunkManager(scene,camera);
 new SkyBox(scene);
+
 
 const light = new DirectionalLight(0xffffff, 1.5);
 light.castShadow = true;
@@ -130,6 +131,7 @@ requestAnimationFrame(render);
 /*DEBUG
 */
 import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector";
+import {GuiSingleton} from "./GUI/GUI";
 
 window.THREE = THREE;
 //@ts-ignore
