@@ -70,7 +70,6 @@ const clock = new Clock();
 
 window.THREE = THREE;
 //@ts-ignore
-window.ChunkDirector = GridChunkDirector;
 //@ts-ignore
 window.camera = camera;
 
