@@ -7,7 +7,7 @@ import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
 
 export class ChunkRecord extends Vector2{
 
-    private _dimension;
+    private readonly _dimension;
     private _terrainChunk:undefined|TerrainChunk
 
     constructor(box:Box2) {
@@ -32,10 +32,10 @@ export class ChunkRecord extends Vector2{
 }
 
 
-class Dictionary{
+class Dictionary <T>{
     private _collection:any = [];
 
-    add(at:string, object: any){
+    add(at:string, object: T){
         this._collection[at] = object;
     }
 
@@ -43,15 +43,15 @@ class Dictionary{
         delete this._collection[at];
     }
 
-    setAndReplace(object: any[]){
+    setAndReplace(object: T[]){
         this._collection = object;
     }
 
-    getAll(){
+    getAll() :T[]{
         return this._collection;
     }
 
-    getAt(key:string){
+    getAt(key:string) :T{
         return this._collection[key];
     }
 
@@ -63,7 +63,7 @@ export default class TerrainChunkManager {
     private readonly _group: Group;
     private readonly _camera: Camera;
 
-    private _chunkPositionDictionary = new Dictionary();
+    private _chunkPositionDictionary = new Dictionary<ChunkRecord>();
 
 
     private _noiseManager = new TerrainFeatureNoiseManager(new BiomeManager());
@@ -82,13 +82,13 @@ export default class TerrainChunkManager {
     public checkCameraAndAddTerrain() {
 
         const camera = this._camera;
-        const suggestedPositionsDictionary = new Dictionary();
+        const suggestedPositionsDictionary = new Dictionary<ChunkRecord>();
 
 
         const suggestedPositions = this._chunkDirector.getChunksFrom(camera.position);
         suggestedPositionsDictionary.setAndReplace(suggestedPositions);
 
-        const suggestedChunksDictionary = new Dictionary();
+        const suggestedChunksDictionary = new Dictionary<ChunkRecord>();
 
         suggestedPositions.forEach(chunkPosition=>{
             const key = TerrainChunkManager.positionToKey(chunkPosition);
@@ -96,7 +96,7 @@ export default class TerrainChunkManager {
         })
 
 
-        const deletableDictionary = new Dictionary();
+        const deletableDictionary = new Dictionary<ChunkRecord>();
         const deletableChunks =  TerrainChunkManager._subtractSet(this._chunkPositionDictionary.getAll(), suggestedChunksDictionary.getAll());
         deletableDictionary.setAndReplace(deletableChunks);
 
