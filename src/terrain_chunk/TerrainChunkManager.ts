@@ -1,7 +1,6 @@
 import {Box2, Camera, Group, Scene, Vector2} from "three";
 import {TerrainChunk} from "./TerrainChunk";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
-import {BiomeManager} from "./Biome/BiomeManager";
 import {GridChunkDirector} from "./ChunkDirector/GridChunkDirector";
 import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
 import {IDictionary} from "../Utils/Dictionary/IDictionary";
@@ -42,7 +41,7 @@ export default class TerrainChunkManager {
     private _chunkPositionDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();
 
 
-    private _noiseManager = new TerrainFeatureNoiseManager(new BiomeManager());
+    private _noiseManager = new TerrainFeatureNoiseManager();
     private _chunkBuilder = new ChunkBuilder();
 
 
