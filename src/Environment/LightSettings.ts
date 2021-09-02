@@ -3,7 +3,7 @@ import TerrainChunkManager from "../terrain_chunk/TerrainChunkManager";
 import SkyBox from "../SkyBox";
 import {AmbientLight, Camera, CameraHelper, DirectionalLight, Light, Scene} from "three";
 // noinspection JSDuplicatedDeclaration
-export class LightScene {
+export class LightSettings {
 
     private _scene: Scene;
     constructor(scene: Scene) {
