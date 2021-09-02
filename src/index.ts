@@ -38,7 +38,7 @@ const terrainChunkManager =new TerrainChunkManager(scene,camera);
 new SkyBox(scene);
 
 
-const light = new DirectionalLight(0xffffff, 1.5);
+/*const light = new DirectionalLight(0xffffff, 1.5);
 light.castShadow = true;
 light.shadow.camera.left= -1000;
 light.shadow.camera.right= 1000;
@@ -53,8 +53,9 @@ light.shadow.mapSize.set(512,512);
 const ambientLight = new AmbientLight(0x999999,.5);
 scene.add(light);
 const shadowHelper = new CameraHelper(light.shadow.camera);
-scene.add(shadowHelper,ambientLight);
-
+scene.add(shadowHelper,ambientLight);*/
+const light = new LightScene(scene)
+light.directionalLightManager()
 
 
 
@@ -132,6 +133,7 @@ requestAnimationFrame(render);
 */
 import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector";
 import {GuiSingleton} from "./GUI/GUI";
+import {LightScene} from "./Environment/Light";
 
 window.THREE = THREE;
 //@ts-ignore
