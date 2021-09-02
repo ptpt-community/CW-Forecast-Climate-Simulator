@@ -11,10 +11,11 @@ import waterFragmentShader from './shaders/water/fragment.glsl';
 import {WaterScene} from "./Environment/WaterScene";
 
 
-let canvas = document.querySelector("#c") as HTMLCanvasElement;//1
-const renderer = new THREE.WebGLRenderer({canvas});//2
+let canvas = document.querySelector("#c") as HTMLCanvasElement;
+const renderer = new THREE.WebGLRenderer({canvas});
 
-const camera = new THREE.PerspectiveCamera( 40, 2, 0.1, 3000);
+const cameraBasic = new CameraSettings()
+const camera = cameraBasic.getCamera()
 const gui = GuiSingleton.getGui()//3
 
 movementControlling(camera,renderer.domElement,.1,gui);
@@ -32,7 +33,7 @@ const effectController = {
     azimuth: 180,
     exposure: renderer.toneMappingExposure
 };
-
+new THREE.Camera()
 const scene = new THREE.Scene();
 const terrainChunkManager =new TerrainChunkManager(scene,camera);
 new SkyBox(scene);
@@ -54,7 +55,7 @@ const ambientLight = new AmbientLight(0x999999,.5);
 scene.add(light);
 const shadowHelper = new CameraHelper(light.shadow.camera);
 scene.add(shadowHelper,ambientLight);*/
-const light = new LightScene(scene)
+const light = new LightSettings(scene)
 light.directionalLightManager()
 
 
@@ -133,7 +134,8 @@ requestAnimationFrame(render);
 */
 import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector";
 import {GuiSingleton} from "./GUI/GUI";
-import {LightScene} from "./Environment/Light";
+import {LightSettings} from "./Environment/LightSettings";
+import {CameraSettings} from "./Environment/CameraSettings";
 
 window.THREE = THREE;
 //@ts-ignore
