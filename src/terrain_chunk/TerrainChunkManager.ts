@@ -4,7 +4,6 @@ import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
 import {BiomeManager} from "./Biome/BiomeManager";
 import {GridChunkDirector} from "./ChunkDirector/GridChunkDirector";
 import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
-import {QuadTree} from "./ChunkDirector/QuadTree";
 
 export class ChunkRecord extends Vector2{
 
@@ -108,7 +107,6 @@ export default class TerrainChunkManager {
         this._chunkPositions_DP[TerrainChunkManager.positionToKey(position)] = position;
         this._chunkBuilder.push(position);
 
-        // this._currentChunkList.add(new ChunkRecord(position,terrainChunk));
     }
 }
 

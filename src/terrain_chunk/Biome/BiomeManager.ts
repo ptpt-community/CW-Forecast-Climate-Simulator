@@ -52,14 +52,7 @@ class TestBiome implements Biome {
         this._z = z;
     }
 
-    /***
-     *
-     onst persistance = .707;
-     const lacuranity = 1.8;
-     const exponentiation = 7;
-     const height = 300;
 
-     * */
 
     public getHeight(): number {
         const persistance = .707;

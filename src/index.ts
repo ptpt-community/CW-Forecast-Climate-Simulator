@@ -55,21 +55,8 @@ const shadowHelper = new CameraHelper(light.shadow.camera);
 scene.add(shadowHelper,ambientLight);
 
 
-// gui.add(params, "intensity").min(0).max(10).step(.001).onFinishChange(()=>{
-//     light.intensity = params.intensity;
-// })
 
 
-//TODO: SKY
-// const sky = new Sky();
-// sky.position.set(0,500,0);
-// sky.visible = true;
-// sky.scale.setScalar(10000);
-// sky.material.uniforms.turbidity.value = effectController.turbidity;
-// sky.material.uniforms.rayleigh.value = effectController.rayleigh;
-// sky.material.uniforms.mieCoefficient.value = effectController.mieCoefficient;
-// sky.material.uniforms.mieDirectionalG.value = effectController.mieDirectionalG;
-//scene.add(sky);
 
 
 
@@ -92,9 +79,7 @@ const waterScene = new WaterScene(scene,gui);
 
 
 
-/**
- * Sizes
- */
+
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
@@ -124,9 +109,7 @@ const clock = new Clock();
 
 
 function render() {
-   // light.shadow.camera.position.set(camera.position.x,camera.position.y,camera.position.z+100);
-   //  waterScene.water.position.set(camera.position.x,0,camera.position.z);
-   //  waterScene.waterMaterial.uniforms.uTime.value = clock.getElapsedTime();
+
     terrainChunkManager.checkCameraAndAddTerrain();
     if (resizeRendererToDisplaySize(renderer)) {
         const canvas = renderer.domElement;
