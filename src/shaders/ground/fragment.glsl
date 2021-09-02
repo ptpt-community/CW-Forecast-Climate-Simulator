@@ -48,7 +48,7 @@ float getPreceipitationMath(float temp){
 }
 float getPrecipitation(float temperature){
     float  a = getPreceipitationMath(temperature);
-    return simplex(vPosition.xz/500.0)*a;
+    return simplex(vPosition.xz/5000.0)*a;
 }
 
 
