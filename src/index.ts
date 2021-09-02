@@ -3,7 +3,12 @@ import {AmbientLight, CameraHelper, Clock, DirectionalLight} from "three";
 import {GUI} from "dat.gui";
 import {movementControlling} from "./MovementControlling";
 import SkyBox from "./SkyBox";
-import TerrainChunkManager from "./terrain_chunk/TerrainChunkManager";
+import {LightSettings} from "./Environment/LightSettings";
+import {CameraSettings} from "./Environment/CameraSettings";
+import {Renderer} from "./Environment/RendererSettings";
+import {GuiSingleton} from "./GUI/GUI";
+
+
 // @ts-ignore
 import waterVertexShader from './shaders/water/vertex.glsl';
 //@ts-ignore
@@ -20,11 +25,11 @@ const gui = GuiSingleton.getGui()//3
 //renderInstantiate
 const scene = new THREE.Scene();
 
-const renderer_class =new Renderer(camera,canvas,scene)
+const renderer_class = new Renderer(camera, canvas, scene)
 renderer_class.render()
 
 
-movementControlling(camera,renderer.domElement,.1,gui);
+movementControlling(camera, renderer.domElement, .1, gui);
 
 /*new THREE.Camera()
 const terrainChunkManager =new TerrainChunkManager(scene,camera);*/
@@ -33,24 +38,10 @@ new SkyBox(scene);
 const light = new LightSettings(scene)
 light.directionalLightManager()
 
-/*function resizeRendererToDisplaySize(renderer:THREE.Renderer){
-    const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !==height;
-    if (needResize){
-        renderer.setSize(width,height,false);
-    }
-
-    return needResize;
-}*/
-
 renderer.shadowMap.enabled = true;
 
 
-const waterScene = new WaterScene(scene,gui);
-
-
+const waterScene = new WaterScene(scene, gui);
 
 
 const sizes = {
@@ -58,8 +49,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     // Update sizes
 
     sizes.width = window.innerWidth
@@ -75,38 +65,8 @@ window.addEventListener('resize', () =>
 })
 
 
-
-
-//
 const clock = new Clock();
 
-
-/*function render() {
-
-    terrainChunkManager.checkCameraAndAddTerrain();
-    if (resizeRendererToDisplaySize(renderer)) {
-        const canvas = renderer.domElement;
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-    }
-
-    renderer.render(scene, camera);
-
-    requestAnimationFrame(render);
-}
-
-requestAnimationFrame(render);*/
-
-
-
-
-/*DEBUG
-*/
-import {GridChunkDirector} from "./terrain_chunk/ChunkDirector/GridChunkDirector";
-import {GuiSingleton} from "./GUI/GUI";
-import {LightSettings} from "./Environment/LightSettings";
-import {CameraSettings} from "./Environment/CameraSettings";
-import {Renderer} from "./Environment/RendererSettings";
 
 window.THREE = THREE;
 //@ts-ignore
