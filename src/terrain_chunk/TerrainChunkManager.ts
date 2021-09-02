@@ -59,7 +59,6 @@ export default class TerrainChunkManager {
         const camera = this._camera;
         const suggestedPositionsDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();
 
-
         const suggestedPositions = this._chunkDirector.getChunksFrom(camera.position);
         suggestedPositionsDictionary.setAndReplace(suggestedPositions);
 
