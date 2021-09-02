@@ -7,10 +7,6 @@ import SimplexNoise from "simplex-noise"
 
 export class GetNoise {
 
-    /*TODO:
-    In our backend we should add file module to store our this._dp
-    Later we can use it to save new random numbers and load previous random numbers
-    */
 
     _seed = '' + 100100;
 
@@ -42,11 +38,8 @@ export class GetNoise {
 
     getNoise(x: number, y: number) {
 
-        // const key = GetNoise._key(x,y);
-        // if (this._dp[key] !== undefined) return this._dp[key];
-        // this._is_changed = true;
+
         const simplexNoise = this._simplex.noise2D(x,y);
-        // this._dp[key] = simplexNoise;
 
         return simplexNoise;
     }

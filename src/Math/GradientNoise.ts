@@ -3,12 +3,6 @@ import {GetNoise} from "../Noise/GetNoise";
 import SimplexNoise from  "simplex-noise"
 
 
-/**
- * TODO:
- * A Singleton GetGradientNoise class
- * To apply memoization we need to make a "Singleton" From it
- * The getInterpolatedNoise is to be the public method
- * */
 
 
 export function getGradientNoise(x:number, z:number){

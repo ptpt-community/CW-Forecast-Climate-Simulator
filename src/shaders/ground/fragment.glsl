@@ -54,9 +54,6 @@ float getPrecipitation(float temperature){
 
 
 
-
-
-
 void main(){
 
     vec3 highColor = vec3(1.0,0.5,0.3);

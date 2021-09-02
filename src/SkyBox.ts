@@ -1,4 +1,4 @@
-import {BackSide, BoxGeometry, CubeTextureLoader, Mesh, MeshBasicMaterial, Scene, TextureLoader} from "three";
+import {BackSide, BoxGeometry, CubeTextureLoader,  Scene} from "three";
 
 export default class SkyBox{
     private _scene: Scene;
@@ -13,7 +13,7 @@ export default class SkyBox{
 
     private _init() {
 
-       // this._scene.add(skyBoxMesh);
+
         let daySky = [
             'https://media.discordapp.net/attachments/871240169100038181/871240264801452092/Daylight_Box_Back.png',
             'https://media.discordapp.net/attachments/871240169100038181/871240271042600980/Daylight_Box_Front.png',

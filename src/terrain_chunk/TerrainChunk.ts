@@ -62,9 +62,7 @@ export class TerrainChunk {
             this._group.add(plane);
 
 
-            /*
-            DEBUG
-             */
+
 
 
 
