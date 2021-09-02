@@ -1,17 +1,6 @@
-import {
-    Group,
-    Material,
-    Mesh,
-    MeshBasicMaterial,
-    MeshPhongMaterial,
-    PlaneGeometry,
-    RepeatWrapping,
-    Scene, ShaderMaterial,
-    Texture,
-    TextureLoader
-} from "three";
+import {Group, Material, Mesh, PlaneGeometry, ShaderMaterial} from "three";
 import {PlaneCreator} from "./PlaneCreator";
-import {BiomeManager} from "./Biome/BiomeManager";
+
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
 import {ChunkRecord} from "./TerrainChunkManager";
 

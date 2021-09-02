@@ -1,13 +1,14 @@
-import {Box2, Camera, Group, Scene, TextureLoader, Vector2} from "three";
+import {Box2, Camera, Group, Scene, Vector2} from "three";
 import {TerrainChunk} from "./TerrainChunk";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
-import {BiomeManager} from "./Biome/BiomeManager";
 import {GridChunkDirector} from "./ChunkDirector/GridChunkDirector";
 import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
+import {IDictionary} from "../Utils/Dictionary/IDictionary";
+import {ArrayDictionary} from "../Utils/Dictionary/ArrayDictionary";
 
 export class ChunkRecord extends Vector2{
 
-    private _dimension;
+    private readonly _dimension;
     private _terrainChunk:undefined|TerrainChunk
 
     constructor(box:Box2) {
@@ -36,8 +37,11 @@ export class ChunkRecord extends Vector2{
 export default class TerrainChunkManager {
     private readonly _group: Group;
     private readonly _camera: Camera;
-    private _chunkPositions_DP : any = []
-    private _noiseManager = new TerrainFeatureNoiseManager(new BiomeManager());
+
+    private _chunkPositionDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();
+
+
+    private _noiseManager = new TerrainFeatureNoiseManager();
     private _chunkBuilder = new ChunkBuilder();
 
 
@@ -53,28 +57,34 @@ export default class TerrainChunkManager {
     public checkCameraAndAddTerrain() {
 
         const camera = this._camera;
-        console.log("Done First");
+        const suggestedPositionsDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();
+
         const suggestedPositions = this._chunkDirector.getChunksFrom(camera.position);
-        const suggestedChunks_DP :any = [];
+        suggestedPositionsDictionary.setAndReplace(suggestedPositions);
+
+        const suggestedChunksDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();
+
         suggestedPositions.forEach(chunkPosition=>{
             const key = TerrainChunkManager.positionToKey(chunkPosition);
-            suggestedChunks_DP[key] =chunkPosition;
+            suggestedChunksDictionary.add(key,chunkPosition);
         })
 
 
-        const deletableChunks =  TerrainChunkManager._subtractSet(this._chunkPositions_DP, suggestedChunks_DP);
+        const deletableDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();
+        const deletableChunks =  TerrainChunkManager._subtractSet(this._chunkPositionDictionary.getAll(), suggestedChunksDictionary.getAll());
+        deletableDictionary.setAndReplace(deletableChunks);
 
-        for(let key in suggestedChunks_DP){
-            if(this._chunkPositions_DP[key]) continue;
-            this.createChunk(suggestedChunks_DP[key]);
+        for(let key in suggestedChunksDictionary.getAll()){
+            if(this._chunkPositionDictionary.getAt(key)) continue;
+            this.createChunk(suggestedChunksDictionary.getAt(key));
         }
 
 
 
-        for(let key in deletableChunks){
-            (this._chunkPositions_DP[key].terrainChunk==undefined)
-            this._chunkPositions_DP[key].terrainChunk.destroy();
-            delete  this._chunkPositions_DP[key];
+        for(let key in deletableDictionary.getAll()){
+
+            this._chunkPositionDictionary.getAt(key).terrainChunk.destroy();
+            this._chunkPositionDictionary.remove(key);
         }
 
         this._chunkBuilder.build();
@@ -104,7 +114,7 @@ export default class TerrainChunkManager {
     private createChunk(position: ChunkRecord) {
         console.log("Generate New Chunk");
         position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
-        this._chunkPositions_DP[TerrainChunkManager.positionToKey(position)] = position;
+        this._chunkPositionDictionary.add(TerrainChunkManager.positionToKey(position), position);
         this._chunkBuilder.push(position);
 
     }
