@@ -7,8 +7,8 @@ export class CameraSettings{
 
 
     public getCamera():PerspectiveCamera{
-        const camera =new PerspectiveCamera( 40, 2, 0.1, 3000);
-        camera.position.set(0,1000,0);
+        const camera =new PerspectiveCamera( 60, 2, 0.1, 200);
+        camera.position.set(0,10,0);
         camera.lookAt(1,1,1);
         return camera;
     }

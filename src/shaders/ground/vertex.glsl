@@ -60,7 +60,7 @@ float height(vec2 pos){
     float G = pow(2.0, (-persistance));
     float noise = 0.0;
 
-    int octaves = 5;
+    int octaves = 16;
     int o = 0;
 
 
