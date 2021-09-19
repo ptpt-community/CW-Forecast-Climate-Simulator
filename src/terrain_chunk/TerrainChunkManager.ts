@@ -5,6 +5,7 @@ import {GridChunkDirector} from "./ChunkDirector/GridChunkDirector";
 import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
 import {IDictionary} from "../Utils/Dictionary/IDictionary";
 import {ArrayDictionary} from "../Utils/Dictionary/ArrayDictionary";
+import {QuadTree} from "./ChunkDirector/QuadTree";
 
 export class ChunkRecord extends Vector2{
 
@@ -45,7 +46,9 @@ export default class TerrainChunkManager {
     private _chunkBuilder = new ChunkBuilder();
 
 
-    private _chunkDirector:IChunkDirector = new GridChunkDirector(256);
+    private _chunkDirector:IChunkDirector = new QuadTree(
+        {bottomLeft: new Vector2(-512,-512), topRight: new Vector2(512,512)}
+    );
     
     constructor(scene: Scene, camera: Camera) {
         this._group = new Group();
@@ -87,7 +90,7 @@ export default class TerrainChunkManager {
             this._chunkPositionDictionary.remove(key);
         }
 
-        this._chunkBuilder.build();
+        this._chunkBuilder.build(32);
 
 
     }
@@ -133,12 +136,19 @@ class ChunkBuilder{
         this.chunkRecords.push(chunk);
     }
 
+    build(turns:number){
+        for(let i =0; i<turns; i++){
+            const done = this._Build();
+            if(done) return;
+        }
+    }
 
-    build(){
+
+    private _Build(){
 
         if(this._currentGenerator === undefined) {
             const chunk = this.chunkRecords.pop();
-            if(chunk===undefined) return;
+            if(chunk===undefined) return 0;
             this._currentChunk = chunk;
             this._currentGenerator = chunk.terrainChunk.noiseGenerator;
         }
@@ -147,6 +157,7 @@ class ChunkBuilder{
            if(a.done) this._currentGenerator =undefined;
            if(this._currentChunk!==undefined)
            this._currentChunk.terrainChunk.show();
+           else return 0;
 
         }
 

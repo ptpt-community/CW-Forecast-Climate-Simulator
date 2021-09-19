@@ -1,5 +1,4 @@
-import {BiomeManager} from "./Biome/BiomeManager";
-import {AxesHelper, Mesh, Vector3} from "three";
+import {Mesh} from "three";
 
 export class TerrainFeatureNoiseManager {
 
