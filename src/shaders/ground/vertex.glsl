@@ -54,7 +54,7 @@ float height(vec2 pos){
 
 
     float amplitude = 1.0;
-    float frequency = 0.01;
+    float frequency = 0.005;
     float normalization = 0.0;
     float total = 0.0;
     float G = pow(2.0, (-persistance));

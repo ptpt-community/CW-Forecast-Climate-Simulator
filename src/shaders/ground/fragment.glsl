@@ -66,7 +66,7 @@ void main(){
     float temperatureStrength = temperature*.025;
     float precipitationStrength = precipitation*.0025;
 
-    float mixStrength = precipitationStrength;
+    float mixStrength = temperatureStrength;
 
     vec3 color = mix(lowColor,highColor,mixStrength);
 

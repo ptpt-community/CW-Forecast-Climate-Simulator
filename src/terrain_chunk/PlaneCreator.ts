@@ -17,6 +17,9 @@ export class PlaneCreator {
 
         this._plane.position.set(positionX, 0, positionZ );
 
+        this._plane.frustumCulled=false;
+        //can there be a better solution while keeping this true? This is for scene disappearing when camera is near
+
 
     }
 
