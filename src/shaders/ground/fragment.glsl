@@ -2,7 +2,38 @@
 varying vec4 vPosition;
 varying float vSnoise;
 
+float cold_desert_slope = 1.3636;
+float woodland_slope = 5.4545;
+float seasonal_forest = 10.00;
+float temparature_rain_forest = 14.5454;
+float subtropical_desert = 4.6153;
+float tropical_seasonal_forest = 5.00;
+float tropical_rain_forest = 7.69;
 
+
+float check_secondPhase(float temperature, float precipitation){
+    float a=precipitation/22.00;
+    if (a<=cold_desert_slope)return 3.00;
+    else if (a>cold_desert_slope&&a<=woodland_slope)return 4.00;
+    else if (a>woodland_slope&&a<=seasonal_forest)return 5.00;
+    else if (a>seasonal_forest&&a<=temparature_rain_forest)return 6.00;
+    return 1.00;
+}
+float check_thirdPhase(float temperature, float precipitation){
+    float a=precipitation-temperature*(60.00/13.00);
+    if (a<61.538)return 7.00;
+    else if (a>=61.538&&a<118.461)return 8.00;
+    return 9.00;
+}
+float getBiome(float temperature, float precipitation){
+
+    if (temperature< -2.00)return 1.00;
+    else if (temperature> -2.00&&temperature<=7.00)return 2.00;
+    else if (temperature>7.00&&temperature<18.00)return check_secondPhase(temperature, precipitation);
+    else if (temperature>=18.00&&temperature<33.00) return check_thirdPhase(temperature, precipitation);
+    return 8.00;
+
+}
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
 float simplex(vec2 v){
@@ -67,8 +98,11 @@ void main(){
     float precipitationStrength = precipitation*.0025;
 
     float mixStrength = temperatureStrength;
+    float biomeCofficient = getBiome(temperature,precipitation);
 
-    vec3 color = mix(lowColor,highColor,mixStrength);
+
+
+    vec3 color = mix(lowColor*biomeCofficient, highColor*biomeCofficient, mixStrength);
 
 
     gl_FragColor = vec4(color,.8);
