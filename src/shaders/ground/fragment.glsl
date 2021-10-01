@@ -97,7 +97,7 @@ void main(){
     float temperatureStrength = temperature*.025;
     float precipitationStrength = precipitation*.0025;
 
-    float mixStrength = temperatureStrength;
+    float mixStrength =precipitationStrength;
     float biomeCofficient = getBiome(temperature,precipitation);
 
 
