@@ -4,6 +4,14 @@ varying float temperature;
 varying float precipitation;
 flat out int index;
 
+uniform float uTemperatureOffset;
+
+
+/*Global Private*/
+vec4 modelPosition;
+
+/**/
+
 
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
@@ -127,8 +135,8 @@ int getBiome(float temperature, float precipitation){
 
 float getTemperature(float offset){
     //Temperature = sin(x) ranging from -10 to + 35 which is  -22.5 to + 22.5  and offsetted +12.5
-    float temperature =  sin(distance(vec2(0, 0), vPosition.xz/50.0));
-    temperature -= vPosition.y*.1; /**IMPORTANT!!Need Research*/
+    float temperature =  sin(distance(vec2(0, 0), modelPosition.xz/50.0));
+    temperature -= modelPosition.y*.1; /**IMPORTANT!!Need Research*/
     return temperature*22.5 + 12.5 + offset;
 }
 
@@ -156,17 +164,16 @@ float getPrecipitation(float temperature){
 
 void main(){
 
-    vec4 modelPosition = modelMatrix*vec4(position, 1.0);
+    modelPosition = modelMatrix*vec4(position, 1.0);
     modelPosition.y = height(modelPosition.xz);
-    vPosition = modelPosition;
-
-
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix* viewPosition;
 
-    temperature = getTemperature(0.0);
+    temperature = getTemperature(uTemperatureOffset);
     precipitation = getPrecipitation(temperature);
     index= int( getBiome(temperature,precipitation) );
+
+
 
     gl_Position = projectedPosition;
 
