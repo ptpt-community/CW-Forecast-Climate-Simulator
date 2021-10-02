@@ -166,15 +166,15 @@ void main(){
 
     modelPosition = modelMatrix*vec4(position, 1.0);
     modelPosition.y = height(modelPosition.xz);
-    vec4 viewPosition = viewMatrix * modelPosition;
-    vec4 projectedPosition = projectionMatrix* viewPosition;
+
 
     temperature = getTemperature(uTemperatureOffset);
     precipitation = getPrecipitation(temperature);
-    index= int( getBiome(temperature,precipitation) );
+    index= ( getBiome(temperature,precipitation) );
 
 
-
+    vec4 viewPosition = viewMatrix * modelPosition;
+    vec4 projectedPosition = projectionMatrix* viewPosition;
     gl_Position = projectedPosition;
 
 
