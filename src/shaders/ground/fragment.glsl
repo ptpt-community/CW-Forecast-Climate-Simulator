@@ -85,7 +85,7 @@ float getPrecipitation(float temperature){
 
 
 void main(){
-
+ //check
     biomeColor[1]=vec3(.5, .2, .7);
     biomeColor[2]=vec3(.2, .8, .2);
     biomeColor[3]=vec3(.3, .9, .3);
