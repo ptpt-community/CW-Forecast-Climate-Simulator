@@ -8,6 +8,8 @@ import {ChunkRecord} from "./TerrainChunkManager";
 import groundVertexShader from "../shaders/ground/vertex.glsl"
 //@ts-ignore
 import groundFragmentShader from "../shaders/ground/fragment.glsl"
+import {inputs} from "../../inputs/input";
+import {GuiSingleton} from "../GUI/GUI";
 
 export class TerrainChunk {
 
@@ -24,8 +26,15 @@ export class TerrainChunk {
         this._planeMaterial = new ShaderMaterial({
             wireframe: true,
             vertexShader: groundVertexShader,
-            fragmentShader: groundFragmentShader
+            fragmentShader: groundFragmentShader,
+            uniforms: {
+                uTemperatureOffset: {value: inputs.temperatureOffset},
+            }
         })
+
+
+
+
         this._noisifier = noisifier;
         const a =   this._generateTerrain(position);
         this._noiseGenerator = a.generator;

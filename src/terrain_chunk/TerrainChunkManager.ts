@@ -36,7 +36,15 @@ export class ChunkRecord extends Vector2{
 
 
 export default class TerrainChunkManager {
+    get group(): Group {
+
+        return this._group;
+    }
+
     private readonly _group: Group;
+
+
+
     private readonly _camera: Camera;
 
     private _chunkPositionDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();
@@ -54,6 +62,9 @@ export default class TerrainChunkManager {
         this._group = new Group();
         scene.add(this._group);
         this._camera = camera;
+
+        //@ts-ignore
+        window.group = this._group;
     }
 
 
@@ -101,6 +112,8 @@ export default class TerrainChunkManager {
     }
 
 
+
+
     private static _subtractSet<T>(setA:T[], setB:T[]) {
         const subtracted = {...setA};
         for (let k in setB) {
@@ -108,6 +121,9 @@ export default class TerrainChunkManager {
         }
         return subtracted;
     }
+
+
+
 
 
 
