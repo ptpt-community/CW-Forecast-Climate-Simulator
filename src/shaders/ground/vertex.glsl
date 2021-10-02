@@ -156,6 +156,12 @@ float getPrecipitation(float temperature){
 }
 
 
+float getGlaciarLayer(float temperature){
+    float temperatureFactor = (temperature)*.05*(-1.0);
+    return temperature>0.0? 0.0 : temperatureFactor;
+
+}
+
 /*
 */
 
@@ -171,6 +177,8 @@ void main(){
     temperature = getTemperature(uTemperatureOffset);
     precipitation = getPrecipitation(temperature);
     index= ( getBiome(temperature,precipitation) );
+
+    modelPosition.y += getGlaciarLayer(temperature);
 
 
     vec4 viewPosition = viewMatrix * modelPosition;
