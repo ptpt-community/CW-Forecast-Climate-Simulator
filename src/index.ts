@@ -19,6 +19,9 @@ import {WaterScene} from "./Environment/WaterScene";
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
 
+//@ts-ignore----------------
+window.debug = {}
+
 const cameraBasic = new CameraSettings()
 const camera = cameraBasic.getCamera()
 const gui = GuiSingleton.getGui()//3

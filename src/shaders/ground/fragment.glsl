@@ -3,6 +3,9 @@ varying vec4 vPosition;
 varying float vSnoise;
 
 
+uniform float uTemperatureOffset;
+
+
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
 float simplex(vec2 v){
@@ -59,11 +62,11 @@ void main(){
     vec3 highColor = vec3(1.0,0.5,0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
 
-    float temperature = getTemperature(0.0);
+    float temperature = getTemperature(uTemperatureOffset);
     float precipitation = getPrecipitation(temperature);
 
 
-    float temperatureStrength = temperature*.025;
+    float temperatureStrength = temperature*.025+ uTemperatureOffset*.25;
     float precipitationStrength = precipitation*.0025;
 
     float mixStrength = temperatureStrength;
