@@ -152,7 +152,7 @@ float getPreceipitationMath(float temp){
 
 float getPrecipitation(float temperature){
     float  a = getPreceipitationMath(temperature);
-    return simplex(vPosition.xz/1000.0)*a;
+    return simplex(modelPosition.xz/1000.0)*a;
 }
 
 
