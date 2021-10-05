@@ -65,13 +65,13 @@ float height(vec2 pos){
 
 
     float amplitude = 1.0;
-    float frequency = 0.005;
+    float frequency = 0.0075;
     float normalization = 0.0;
     float total = 0.0;
     float G = pow(2.0, (-persistance));
     float noise = 0.0;
 
-    int octaves = 16;
+    int octaves = 8;
     int o = 0;
 
 
@@ -180,7 +180,7 @@ void main(){
 
     modelPosition.y += getGlaciarLayer(temperature);
 
-
+    vPosition = modelPosition;
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix* viewPosition;
     gl_Position = projectedPosition;
