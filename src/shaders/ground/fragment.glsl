@@ -16,13 +16,13 @@ int check_secondPhase(float temperature, float precipitation){
     else if (a>cold_desert_slope&&a<=woodland_slope)return 4;
     else if (a>woodland_slope&&a<=seasonal_forest)return 5;
     else if (a>seasonal_forest&&a<=temparature_rain_forest)return 6;
-    return 1;
+    return 8;
 }
 int check_thirdPhase(float temperature, float precipitation){
     float a=precipitation-temperature*(60.00/13.00);
     if (a<61.538)return 7;
     else if (a>=61.538&&a<118.461)return 8;
-    return 9;
+    return 1;
 }
 int getBiome(float temperature, float precipitation){
 
@@ -86,14 +86,19 @@ float getPrecipitation(float temperature){
 
 void main(){
  //check
-    biomeColor[1]=vec3(.5, .2, .7);
-    biomeColor[2]=vec3(.2, .8, .2);
-    biomeColor[3]=vec3(.3, .9, .3);
-    biomeColor[4]=vec3(.6, .4, .9);
-    biomeColor[5]=vec3(.6, .5, .1);
-    biomeColor[6]=vec3(.1, .2, .8);
-    biomeColor[7]=vec3(.7, .8, .9);
-    biomeColor[8]=vec3(.7, .8, .5);
+    biomeColor[1]=vec3(.67, .921, .678);//rgb(173, 235, 173)
+    biomeColor[2]=vec3(1, .8, 0);//rgb(255, 204, 0)
+
+    biomeColor[3]=vec3(.6, .1, .2);//rgb(153, 255, 51)
+    biomeColor[4]=vec3(1, 1, .8);//rgb(255, 255, 204)
+
+    biomeColor[5]=vec3(.6, .6, .4);//rgb(153, 153, 102)
+
+    biomeColor[6]=vec3(1, .94, .701);//rgb(255, 240, 179)
+
+    biomeColor[7]=vec3(1, .65, .301);//rgb(255, 166, 77)
+    biomeColor[8]=vec3(.4,1 , .6);//rgb(102, 255, 153)
+
     vec3 highColor = vec3(1.0, 0.5, 0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
 
