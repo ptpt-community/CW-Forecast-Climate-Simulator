@@ -14,7 +14,9 @@ import waterVertexShader from './shaders/water/vertex.glsl';
 //@ts-ignore
 import waterFragmentShader from './shaders/water/fragment.glsl';
 import {WaterScene} from "./Environment/WaterScene";
-
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
+import {MTLLoader} from "three/examples/jsm/loaders/MTLLoader";
 
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
 const renderer = new THREE.WebGLRenderer({canvas});
@@ -44,7 +46,9 @@ light.directionalLightManager()
 renderer.shadowMap.enabled = true;
 
 
+/*
 const waterScene = new WaterScene(scene, gui);
+*/
 
 
 const sizes = {
@@ -69,6 +73,13 @@ window.addEventListener('resize', () => {
 
 
 const clock = new Clock();
+
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+const cube = new THREE.Mesh( geometry, material );
+cube.position.set(10,10,10)
+scene.add( cube );
+
 
 
 window.THREE = THREE;

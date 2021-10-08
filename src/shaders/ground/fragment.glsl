@@ -3,12 +3,7 @@ varying float vSnoise;
 varying float temperature;
 varying float precipitation;
 flat in int index;
-
-
 vec3 biomeColor[10];
-
-
-
 
 
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -48,14 +43,19 @@ float simplex(vec2 v){
 
 void main(){
  //check
-    biomeColor[1]=vec3(.5, .2, .7);
-    biomeColor[2]=vec3(.2, .8, .2);
-    biomeColor[3]=vec3(.3, .9, .3);
-    biomeColor[4]=vec3(.6, .4, .9);
-    biomeColor[5]=vec3(.6, .5, .1);
-    biomeColor[6]=vec3(.1, .2, .8);
-    biomeColor[7]=vec3(.7, .8, .9);
-    biomeColor[8]=vec3(.7, .8, .5);
+    biomeColor[1]=vec3(.67, .921, .678);//rgb(173, 235, 173)
+    biomeColor[2]=vec3(1, .8, 0);//rgb(255, 204, 0)
+
+    biomeColor[3]=vec3(.6, .1, .2);//rgb(153, 255, 51)
+    biomeColor[4]=vec3(1, 1, .8);//rgb(255, 255, 204)
+
+    biomeColor[5]=vec3(.6, .6, .4);//rgb(153, 153, 102)
+
+    biomeColor[6]=vec3(1, .94, .701);//rgb(255, 240, 179)
+
+    biomeColor[7]=vec3(1, .65, .301);//rgb(255, 166, 77)
+    biomeColor[8]=vec3(.4,1 , .6);//rgb(102, 255, 153)
+
     vec3 highColor = vec3(1.0, 0.5, 0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
 
