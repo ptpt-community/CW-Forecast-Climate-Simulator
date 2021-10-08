@@ -46,17 +46,21 @@ float simplex(vec2 v){
 void main(){
  //check
     biomeColor[1]=vec3(1.0, 1.0, 1.0);// ->Tundra
-    biomeColor[2]=vec3(.7, 1.0, .7);//->Cold Desert
+    biomeColor[2]=vec3(.6, 1.0, .6);//->Cold Desert//Grassland
 
     biomeColor[3]=vec3(.5, .8, .5);//woodland
     biomeColor[4]=vec3(.6, .8, .6);//->Seasonal Forest
 
     biomeColor[5]=vec3(.4, .7, .4);//rgb(153, 153, 102)->temperate Rain Forest
 
-    biomeColor[6]=vec3(.9, .9, .4);//rgb(255, 240, 179)-> Subtropical Desert
+    biomeColor[6]=vec3(.1, .7, .1);//rgb(102, 255, 153)->Tropical Rain Forest
 
-    biomeColor[7]=vec3(.7,.9,.5);//rgb(255, 166, 77)->Tropical Seasonal Forest
-    biomeColor[8]=vec3(.1, .7, .1);//rgb(102, 255, 153)->Tropical Rain Forest
+    biomeColor[7]=vec3(.7,.9,.5);//rgb(255, 166, 77)->Savannah
+
+    biomeColor[8]=vec3(.9, .9, .4);//rgb(255, 240, 179)-> Subtropical Desert
+    biomeColor[9]=vec3(.8, 1.0, .8);//rgb(102, 255, 153)->Boreal Forest
+
+
 
     float blueness = -50.0/(temperature+10.0);
     blueness = blueness < .6? .6 : blueness;
