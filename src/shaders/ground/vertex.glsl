@@ -2,6 +2,8 @@ varying vec4 vPosition;
 varying float vSnoise;
 varying float temperature;
 varying float precipitation;
+varying float vAngle;
+
 flat out int index;
 
 uniform float uTemperatureOffset;
@@ -151,7 +153,7 @@ float getPreceipitationMath(float temp){
 
 float getPrecipitation(float temperature){
     float  a = getPreceipitationMath(temperature);
-    return simplex(modelPosition.xz/1000.0)*a;
+    return simplex(modelPosition.xz/100.0)*a;
 }
 
 
@@ -164,13 +166,26 @@ float getGlaciarLayer(float temperature){
 /*
 */
 
-
+float getAngle(vec3 a, vec3 b){
+  return acos ( dot(a,b) / (length(a)*length(b)) )/3.14159265;
+    //return 2.0;
+}
 
 
 void main(){
 
     modelPosition = modelMatrix*vec4(position, 1.0);
     modelPosition.y = height(modelPosition.xz);
+
+    float side = .3;
+
+    vec3 northSide = vec3(modelPosition.x, height(vec2(modelPosition.x,modelPosition.z+side)), modelPosition.z+side);
+    vec3 eastSide =  vec3(modelPosition.x+side, height(vec2(modelPosition.x+side,modelPosition.z)), modelPosition.z);
+    vec3 toNorth = northSide - modelPosition.xyz;
+    vec3 toEast = eastSide - modelPosition.xyz;
+    vec3 normalOfModel = cross(toNorth,toEast);
+
+     vAngle = getAngle(toEast,toNorth);
 
 
     temperature = getTemperature(uTemperatureOffset);
