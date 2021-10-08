@@ -1,5 +1,10 @@
 varying vec4 vPosition;
 varying float vSnoise;
+varying float temperature;
+varying float precipitation;
+flat in int index;
+vec3 biomeColor[10];
+
 
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
