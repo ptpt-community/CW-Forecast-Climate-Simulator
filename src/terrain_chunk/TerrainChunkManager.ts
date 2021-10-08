@@ -137,11 +137,13 @@ export default class TerrainChunkManager {
             position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
             this._generatedChunks.add(TerrainChunkManager.positionToKey(position),position.terrainChunk);
             this._chunkPositionDictionary.add(TerrainChunkManager.positionToKey(position), position);
-            this._chunkBuilder.push(position);
+        } else {
+
+            position.terrainChunk = this._generatedChunks.getAt(TerrainChunkManager.positionToKey(position));
+            position.terrainChunk.show();
             return;
         }
-        console.log("Already Generated");
-        this._generatedChunks.getAt(TerrainChunkManager.positionToKey(position)).show();
+        this._chunkBuilder.push(position);
 
 
 
