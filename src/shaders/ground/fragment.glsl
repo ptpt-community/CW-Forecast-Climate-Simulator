@@ -43,18 +43,18 @@ float simplex(vec2 v){
 
 void main(){
  //check
-    biomeColor[1]=vec3(.67, .921, .678);//rgb(173, 235, 173)
-    biomeColor[2]=vec3(1, .8, 0);//rgb(255, 204, 0)
+    biomeColor[1]=vec3(.67, .921, .678);//rgb(173, 235, 173) ->Tundra
+    biomeColor[2]=vec3(1, .8, 0);//rgb(255, 204, 0) ->Cold Desert
 
-    biomeColor[3]=vec3(.6, .1, .2);//rgb(153, 255, 51)
-    biomeColor[4]=vec3(1, 1, .8);//rgb(255, 255, 204)
+    biomeColor[3]=vec3(.6, .1, .2);//rgb(153, 255, 51)->woodland_slope
+    biomeColor[4]=vec3(1, 1, .8);//rgb(255, 255, 204)->Seasonal Forest
 
-    biomeColor[5]=vec3(.6, .6, .4);//rgb(153, 153, 102)
+    biomeColor[5]=vec3(.6, .6, .4);//rgb(153, 153, 102)->temperature Rain Forest
 
-    biomeColor[6]=vec3(1, .94, .701);//rgb(255, 240, 179)
+    biomeColor[6]=vec3(1, .94, .701);//rgb(255, 240, 179)-> Subtropical Desert
 
-    biomeColor[7]=vec3(1, .65, .301);//rgb(255, 166, 77)
-    biomeColor[8]=vec3(.4,1 , .6);//rgb(102, 255, 153)
+    biomeColor[7]=vec3(1, .65, .301);//rgb(255, 166, 77)->Tropical Seasonal Forest
+    biomeColor[8]=vec3(.4,1 , .6);//rgb(102, 255, 153)->Tropical Rain Forest
 
     vec3 highColor = vec3(1.0, 0.5, 0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
