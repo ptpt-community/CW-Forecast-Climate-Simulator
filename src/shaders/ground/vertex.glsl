@@ -96,8 +96,7 @@ float height(vec2 pos){
 
 /**
 
-*/
-float cold_desert_slope = 1.3636;
+*/float cold_desert_slope = 1.3636;
 float woodland_slope = 5.4545;
 float seasonal_forest = 10.00;
 float temparature_rain_forest = 14.5454;
@@ -112,13 +111,13 @@ int check_secondPhase(float temperature, float precipitation){
     else if (a>cold_desert_slope&&a<=woodland_slope)return 4;
     else if (a>woodland_slope&&a<=seasonal_forest)return 5;
     else if (a>seasonal_forest&&a<=temparature_rain_forest)return 6;
-    return 1;
+    return 8;
 }
 int check_thirdPhase(float temperature, float precipitation){
     float a=precipitation-temperature*(60.00/13.00);
     if (a<61.538)return 7;
     else if (a>=61.538&&a<118.461)return 8;
-    return 9;
+    return 1;
 }
 int getBiome(float temperature, float precipitation){
 
