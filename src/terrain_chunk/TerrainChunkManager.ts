@@ -97,11 +97,11 @@ export default class TerrainChunkManager {
 
         for(let key in deletableDictionary.getAll()){
 
-            this._chunkPositionDictionary.getAt(key).terrainChunk.destroy();
+            this._chunkPositionDictionary.getAt(key).terrainChunk.hide();
             this._chunkPositionDictionary.remove(key);
         }
 
-        this._chunkBuilder.build(32);
+        this._chunkBuilder.build(8);
 
 
     }
@@ -128,13 +128,26 @@ export default class TerrainChunkManager {
 
 
 
-
-
+    private _generatedChunks:IDictionary<TerrainChunk> = new ArrayDictionary();
     private createChunk(position: ChunkRecord) {
-        console.log("Generate New Chunk");
-        position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
-        this._chunkPositionDictionary.add(TerrainChunkManager.positionToKey(position), position);
+
+
+        if(this._generatedChunks.getAt(TerrainChunkManager.positionToKey(position)) ===undefined) {
+            console.log("Generate New Chunk");
+            position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
+            this._generatedChunks.add(TerrainChunkManager.positionToKey(position),position.terrainChunk);
+            this._chunkPositionDictionary.add(TerrainChunkManager.positionToKey(position), position);
+        } else {
+
+            position.terrainChunk = this._generatedChunks.getAt(TerrainChunkManager.positionToKey(position));
+            position.terrainChunk.show();
+            return;
+        }
         this._chunkBuilder.push(position);
+
+
+
+
 
     }
 }

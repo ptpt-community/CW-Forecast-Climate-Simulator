@@ -11,11 +11,11 @@
         <table>
             <tr>
                 <td>Year</td>
-                <td><input type="range" min="1900" max="2200"></td>
+                <td><input id="year_range" type="range" min="1900"  max="2200"></td>
             </tr>
             <tr>
                 <td>Temperature</td>
-                <td><input type="range" min="-50" max="50"></td>
+                <td><input id="temperature_range" type="range" min="-5" max="5"></td>
             </tr>
         </table>
     </div>
@@ -61,10 +61,42 @@
 </style>
 
 <script>
+
+
+    function getTemperatureDifference(year){
+        return ( .000000001*( (year-1823)**4) ) -1
+    }
+
     document.getElementById("menu-button").onclick = () => {
         const menu = document.getElementById("menu");
         menu.hidden = !menu.hidden;
     }
+
+    function setTemperature(x)
+    {
+        window.inputs.temperatureOffset=x;
+        group.children.forEach(m=>{
+            console.log(m.material.uniforms.uTemperatureOffset.value= window.inputs.temperatureOffset)
+        })
+    }
+
+
+    document.getElementById("temperature_range").onchange = ()=>{
+        setTemperature(document.getElementById("temperature_range").value)
+    }
+
+
+    document.getElementById("year_range").onchange = ()=>{
+        const temperature = getTemperatureDifference(document.getElementById("year_range").value);
+        setTemperature(temperature);
+
+    }
+
+    document.getElementById("year_range").value=2000;
+
+
+
+
 </script>
 
 </html>
