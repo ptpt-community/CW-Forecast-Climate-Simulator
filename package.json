@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "webpack serve",
     "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node prediction.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^3.9.0",
     "@types/dat.gui": "^0.7.7",
     "@types/seedrandom": "^3.0.1",
     "@types/three": "^0.130.0",
