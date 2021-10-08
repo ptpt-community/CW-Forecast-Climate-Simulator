@@ -2,6 +2,8 @@ varying vec4 vPosition;
 varying float vSnoise;
 varying float temperature;
 varying float precipitation;
+varying float vAngle;
+
 flat in int index;
 vec3 biomeColor[10];
 
@@ -43,18 +45,27 @@ float simplex(vec2 v){
 
 void main(){
  //check
-    biomeColor[1]=vec3(.67, .921, .678);//rgb(173, 235, 173) ->Tundra
-    biomeColor[2]=vec3(1, .8, 0);//rgb(255, 204, 0) ->Cold Desert
+    biomeColor[1]=vec3(1.0, 1.0, 1.0);// ->Tundra
+    biomeColor[2]=vec3(.6, 1.0, .6);//->Cold Desert//Grassland
 
-    biomeColor[3]=vec3(.6, .1, .2);//rgb(153, 255, 51)->woodland_slope
-    biomeColor[4]=vec3(1, 1, .8);//rgb(255, 255, 204)->Seasonal Forest
+    biomeColor[3]=vec3(.5, .8, .5);//woodland
+    biomeColor[4]=vec3(.6, .8, .6);//->Seasonal Forest
 
-    biomeColor[5]=vec3(.6, .6, .4);//rgb(153, 153, 102)->temperature Rain Forest
+    biomeColor[5]=vec3(.4, .7, .4);//rgb(153, 153, 102)->temperate Rain Forest
 
-    biomeColor[6]=vec3(1, .94, .701);//rgb(255, 240, 179)-> Subtropical Desert
+    biomeColor[6]=vec3(.1, .7, .1);//rgb(102, 255, 153)->Tropical Rain Forest
 
-    biomeColor[7]=vec3(1, .65, .301);//rgb(255, 166, 77)->Tropical Seasonal Forest
-    biomeColor[8]=vec3(.4,1 , .6);//rgb(102, 255, 153)->Tropical Rain Forest
+    biomeColor[7]=vec3(.7,.9,.5);//rgb(255, 166, 77)->Savannah
+
+    biomeColor[8]=vec3(.9, .9, .4);//rgb(255, 240, 179)-> Subtropical Desert
+    biomeColor[9]=vec3(.8, 1.0, .8);//rgb(102, 255, 153)->Boreal Forest
+
+
+
+    float blueness = -50.0/(temperature+10.0);
+    blueness = blueness < .6? .6 : blueness;
+
+    vec3 stoneColor =  vec3(.6,.6, blueness )  ;
 
     vec3 highColor = vec3(1.0, 0.5, 0.3);
     vec3 lowColor = vec3(0.3, 0.3, .5);
@@ -67,9 +78,13 @@ void main(){
 
     float mixStrength =precipitationStrength;
 
+    //vec3 color = mix(highColor,lowColor,mixStrength);
+
+    vec3 color = vAngle<.525? biomeColor[index]: stoneColor;
+  //  color = index==1? biomeColor[index]:color;
 
 
-    vec3 color =biomeColor[index];
+ //   vec3 color = vec3(vAngle,1.0,1.0);
 
 
 
