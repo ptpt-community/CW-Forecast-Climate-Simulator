@@ -130,15 +130,24 @@
         })
     }
 
+    function getCurrentTemperatureDifference(){
+        const fromYear = getTemperatureDifference(document.getElementById("year_range").value);
+        const fromAverage = parseInt(document.getElementById("temperature_range").value);
+        return fromAverage + fromYear;
+    }
+
+    function changeTemperature(){
+        setTemperature(getCurrentTemperatureDifference());
+    }
+
 
     document.getElementById("temperature_range").onchange = ()=>{
-        setTemperature(document.getElementById("temperature_range").value)
+        changeTemperature();
     }
 
 
     document.getElementById("year_range").onchange = ()=>{
-        const temperature = getTemperatureDifference(document.getElementById("year_range").value);
-        setTemperature(temperature);
+        changeTemperature();
 
     }
 
