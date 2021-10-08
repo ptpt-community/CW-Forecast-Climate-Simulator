@@ -72,5 +72,6 @@ void main(){
     vec3 color =biomeColor[index];
 
 
+
     gl_FragColor = vec4(color, .8);
 }

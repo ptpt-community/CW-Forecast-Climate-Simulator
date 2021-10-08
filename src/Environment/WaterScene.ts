@@ -83,7 +83,7 @@ export class  WaterScene{
     const water = new THREE.Mesh(waterGeometry, waterMaterial)
     water.rotation.x = -Math.PI * 0.5;
     water.scale.set(1000, 1000, 10);
-  //  scene.add(water);
+    scene.add(water);
 
     this._water = water;
     this._waterMaterial = waterMaterial;
