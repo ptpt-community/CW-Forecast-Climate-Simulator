@@ -218,7 +218,7 @@ bool pointInsideOfTetragon(vec2 point, Tetragon r){
 
 int getBiome(float temperature, float precipitation){
     vec2 point = vec2(temperature,precipitation);
-    if (temperature<0.0) return 1;
+    if (temperature<=-2.0) return 1;
     if(pointInsideOfTriangle(point,grassland)) return 2;
     if(pointInsideOfTriangle(point,woodland)) return 3;
     if(pointInsideOfTetragon(point,temperateSeasonalForest)) return 4;
@@ -227,6 +227,12 @@ int getBiome(float temperature, float precipitation){
     if(pointInsideOfTetragon(point,savanna)) return 7;
     if(pointInsideOfTetragon(point,subtropicalDesert)) return 8;
     if(pointInsideOfTetragon(point,borealForest)) return 9;
+
+
+    if (temperature> -2.00&&temperature<=7.00)return 9;
+    if (temperature>7.00&&temperature<18.00) return check_secondPhase(temperature, precipitation);
+    if (temperature>=18.00&&temperature<33.00) return check_thirdPhase(temperature, precipitation);
+    return 8;
 
 }
 
