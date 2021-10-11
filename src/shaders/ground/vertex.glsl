@@ -123,13 +123,110 @@ int check_thirdPhase(float temperature, float precipitation){
     return 6;
 }
 
-int getBiome(float temperature, float precipitation){
 
-    if (temperature< -2.00)return 1;
-    else if (temperature> -2.00&&temperature<=7.00)return 9;
-    else if (temperature>7.00&&temperature<18.00)return check_secondPhase(temperature, precipitation);
-    else if (temperature>=18.00&&temperature<33.00) return check_thirdPhase(temperature, precipitation);
-    return 8;
+struct Tetragon {
+    vec2 a,b,c,d;
+};
+
+struct Triangle {
+    vec2 a,b,c;
+};
+
+Tetragon temperateSeasonalForest = Tetragon(
+    vec2(6.0,50.0),
+    vec2(7.0,180.0),
+    vec2(22.0,230.0),
+    vec2(21.0,120.0)
+);
+Triangle woodland = Triangle(
+    vec2(-3.0,0.0),
+    vec2 (21.0,120.0),
+    vec2 (20.5,50.0)
+);
+
+Triangle grassland = Triangle(
+    vec2(-3.0,0.0),
+    vec2 (20.5,50.0),
+    vec2(22.0,50.0)
+);
+
+Tetragon subtropicalDesert = Tetragon(
+    vec2 (20.5,50.0),
+    vec2 (35.0,100.0),
+    vec2 (35.0,0.0),
+    vec2(22.0,50.0)
+
+);
+
+Tetragon savanna = Tetragon(
+    vec2 (20.5,50.0),
+    vec2(22.0,230.0),
+    vec2 (33.0,290.0),
+    vec2 (35.0,100.0)
+);
+
+
+Tetragon tropicalRainForest = Tetragon(
+    vec2(22.0,230.0),
+    vec2(22.5,450.0),
+    vec2 (33.0,450.0),
+    vec2 (35.0,290.0)
+);
+
+Tetragon temperateRainForest = Tetragon(
+    vec2(7.0,180.0),
+    vec2(10.0,300.0),
+    vec2(22.5,350.0),
+    vec2(22.0,230.0)
+
+);
+
+Tetragon borealForest = Tetragon(
+    vec2(-.5,20.0),
+    vec2(1.5,300.0),
+    vec2(10.0,300.0),
+    vec2(6.0,50.0)
+
+);
+
+
+
+
+
+float d2Cross(vec2 a, vec2 b){
+    return a.x*b.y - b.x*a.y;
+}
+
+
+bool sameSide(vec2 p1, vec2 p2, vec2 a, vec2 b ){
+    float cp1 = d2Cross(b-a,p1-a);
+    float cp2 = d2Cross(b-a,p2-a);
+    return cp1*cp2 >=0.0 ;
+}
+
+
+bool pointInsideOfTriangle(vec2 point, Triangle t){
+    return sameSide(point, t.a, t.b, t.c) && sameSide(point, t.b, t.a, t.c) && sameSide(point, t.c, t.a, t.b);
+}
+
+bool pointInsideOfTetragon(vec2 point, Tetragon r){
+
+    return pointInsideOfTriangle(point,Triangle (r.a,r.b,r.c)) || pointInsideOfTriangle(point,Triangle (r.a,r.c,r.d));
+}
+
+
+
+int getBiome(float temperature, float precipitation){
+    vec2 point = vec2(temperature,precipitation);
+    if (temperature<0.0) return 1;
+    if(pointInsideOfTriangle(point,grassland)) return 2;
+    if(pointInsideOfTriangle(point,woodland)) return 3;
+    if(pointInsideOfTetragon(point,temperateSeasonalForest)) return 4;
+    if(pointInsideOfTetragon(point,temperateRainForest)) return 5;
+    if(pointInsideOfTetragon(point,tropicalRainForest)) return 6;
+    if(pointInsideOfTetragon(point,savanna)) return 7;
+    if(pointInsideOfTetragon(point,subtropicalDesert)) return 8;
+    if(pointInsideOfTetragon(point,borealForest)) return 9;
 
 }
 
