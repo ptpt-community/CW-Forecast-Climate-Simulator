@@ -24,8 +24,7 @@ export class LightSettings {
 
         const ambientLight = new AmbientLight(0x999999,.5);
         this._scene.add(light);
-        const shadowHelper = new CameraHelper(light.shadow.camera);
-        this._scene.add(shadowHelper,ambientLight);
+        this._scene.add(ambientLight);
     }
 
 
