@@ -81,10 +81,10 @@ void main(){
     //vec3 color = mix(highColor,lowColor,mixStrength);
 
     vec3 color = vAngle<.525? biomeColor[index]: stoneColor;
-  //  color = index==1? biomeColor[index]:color;
 
 
- //   vec3 color = vec3(vAngle,1.0,1.0);
+    //   vec3 color = vec3(vAngle,1.0,1.0); //slope
+    // vec3 color = vec3((((simplex(vPosition.xy)+1.0))/2.0)*1.0,.0,.0); //SIMPLEX TEST
 
 
 
