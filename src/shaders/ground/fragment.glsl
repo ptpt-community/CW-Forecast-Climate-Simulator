@@ -7,6 +7,8 @@ varying float vAngle;
 flat in int index;
 vec3 biomeColor[10];
 
+uniform int uColorSelection;
+
 
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
@@ -79,7 +81,7 @@ void main(){
     float mixStrength =precipitationStrength;
 
     vec3 environmentColor[3];
-    int colorSelection = 0;
+    int colorSelection = uColorSelection;
     environmentColor[0] = vAngle<.525? biomeColor[index]: stoneColor; // Natural
     environmentColor[1] = mix(lowColor,highColor,temperatureStrength); //Temperature
     environmentColor[2] = mix(lowColor,highColor,precipitationStrength); //Precipitation

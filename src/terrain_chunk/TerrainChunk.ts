@@ -29,6 +29,7 @@ export class TerrainChunk {
             fragmentShader: groundFragmentShader,
             uniforms: {
                 uTemperatureOffset: {value: inputs.temperatureOffset},
+                uColorSelection : {value: inputs.selectedRenderColor}
             }
         })
 
