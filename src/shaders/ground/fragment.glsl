@@ -78,9 +78,15 @@ void main(){
 
     float mixStrength =precipitationStrength;
 
+    vec3 environmentColor[3];
+    int colorSelection = 0;
+    environmentColor[0] = vAngle<.525? biomeColor[index]: stoneColor; // Natural
+    environmentColor[1] = mix(lowColor,highColor,temperatureStrength); //Temperature
+    environmentColor[2] = mix(lowColor,highColor,precipitationStrength); //Precipitation
+
     //vec3 color = mix(highColor,lowColor,mixStrength);
 
-    vec3 color = vAngle<.525? biomeColor[index]: stoneColor;
+    vec3 color = environmentColor[colorSelection];
 
 
     //   vec3 color = vec3(vAngle,1.0,1.0); //slope

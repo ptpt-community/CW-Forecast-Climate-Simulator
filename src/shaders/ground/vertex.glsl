@@ -198,9 +198,10 @@ int getBiome(float temperature, float precipitation) {
 
 float getTemperature(float offset){
     //Temperature = sin(x) ranging from -10 to + 35 which is  -22.5 to + 22.5  and offsetted +12.5
-    float temperature =  sin(distance(vec2(0, 0), modelPosition.xz/50.0));
-    temperature -= modelPosition.y*.1; /**IMPORTANT!!Need Research*/
-    return temperature*22.5 + 12.5 + offset;
+   // float temperature =  sin(distance(vec2(0, 0), modelPosition.xz/50.0));
+    float temperature = sin((-6750.0+modelPosition.x)/280.0);
+    temperature -= modelPosition.y*.1 ; /**IMPORTANT!!Need Research*/
+    return temperature*22.5 + offset;
 }
 
 
