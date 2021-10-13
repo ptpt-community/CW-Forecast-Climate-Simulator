@@ -34,7 +34,7 @@ const renderer_class = new Renderer(camera, canvas, scene)
 renderer_class.render()
 
 
-movementControlling(camera, renderer.domElement, .1, gui);
+movementControlling(camera, renderer.domElement, .3, gui);
 
 /*new THREE.Camera()
 const terrainChunkManager =new TerrainChunkManager(scene,camera);*/

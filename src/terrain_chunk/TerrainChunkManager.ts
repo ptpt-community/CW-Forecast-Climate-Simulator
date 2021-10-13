@@ -100,7 +100,7 @@ export default class TerrainChunkManager {
             this._chunkPositionDictionary.remove(key);
         }
 
-        this._chunkBuilder.build(8);
+        this._chunkBuilder.build(32);
 
 
     }
