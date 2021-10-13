@@ -1,7 +1,6 @@
 import {Box2, Camera, Group, Scene, Vector2} from "three";
 import {TerrainChunk} from "./TerrainChunk";
 import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
-import {GridChunkDirector} from "./ChunkDirector/GridChunkDirector";
 import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
 import {IDictionary} from "../Utils/Dictionary/IDictionary";
 import {ArrayDictionary} from "../Utils/Dictionary/ArrayDictionary";
@@ -57,7 +56,7 @@ export default class TerrainChunkManager {
     private _chunkDirector:IChunkDirector = new QuadTree(
         {bottomLeft: new Vector2(-512,-512), topRight: new Vector2(512,512)}
     );
-    
+
     constructor(scene: Scene, camera: Camera) {
         this._group = new Group();
         scene.add(this._group);
@@ -97,7 +96,7 @@ export default class TerrainChunkManager {
 
         for(let key in deletableDictionary.getAll()){
 
-            this._chunkPositionDictionary.getAt(key).terrainChunk.hide();
+            this._chunkPositionDictionary.getAt(key).terrainChunk.destroy();
             this._chunkPositionDictionary.remove(key);
         }
 
@@ -128,26 +127,13 @@ export default class TerrainChunkManager {
 
 
 
-    private _generatedChunks:IDictionary<TerrainChunk> = new ArrayDictionary();
+
+
     private createChunk(position: ChunkRecord) {
-
-
-        if(this._generatedChunks.getAt(TerrainChunkManager.positionToKey(position)) ===undefined) {
-            console.log("Generate New Chunk");
-            position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
-            this._generatedChunks.add(TerrainChunkManager.positionToKey(position),position.terrainChunk);
-            this._chunkPositionDictionary.add(TerrainChunkManager.positionToKey(position), position);
-        } else {
-
-            position.terrainChunk = this._generatedChunks.getAt(TerrainChunkManager.positionToKey(position));
-            position.terrainChunk.show();
-            return;
-        }
+        console.log("Generate New Chunk");
+        position.terrainChunk = new TerrainChunk(this._group, position, this._noiseManager);
+        this._chunkPositionDictionary.add(TerrainChunkManager.positionToKey(position), position);
         this._chunkBuilder.push(position);
-
-
-
-
 
     }
 }
@@ -182,11 +168,11 @@ class ChunkBuilder{
             this._currentGenerator = chunk.terrainChunk.noiseGenerator;
         }
         else {
-           const a=  this._currentGenerator.next();
-           if(a.done) this._currentGenerator =undefined;
-           if(this._currentChunk!==undefined)
-           this._currentChunk.terrainChunk.show();
-           else return 0;
+            const a=  this._currentGenerator.next();
+            if(a.done) this._currentGenerator =undefined;
+            if(this._currentChunk!==undefined)
+                this._currentChunk.terrainChunk.show();
+            else return 0;
 
         }
 
