@@ -26,6 +26,7 @@ export class RendererSettings {
 
     }
 
+
     private updateRenderables(){
         this.rendarables.forEach(renderable => renderable.updateRender())
     }
@@ -34,6 +35,10 @@ export class RendererSettings {
 
     public getRenderer(){
         return this.renderer;
+    }
+
+    public addRenderable(renderable: Renderable){
+        this.rendarables.push(renderable);
     }
 
     public resizeRendererToDisplaySize(renderer: THREE.Renderer) {
@@ -50,16 +55,18 @@ export class RendererSettings {
 
     private  newRender=():void=>{
        this.updateRenderables();
-
         if (this.resizeRendererToDisplaySize(this.renderer)) {
-            const canvas = this.renderer.domElement;
-            this._camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            this._camera.updateProjectionMatrix();
+            this.resizeView();
         }
 
         this.renderer.render(this._scene, this._camera);
-
         requestAnimationFrame(this.newRender);
+    }
+
+    private resizeView() {
+        const canvas = this.renderer.domElement;
+        this._camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        this._camera.updateProjectionMatrix();
     }
 
     public render() {
