@@ -89,7 +89,9 @@ float height(vec2 pos){
     total /= normalization;
 
     total = pow(total, exponentiation) * height;
-    total += snoise(pos.x/ 1000.0, pos.y/1000.0) * 10.0;
+    //total += snoise(pos.x/ 1000.0, pos.y/1000.0) * 10.0;
+
+    total += sin( distance(pos, vec2(0.0,0.0) ) /130.0)*2.0;
 
 
     return total;
@@ -199,9 +201,9 @@ int getBiome(float temperature, float precipitation) {
 float getTemperature(float offset){
     //Temperature = sin(x) ranging from -10 to + 35 which is  -22.5 to + 22.5  and offsetted +12.5
    // float temperature =  sin(distance(vec2(0, 0), modelPosition.xz/50.0));
-    float temperature = sin((-6750.0+modelPosition.x)/280.0);
+    float temperature = sin((-6050.0+modelPosition.x)/280.0);
     temperature -= modelPosition.y*.1 ; /**IMPORTANT!!Need Research*/
-    return temperature*22.5 + offset;
+    return temperature*22.5 + offset + 20.0;
 }
 
 

@@ -5,6 +5,7 @@ import {IChunkDirector} from "./ChunkDirector/IChunkDirector";
 import {IDictionary} from "../Utils/Dictionary/IDictionary";
 import {ArrayDictionary} from "../Utils/Dictionary/ArrayDictionary";
 import {QuadTree} from "./ChunkDirector/QuadTree";
+import {Renderable} from "../Environment/RendererSettings";
 
 export class ChunkRecord extends Vector2{
 
@@ -34,7 +35,7 @@ export class ChunkRecord extends Vector2{
 
 
 
-export default class TerrainChunkManager {
+export default class TerrainChunkManager implements Renderable{
     get group(): Group {
 
         return this._group;
@@ -67,7 +68,7 @@ export default class TerrainChunkManager {
     }
 
 
-    public checkCameraAndAddTerrain() {
+    public updateRender() {
 
         const camera = this._camera;
         const suggestedPositionsDictionary : IDictionary<ChunkRecord>= new ArrayDictionary();

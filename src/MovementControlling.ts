@@ -11,6 +11,10 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
         speed: speed
     };
 
+    function getSpeedBasedOnHeight(){
+        return (0.0909090909090909*camera.position.y) + 0.18181818181818182;
+    };
+
     const onKeyDown = function (event: KeyboardEvent) {
         console.log(camera.position);
         switch (event.code) {
@@ -28,10 +32,14 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
                 controls.moveRight(controllableParams.speed)
                 break
             case 'Space':
+                if(camera.position.y>20) break;
                 camera.position.y += controllableParams.speed;
+               // controllableParams.speed = getSpeedBasedOnHeight()
                 break
             case 'ShiftLeft':
+                if(camera.position.y<3.0) break;
                 camera.position.y -= controllableParams.speed;
+                //controllableParams.speed = getSpeedBasedOnHeight()
                 break
         }
     }

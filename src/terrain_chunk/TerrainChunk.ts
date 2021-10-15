@@ -5,6 +5,7 @@ import {TerrainFeatureNoiseManager} from "./TerrainFeatureNoiseManager";
 import {ChunkRecord} from "./TerrainChunkManager";
 
 //@ts-ignore
+//@ts-ignore
 import groundVertexShader from "../shaders/ground/vertex.glsl"
 //@ts-ignore
 import groundFragmentShader from "../shaders/ground/fragment.glsl"
