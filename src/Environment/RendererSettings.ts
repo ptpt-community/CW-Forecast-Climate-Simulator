@@ -15,13 +15,19 @@ export class RendererSettings {
     private renderer;
     private _scene ;
 
+    private rendarables : Renderable[]  = [];
 
     constructor(camera: PerspectiveCamera, canvas: HTMLCanvasElement,scene:Scene) {
         this._camera = camera;
         this._scene = scene;
         this._terrainChunkManager = new TerrainChunkManager(this._scene, this._camera);
         this.renderer = new THREE.WebGLRenderer({canvas});
+        this.rendarables.push(this._terrainChunkManager);
 
+    }
+
+    private updateRenderables(){
+        this.rendarables.forEach(renderable => renderable.updateRender())
     }
 
 
@@ -43,7 +49,7 @@ export class RendererSettings {
     }
 
     private  newRender=():void=>{
-        this._terrainChunkManager.updateRender();
+       this.updateRenderables();
 
         if (this.resizeRendererToDisplaySize(this.renderer)) {
             const canvas = this.renderer.domElement;
