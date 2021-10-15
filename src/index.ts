@@ -1,11 +1,20 @@
-import * as THREE from "three";
-import {AmbientLight, CameraHelper, Clock, DirectionalLight} from "three";
+import * as THREE from "three"
+import {
+    AmbientLight, BoxGeometry,
+    CameraHelper,
+    Clock,
+    DirectionalLight, Mesh, MeshBasicMaterial,
+    PlaneGeometry, RepeatWrapping,
+    Scene,
+    TextureLoader, Vector3,
+    WebGLRenderer
+} from "three";
 import {GUI} from "dat.gui";
 import {movementControlling} from "./MovementControlling";
 import SkyBox from "./SkyBox";
 import {LightSettings} from "./Environment/LightSettings";
 import {CameraSettings} from "./Environment/CameraSettings";
-import {Renderer} from "./Environment/RendererSettings";
+import {RendererSettings} from "./Environment/RendererSettings";
 import {GuiSingleton} from "./GUI/GUI";
 
 
@@ -17,9 +26,11 @@ import {WaterScene} from "./Environment/WaterScene";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
 import {MTLLoader} from "three/examples/jsm/loaders/MTLLoader";
+import {Water} from "three/examples/jsm/objects/Water";
+import {Sky} from "three/examples/jsm/objects/Sky";
 
 let canvas = document.querySelector("#c") as HTMLCanvasElement;
-const renderer = new THREE.WebGLRenderer({canvas});
+
 
 //@ts-ignore----------------
 window.debug = {}
@@ -28,28 +39,97 @@ const cameraBasic = new CameraSettings()
 const camera = cameraBasic.getCamera()
 const gui = GuiSingleton.getGui()//3
 //renderInstantiate
-const scene = new THREE.Scene();
+const scene = new Scene();
 
-const renderer_class = new Renderer(camera, canvas, scene)
-renderer_class.render()
+const rendererSettings = new RendererSettings(camera, canvas, scene);
+const renderer = rendererSettings.getRenderer();
+rendererSettings.render()
 
 
 movementControlling(camera, renderer.domElement, .3, gui);
 
 /*new THREE.Camera()
 const terrainChunkManager =new TerrainChunkManager(scene,camera);*/
-new SkyBox(scene);
+// new SkyBox(scene);
 
 const light = new LightSettings(scene)
 light.directionalLightManager()
 
 renderer.shadowMap.enabled = true;
 
+//Water
 
-/*
-const waterScene = new WaterScene(scene, gui);
+function buildWater() {
+    const waterGeometry = new PlaneGeometry(1500, 1500);
+    const water = new Water(
+        waterGeometry,
+        {
+            textureWidth: 512,
+            textureHeight: 512,
+            waterNormals: new TextureLoader().load('', function ( texture ) {
+                texture.wrapS = texture.wrapT = RepeatWrapping;
+            }),
+            alpha: 1.0,
+            sunDirection: new Vector3(),
+            sunColor: 0xffffff,
+            waterColor: 0x001e0f,
+            distortionScale: 3.7,
+            fog: scene.fog !== undefined
+        }
+    );
+    water.rotation.x =- Math.PI / 2;
+    scene.add(water);
+
+    //@ts-ignore
+    const waterUniforms = water.material.uniforms;
+    return water;
+}
+
+const water = buildWater();
+
+function update() {
+    // @ts-ignore
+    water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
+    // renderer.render(scene, camera);
+}
+
+
+// const waterScene = new WaterScene(scene, gui);
+
+
+/*Sky
 */
 
+
+function buildSky() {
+    const sky = new Sky();
+    sky.scale.setScalar(10000);
+    scene.add(sky);
+    return sky;
+}
+
+const sky : Sky = buildSky();
+//sun
+function buildSun() {
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    const sun = new THREE.Vector3();
+
+    // Defining the x, y and z value for our 3D Vector
+    const theta = Math.PI * (0.49 - 0.5);
+    const phi = 2 * Math.PI * (0.205 - 0.5);
+    sun.x = Math.cos(phi);
+    sun.y = Math.sin(phi) * Math.sin(theta);
+    sun.z = Math.sin(phi) * Math.cos(theta);
+
+
+    sky.material.uniforms['sunPosition'].value.copy(sun);
+
+    //@ts-ignore
+    scene.environment = pmremGenerator.fromScene(sky).texture;
+    return sun;
+}
+buildSun();
+//end sky
 
 const sizes = {
     width: window.innerWidth,
@@ -72,17 +152,10 @@ window.addEventListener('resize', () => {
 })
 
 
-const clock = new Clock();
-
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-const cube = new THREE.Mesh( geometry, material );
-cube.position.set(10,10,10)
-scene.add( cube );
 
 
 
-window.THREE = THREE;
+// window.THREE = THREE;
 //@ts-ignore
 //@ts-ignore
 window.camera = camera;
