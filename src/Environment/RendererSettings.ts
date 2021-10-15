@@ -1,9 +1,14 @@
 import * as THREE from "three";
 import TerrainChunkManager from "../terrain_chunk/TerrainChunkManager";
 import {PerspectiveCamera, Scene} from "three";
-import SkyBox from "../SkyBox";
 
-export class Renderer {
+
+
+export interface Renderable{
+    updateRender() : void;
+}
+
+export class RendererSettings {
 
     private _terrainChunkManager: TerrainChunkManager;
     private _camera;
@@ -19,6 +24,12 @@ export class Renderer {
 
     }
 
+
+
+    public getRenderer(){
+        return this.renderer;
+    }
+
     public resizeRendererToDisplaySize(renderer: THREE.Renderer) {
         const canvas = renderer.domElement;
         const width = canvas.clientWidth;
@@ -32,7 +43,7 @@ export class Renderer {
     }
 
     private  newRender=():void=>{
-        this._terrainChunkManager.checkCameraAndAddTerrain();
+        this._terrainChunkManager.updateRender();
 
         if (this.resizeRendererToDisplaySize(this.renderer)) {
             const canvas = this.renderer.domElement;

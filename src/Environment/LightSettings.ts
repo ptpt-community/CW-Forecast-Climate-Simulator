@@ -1,6 +1,4 @@
-import * as THREE from "three";
-import TerrainChunkManager from "../terrain_chunk/TerrainChunkManager";
-import SkyBox from "../SkyBox";
+
 import {AmbientLight, Camera, CameraHelper, DirectionalLight, Light, Scene} from "three";
 // noinspection JSDuplicatedDeclaration
 export class LightSettings {
