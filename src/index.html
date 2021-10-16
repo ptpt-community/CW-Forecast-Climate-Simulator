@@ -11,7 +11,8 @@
         <table>
             <tr>
                 <td>Year</td>
-                <td><input id="year_range" type="range" min="1900"  max="2100"></td> <td></td>
+                <td><input id="year_range" type="range" min="1900"  max="2100"></td>
+                <td id="year_value"> </td>
             </tr>
             <tr>
                 <td>Avg. Temperature Offset</td>
@@ -169,13 +170,17 @@
        renderColorSelect(selected);
     }
 
-
     document.getElementById("temperature_range").onchange = ()=>{
+
+
         changeTemperature();
     }
 
 
     document.getElementById("year_range").onchange = ()=>{
+
+        document.getElementById("year_value").innerText=document.getElementById("year_range").value;
+
         changeTemperature();
 
     }
