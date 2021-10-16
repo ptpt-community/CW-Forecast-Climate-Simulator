@@ -15,7 +15,7 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
         return (0.0909090909090909*camera.position.y) + 0.18181818181818182;
     };
 
-    const nearPreset : number[] = [.005,.1,1,20]
+    const nearPreset : number[] = [.005,.1,1,20,100]
 
 
     function onHeightChange(){
@@ -35,8 +35,11 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
             set = 2;
         }
 
-        else if(height>50) {
+        else if(height>50 && height <100) {
             set = 3;
+        }
+        else {
+            set = 4;
         }
 
 
