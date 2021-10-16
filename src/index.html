@@ -3,7 +3,8 @@
 
 <div class="floatable">
     <a class="menu-btn" id="menu-button">
-        <img src="https://media.discordapp.net/attachments/838858730342580314/893443498718674975/earth-min2.png" class="btn-img" alt="">
+        <img src="https://media.discordapp.net/attachments/838858730342580314/893443498718674975/earth-min2.png"
+             class="btn-img" alt="">
     </a>
 
 
@@ -11,8 +12,8 @@
         <table>
             <tr>
                 <td>Year</td>
-                <td><input id="year_range" type="range" min="1900"  max="2100"></td>
-                <td id="year_value" > </td>
+                <td><input id="year_range" type="range" min="1900" max="2100"></td>
+                <td id="year_value"></td>
             </tr>
             <tr>
                 <td>Avg. Temperature Offset</td>
@@ -24,40 +25,61 @@
             <table>
                 <tr>
                     <td>Tundra</td>
-                    <td   style="background-color: rgb(255,255,255) " onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976387027841134/tundraaa.png?width=856&height=595')" onmouseout="hideIt()">⠀⠀</td>
+                    <td style="background-color: rgb(255,255,255) "
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976387027841134/tundraaa.png?width=856&height=595')"
+                        onmouseout="hideIt()">⠀
+                        ⠀
+                    </td>
+                    <td rowspan="9"><img src="" id="imageshow" class="helper_image" style="display:none"></td>
                 </tr>
                 <tr>
                     <td>Boreal Forest</td>
-                    <td   style="background-color: rgb(204,255,204) " onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976648941158500/boreal-forest.jpg')" onmouseout="hideIt()"> </td>
+                    <td style="background-color: rgb(204,255,204) "
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976648941158500/boreal-forest.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
                 <tr>
                     <td>Temperate Grassland</td>
-                    <td  style="background-color: rgb(153,255,153)" onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976730251939850/temperate-grassland.jpg')" onmouseout="hideIt()"> </td>
+                    <td style="background-color: rgb(153,255,153)"
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976730251939850/temperate-grassland.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
                 <tr>
                     <td>Woodland</td>
-                    <td   style="background-color: rgb(127.5,204,127.5)" onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976787474808884/woodland.jpg')" onmouseout="hideIt()"> </td>
+                    <td style="background-color: rgb(127.5,204,127.5)"
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976787474808884/woodland.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
                 <tr>
                     <td>Temperate Seasonal Forest</td>
-                    <td style="background-color: rgb(153,204,153)" onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976863685316698/temperate-seasonal_-forest.jpg')" onmouseout="hideIt()"></td>
+                    <td style="background-color: rgb(153,204,153)"
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976863685316698/temperate-seasonal_-forest.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
                 <tr>
                     <td>Temperate Rainforest</td>
-                    <td   style="background-color: rgb(102,178.5,102)" onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976524311609344/rain-forest.jpg')" onmouseout="hideIt()"></td>
+                    <td style="background-color: rgb(102,178.5,102)"
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976524311609344/rain-forest.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
                 <tr>
                     <td>Tropical Rainforest</td>
-                    <td   style="background-color: rgb(25.5,178.5,25.5)" onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976524311609344/rain-forest.jpg')" onmouseout="hideIt()"></td>
+                    <td style="background-color: rgb(25.5,178.5,25.5)"
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976524311609344/rain-forest.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
 
                 <tr>
                     <td>Savannah</td>
-                    <td  style="background-color: rgb(178.5,229.5,127.5)" onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976935189823508/savannah.jpg')" onmouseout="hideIt()"> </td>
+                    <td style="background-color: rgb(178.5,229.5,127.5)"
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976935189823508/savannah.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
                 <tr>
                     <td>Subtropical Desert</td>
-                    <td   style="background-color: rgb(229.5,229.5,102)" onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976587607834674/desert.jpg')" onmouseout="hideIt()"></td>
+                    <td style="background-color: rgb(229.5,229.5,102)"
+                        onmouseover="showIt('https://media.discordapp.net/attachments/860741516297633802/898976587607834674/desert.jpg')"
+                        onmouseout="hideIt()"></td>
                 </tr>
             </table>
 
@@ -79,7 +101,7 @@
             </table>
         </div>
     </div>
-    <img src="" id="imageshow" style="display:none">
+
 </div>
 <canvas id="c"></canvas>
 <style>
@@ -98,6 +120,11 @@
 
     .menu-btn:hover {
         opacity: 50%;
+    }
+
+    .helper_image{
+        height: 200px;
+        width: 200px;
     }
 
 
@@ -119,11 +146,11 @@
         display: block;
     }
 
-    .color_type_selection{
+    .color_type_selection {
         opacity: 20%;
     }
 
-    .color_type_selection:hover{
+    .color_type_selection:hover {
         opacity: 80%;
     }
 </style>
@@ -131,8 +158,8 @@
 <script>
 
 
-    function getTemperatureDifference(year){
-        return ( .000000001*( (year-1823)**4) ) -1
+    function getTemperatureDifference(year) {
+        return (.000000001 * ((year - 1823) ** 4)) - 1
     }
 
     document.getElementById("menu-button").onclick = () => {
@@ -140,63 +167,60 @@
         menu.hidden = !menu.hidden;
     }
 
-    function setTemperature(x)
-    {
-        window.inputs.temperatureOffset=x;
-        group.children.forEach(m=>{
-            console.log(m.material.uniforms.uTemperatureOffset.value= x)
+    function setTemperature(x) {
+        window.inputs.temperatureOffset = x;
+        group.children.forEach(m => {
+            console.log(m.material.uniforms.uTemperatureOffset.value = x)
         })
     }
 
-    function getCurrentTemperatureDifference(){
+    function getCurrentTemperatureDifference() {
         const fromYear = getTemperatureDifference(document.getElementById("year_range").value);
         const fromAverage = parseInt(document.getElementById("temperature_range").value);
         return fromAverage + fromYear;
     }
 
-    function changeTemperature(){
+    function changeTemperature() {
         setTemperature(getCurrentTemperatureDifference());
     }
 
     function renderColorSelect(x) {
         window.inputs.selectedRenderColor = x;
-        group.children.forEach(m=>{
-            console.log(m.material.uniforms.uColorSelection.value= x);
+        group.children.forEach(m => {
+            console.log(m.material.uniforms.uColorSelection.value = x);
         })
     }
 
-    function onSelectColor(){
-       const selected = document.getElementById("color_selector").selectedIndex;
-       renderColorSelect(selected);
+    function onSelectColor() {
+        const selected = document.getElementById("color_selector").selectedIndex;
+        renderColorSelect(selected);
     }
 
-    document.getElementById("temperature_range").onchange = ()=>{
+    document.getElementById("temperature_range").onchange = () => {
 
 
         changeTemperature();
     }
 
 
-    document.getElementById("year_range").onchange = ()=>{
+    document.getElementById("year_range").onchange = () => {
 
-        document.getElementById("year_value").innerText=document.getElementById("year_range").value;
+        document.getElementById("year_value").innerText = document.getElementById("year_range").value;
 
         changeTemperature();
 
     }
 
-    document.getElementById("year_range").value=2000;
+    document.getElementById("year_range").value = 2000;
 
-    function showIt(link)
-    {
+    function showIt(link) {
         console.log("Hover")
-       document.getElementById('imageshow').src=link;
-        document.getElementById('imageshow').style.display='block';
+        document.getElementById('imageshow').src = link;
+        document.getElementById('imageshow').style.display = 'block';
     }
 
-    function hideIt()
-    {
-        document.getElementById('imageshow').style.display='none';
+    function hideIt() {
+        document.getElementById('imageshow').style.display = 'none';
     }
 
 
