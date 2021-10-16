@@ -23,7 +23,7 @@
             <table>
                 <tr>
                     <td>Tundra</td>
-                    <td style="background-color: rgb(255,255,255) ">⠀⠀</td>
+                    <td style="background-color: rgb(255,255,255) " onmouseover="showIt()" onmouseout="hideIt()">⠀⠀</td>
                 </tr>
                 <tr>
                     <td>Boreal Forest</td>
@@ -78,7 +78,7 @@
             </table>
         </div>
     </div>
-
+    <img src="" id="imageshow" style="display:none">
 </div>
 <canvas id="c"></canvas>
 <style>
@@ -182,7 +182,17 @@
 
     document.getElementById("year_range").value=2000;
 
+    function showIt()
+    {
+        console.log("Hover")
+       document.getElementById('imageshow').src="https://www.w3schools.com/images/w3schools_green.jpg";
+        document.getElementById('imageshow').style.display='block';
+    }
 
+    function hideIt()
+    {
+        document.getElementById('imageshow').style.display='none';
+    }
 
 
 </script>
