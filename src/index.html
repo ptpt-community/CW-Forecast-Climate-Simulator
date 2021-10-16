@@ -11,10 +11,10 @@
         <table>
             <tr>
                 <td>Year</td>
-                <td><input id="year_range" type="range" min="1900"  max="2200"></td>
+                <td><input id="year_range" type="range" min="1900"  max="2100"></td> <td></td>
             </tr>
             <tr>
-                <td>Temperature</td>
+                <td>Avg. Temperature Offset</td>
                 <td><input id="temperature_range" type="range" min="-5" max="5"></td>
             </tr>
         </table>
@@ -61,6 +61,22 @@
             </table>
 
         </div>
+        <br>
+        <div>
+            <table>
+                <tr class="color_type_selection">
+                    <td>Render Type⠀⠀</td>
+                    <td>
+                        <select id="color_selector" onchange="onSelectColor()">
+                            <option value="0">Natural</option>
+                            <option value="1">Temperature Map</option>
+                            <option value="2">Precipitation Map</option>
+                        </select>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
 </div>
@@ -101,6 +117,14 @@
         height: 100%;
         display: block;
     }
+
+    .color_type_selection{
+        opacity: 20%;
+    }
+
+    .color_type_selection:hover{
+        opacity: 80%;
+    }
 </style>
 
 <script>
@@ -119,7 +143,7 @@
     {
         window.inputs.temperatureOffset=x;
         group.children.forEach(m=>{
-            console.log(m.material.uniforms.uTemperatureOffset.value= window.inputs.temperatureOffset)
+            console.log(m.material.uniforms.uTemperatureOffset.value= x)
         })
     }
 
@@ -131,6 +155,18 @@
 
     function changeTemperature(){
         setTemperature(getCurrentTemperatureDifference());
+    }
+
+    function renderColorSelect(x) {
+        window.inputs.selectedRenderColor = x;
+        group.children.forEach(m=>{
+            console.log(m.material.uniforms.uColorSelection.value= x);
+        })
+    }
+
+    function onSelectColor(){
+       const selected = document.getElementById("color_selector").selectedIndex;
+       renderColorSelect(selected);
     }
 
 
