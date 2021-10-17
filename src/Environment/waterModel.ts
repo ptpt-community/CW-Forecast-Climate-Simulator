@@ -26,7 +26,7 @@ export class WaterModel implements Renderable {
             {
                 textureWidth: 512,
                 textureHeight: 512,
-                waterNormals: new TextureLoader().load('/waternormals.jpg', function (texture) {
+                waterNormals: new TextureLoader().load('https://threejs.org/examples/textures/waternormals.jpg', function (texture) {
                     texture.wrapS = texture.wrapT = RepeatWrapping;
                 }),
                 alpha: .5,
