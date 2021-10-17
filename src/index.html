@@ -87,6 +87,10 @@
         <br>
         <div>
             <table>
+                <tr>
+                    <td>Height:⠀⠀</td>
+                    <td id="height_view"></td>
+                </tr>
                 <tr class="color_type_selection">
                     <td>Render Type⠀⠀</td>
                     <td>
@@ -174,14 +178,16 @@
         })
     }
 
-    function getCurrentTemperatureDifference() {
+    function getCurrentClimateCoeefficient() {
         const fromYear = getTemperatureDifference(document.getElementById("year_range").value);
         const fromAverage = parseInt(document.getElementById("temperature_range").value);
         return fromAverage + fromYear;
     }
 
-    function changeTemperature() {
-        setTemperature(getCurrentTemperatureDifference());
+    function changeClimate() {
+        const coefficient = getCurrentClimateCoeefficient();
+        setTemperature(coefficient);
+        window.water.position.y = coefficient/300;
     }
 
     function renderColorSelect(x) {
@@ -199,7 +205,8 @@
     document.getElementById("temperature_range").onchange = () => {
 
 
-        changeTemperature();
+        changeClimate();
+
     }
 
 
@@ -207,7 +214,8 @@
 
         document.getElementById("year_value").innerText = document.getElementById("year_range").value;
 
-        changeTemperature();
+        changeClimate();
+
 
     }
 

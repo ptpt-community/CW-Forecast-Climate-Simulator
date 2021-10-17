@@ -2,6 +2,7 @@ import * as THREE from "three";
 import {PointerLockControls} from "three/examples/jsm/controls/PointerLockControls";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {GUI} from "dat.gui";
+import {FrontEndReceiver} from "./FrontEndUpdatable";
 
 export function movementControlling(camera: THREE.Camera, domElement: HTMLElement,speed: number,gui:GUI) {
     const controls = new PointerLockControls(camera, domElement);
@@ -15,31 +16,35 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
         return (0.0909090909090909*camera.position.y) + 0.18181818181818182;
     };
 
-    const nearPreset : number[] = [.005,.1,1,20,100]
+    const nearPreset : number[] = [0.05,.2,1,20,100]
+
+    const frontEndInteract = FrontEndReceiver.getInstance();
 
 
     function onHeightChange(){
         let set = 0;
         const height = camera.position.y;
 
+        frontEndInteract.updateHeight(height)
 
-        if(height>0 && height<2) {
-            set = 0;
+
+        if(height>0 && height<=1.5) {
+            set = 1;
         }
 
-        else if(height >2 && height <20) {
-            set = 1;
+        else if(height >1.5 && height <20) {
+            set = 2;
         }
 
         else if(height>20 && height <50 ) {
             set = 2;
         }
 
-        else if(height>50 && height <100) {
-            set = 3;
+        else if(height>50 && height <80) {
+            set = 2;
         }
-        else {
-            set = 4;
+        else if(height>200){
+            set = 2;
         }
 
 
