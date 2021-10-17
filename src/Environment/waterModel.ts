@@ -46,6 +46,9 @@ export class WaterModel implements Renderable {
         console.log(waterUniforms)
        waterUniforms.size.value = 500;
         this.water = water;
+
+        //@ts-ignore
+        window.water = water;
     }
 
 
