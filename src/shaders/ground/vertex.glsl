@@ -89,7 +89,9 @@ float height(vec2 pos){
     total /= normalization;
 
     total = pow(total, exponentiation) * height;
-    total += snoise(pos.x/ 1000.0, pos.y/1000.0) * 10.0;
+    //total += snoise(pos.x/ 1000.0, pos.y/1000.0) * 10.0;
+
+    total += sin( distance(pos, vec2(0.0,0.0) ) /130.0)*2.0;
 
 
     return total;
@@ -99,38 +101,98 @@ float height(vec2 pos){
 /**
 
 */
-float cold_desert_slope = 1.3636;
-float woodland_slope = 5.4545;
-float seasonal_forest = 10.00;
-float temparature_rain_forest = 14.5454;
-float subtropical_desert = 4.6153;
-float tropical_seasonal_forest = 5.00;
-float tropical_rain_forest = 7.69;
+
+const vec2 a = vec2(-10.0, 0.0);
+const vec2 b = vec2(2.0, 500.0);
+const vec2 c = vec2(-1.0, 20.0);
+const vec2 d = vec2(-3.0, 0.0);
+const vec2 e = vec2(-2.0, 10.0);
+const vec2 f = vec2(21.0, 50.0);
+const vec2 g = vec2(18.0, 0.0);
+const vec2 i = vec2(21.5, 125.0);
+const vec2 j = vec2(7.0, 170.0);
+const vec2 k = vec2(5.0, 48.0);
+const vec2 m = vec2(22.0, 240.0);
+const vec2 n = vec2(200.0, 1061.0);
+const vec2 o = vec2(25.0, 500.0);
+const vec2 p = vec2(13.0, 500.0);
+const vec2 q = vec2(200.0, 140.0);
+const vec2 r = vec2(0.0, 500.0);
+const vec2 s = vec2(200.0,500.0);
+const vec2 t = vec2(200.0,0.0);
+
+struct Tetragon {
+    vec2 a,b,c,d;
+};
+
+struct Triangle {
+    vec2 a,b,c;
+};
 
 
-int check_secondPhase(float temperature, float precipitation){
-    float a=precipitation/22.00;
-    if (a<=cold_desert_slope)return 2;
-    else if (a>cold_desert_slope&&a<=woodland_slope)return 3;
-    else if (a>woodland_slope&&a<=seasonal_forest)return 4;
-    else if (a>seasonal_forest&&a<=temparature_rain_forest)return 5;
-    return 6;
+
+Tetragon tundra = Tetragon(a,b,c,d);
+
+Tetragon grassland = Tetragon(d, e, f, g);
+
+Tetragon woodland = Tetragon(e, c, i, f);
+
+Tetragon temperateSeasonalForest = Tetragon(k, j, m, i);
+
+
+Tetragon temperateRainForest = Tetragon(j, p, o, m);
+
+Tetragon tropicalRainForest = Tetragon(m, o, s, n);
+
+Tetragon savanna = Tetragon(f,m,n,q);
+
+Tetragon subtropicalDesert = Tetragon(g,f,q,t);
+
+Tetragon borealForest = Tetragon(c,b,p,k);
+
+
+
+
+
+
+
+
+float d2Cross(vec2 a, vec2 b){
+    return a.x*b.y - b.x*a.y;
 }
-int check_thirdPhase(float temperature, float precipitation){
-    float a=precipitation-temperature*(60.00/13.00);
-    if (a<61.538)return 7;
-    else if (a>=61.538&&a<118.461)return 8;
-    return 6;
+
+
+bool sameSide(vec2 p1, vec2 p2, vec2 a, vec2 b ){
+    float cp1 = d2Cross(b-a,p1-a);
+    float cp2 = d2Cross(b-a,p2-a);
+    return cp1*cp2 >=0.0 ;
 }
 
-int getBiome(float temperature, float precipitation){
 
-    if (temperature< -2.00)return 1;
-    else if (temperature> -2.00&&temperature<=7.00)return 9;
-    else if (temperature>7.00&&temperature<18.00)return check_secondPhase(temperature, precipitation);
-    else if (temperature>=18.00&&temperature<33.00) return check_thirdPhase(temperature, precipitation);
-    return 8;
+bool pointInsideOfTriangle(vec2 point, Triangle t){
+    return sameSide(point, t.a, t.b, t.c) && sameSide(point, t.b, t.a, t.c) && sameSide(point, t.c, t.a, t.b);
+}
 
+bool pointInsideOfTetragon(vec2 point, Tetragon r){
+    return pointInsideOfTriangle(point,Triangle (r.a,r.b,r.c)) || pointInsideOfTriangle(point,Triangle (r.a,r.c,r.d));
+}
+
+
+
+int getBiome(float temperature, float precipitation) {
+
+    if(temperature<-2.50) return 1;
+    vec2 point = vec2(temperature, precipitation);
+    if (pointInsideOfTetragon(point, tundra)) return 1;
+    if (pointInsideOfTetragon(point, borealForest)) return 9;
+    if (pointInsideOfTetragon(point, grassland)) return 2;
+    if (pointInsideOfTetragon(point, woodland)) return 3;
+    if (pointInsideOfTetragon(point, temperateSeasonalForest)) return 4;
+    if (pointInsideOfTetragon(point, temperateRainForest)) return 5;
+    if (pointInsideOfTetragon(point, tropicalRainForest)) return 6;
+    if (pointInsideOfTetragon(point, savanna)) return 7;
+    if (pointInsideOfTetragon(point, subtropicalDesert)) return 8;
+    return 0;
 }
 
 
@@ -138,9 +200,10 @@ int getBiome(float temperature, float precipitation){
 
 float getTemperature(float offset){
     //Temperature = sin(x) ranging from -10 to + 35 which is  -22.5 to + 22.5  and offsetted +12.5
-    float temperature =  sin(distance(vec2(0, 0), modelPosition.xz/50.0));
-    temperature -= modelPosition.y*.1; /**IMPORTANT!!Need Research*/
-    return temperature*22.5 + 12.5 + offset;
+   // float temperature =  sin(distance(vec2(0, 0), modelPosition.xz/50.0));
+    float temperature = sin((-6050.0+modelPosition.x)/280.0);
+    temperature -= modelPosition.y*.1 ; /**IMPORTANT!!Need Research*/
+    return temperature*22.5 + offset + 20.0;
 }
 
 
@@ -154,8 +217,11 @@ float getPreceipitationMath(float temp){
 
 
 float getPrecipitation(float temperature){
+
     float  a = getPreceipitationMath(temperature);
-    return simplex(modelPosition.xz/500.0)*a;
+    float noise = (simplex(modelPosition.xz/500.0)+1.0)/2.0;
+
+    return noise*a;
 }
 
 

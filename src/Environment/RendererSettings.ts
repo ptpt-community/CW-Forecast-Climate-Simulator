@@ -1,22 +1,44 @@
 import * as THREE from "three";
 import TerrainChunkManager from "../terrain_chunk/TerrainChunkManager";
 import {PerspectiveCamera, Scene} from "three";
-import SkyBox from "../SkyBox";
 
-export class Renderer {
+
+
+export interface Renderable{
+    updateRender() : void;
+}
+
+export class RendererSettings {
 
     private _terrainChunkManager: TerrainChunkManager;
     private _camera;
     private renderer;
     private _scene ;
 
+    private rendarables : Renderable[]  = [];
 
     constructor(camera: PerspectiveCamera, canvas: HTMLCanvasElement,scene:Scene) {
         this._camera = camera;
         this._scene = scene;
         this._terrainChunkManager = new TerrainChunkManager(this._scene, this._camera);
         this.renderer = new THREE.WebGLRenderer({canvas});
+        this.rendarables.push(this._terrainChunkManager);
 
+    }
+
+
+    private updateRenderables(){
+        this.rendarables.forEach(renderable => renderable.updateRender())
+    }
+
+
+
+    public getRenderer(){
+        return this.renderer;
+    }
+
+    public addRenderable(renderable: Renderable){
+        this.rendarables.push(renderable);
     }
 
     public resizeRendererToDisplaySize(renderer: THREE.Renderer) {
@@ -32,17 +54,19 @@ export class Renderer {
     }
 
     private  newRender=():void=>{
-        this._terrainChunkManager.checkCameraAndAddTerrain();
-
+       this.updateRenderables();
         if (this.resizeRendererToDisplaySize(this.renderer)) {
-            const canvas = this.renderer.domElement;
-            this._camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            this._camera.updateProjectionMatrix();
+            this.resizeView();
         }
 
         this.renderer.render(this._scene, this._camera);
-
         requestAnimationFrame(this.newRender);
+    }
+
+    private resizeView() {
+        const canvas = this.renderer.domElement;
+        this._camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        this._camera.updateProjectionMatrix();
     }
 
     public render() {
