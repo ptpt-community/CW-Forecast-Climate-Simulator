@@ -12,12 +12,20 @@
         <table>
             <tr>
                 <td>Year</td>
-                <td><input id="year_range" type="range" min="1900" max="2100"></td>
-                <td id="year_value"></td>
+                <td><input id="year_range" type="range" min="1900" value="2000" max="2100"></td>
+                <td id="year_value">2000 AD</td>
+
             </tr>
             <tr>
                 <td>Avg. Temperature Offset</td>
-                <td><input id="temperature_range" type="range" min="-5" max="5"></td>
+                <td><input id="temperature_range"  value="0" type="range" min="-5" max="5"></td>
+                <td id="temp_offset_value">0 °C</td>
+            </tr>
+
+            <tr>
+                <td>CO₂ Offset</td>
+                <td><input id="carbon-range" type="range"  value="0" min="-5000" max="5000"></td>
+                <td id="co2_offset_value">0 ppm</td>
             </tr>
         </table>
 
@@ -87,9 +95,14 @@
         <br>
         <div>
             <table>
+
                 <tr>
                     <td>Height:⠀⠀</td>
-                    <td id="height_view"></td>
+                    <td id="height_view">900 ft</td>
+                </tr>
+                <tr>
+                    <td>Current Avg. Temperature</td>
+                    <td id="current_temperature_value">14 °C</td>
                 </tr>
                 <tr class="color_type_selection">
                     <td>Render Type⠀⠀</td>
@@ -126,7 +139,7 @@
         opacity: 50%;
     }
 
-    .helper_image{
+    .helper_image {
         height: 200px;
         width: 200px;
     }
@@ -162,8 +175,8 @@
 <script>
 
 
-    window.onload =()=>{
-        window.camera.lookAt(-12,3,-450);
+    window.onload = () => {
+        window.camera.lookAt(-12, 3, -450);
     }
 
     function getTemperatureDifference(year) {
@@ -182,17 +195,27 @@
         })
     }
 
+    const defaultClimateFactors ={
+        temperature: 14,
+    }
+
     function getCurrentClimateCoeefficient() {
         const fromYear = getTemperatureDifference(document.getElementById("year_range").value);
-        const fromAverage = parseInt(document.getElementById("temperature_range").value);
-        return fromAverage + fromYear;
+        const fromTemperatureAverage = parseInt(document.getElementById("temperature_range").value);
+        const fromCarbonAverage = parseInt(document.getElementById("carbon-range").value) / 1000;
+        return fromTemperatureAverage + fromYear + fromCarbonAverage;
     }
 
     function changeClimate() {
         const coefficient = getCurrentClimateCoeefficient();
         setTemperature(coefficient);
-        window.water.position.y = coefficient/300;
+        window.water.position.y = coefficient / 300;
+
+
+        const offsettedCoefficient = Math.ceil((coefficient+defaultClimateFactors.temperature)*100)/100;
+        document.getElementById("current_temperature_value").innerText = offsettedCoefficient+' °C';
     }
+
 
     function renderColorSelect(x) {
         window.inputs.selectedRenderColor = x;
@@ -208,7 +231,14 @@
 
     document.getElementById("temperature_range").onchange = () => {
 
+        document.getElementById("temp_offset_value").innerText = document.getElementById("temperature_range").value + ' °C';
+        changeClimate();
 
+    }
+
+    document.getElementById("carbon-range").onchange = () => {
+
+        document.getElementById("co2_offset_value").innerText = document.getElementById("carbon-range").value + ' ppm';
         changeClimate();
 
     }
@@ -216,12 +246,13 @@
 
     document.getElementById("year_range").onchange = () => {
 
-        document.getElementById("year_value").innerText = document.getElementById("year_range").value;
+        document.getElementById("year_value").innerText = document.getElementById("year_range").value + ' AD';
 
         changeClimate();
 
 
     }
+
 
     document.getElementById("year_range").value = 2000;
 
