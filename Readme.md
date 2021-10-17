@@ -1,2 +1,16 @@
+# Installation:
+
+Go to repository directory and run: 
+
+`npm install`
+
 # Running Guideline
-You can run the project by simply running the "./builds/index.html" in any modern browsers.
+
+Run the project with:
+
+`npm run serve`
+
+You can access from `http://localhost:8080/`
+
+Or use the CW-Forecast website Repository Linked:
+`https://github.com/Machine-Learning-Project-LJSD/CW-Forecast.git`
