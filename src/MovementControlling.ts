@@ -80,6 +80,7 @@ export function movementControlling(camera: THREE.Camera, domElement: HTMLElemen
               // controllableParams.speed = getSpeedBasedOnHeight()
                 break
             case 'ShiftLeft':
+                if(camera.position.y<1.2) break;
                 onHeightChange();
                 camera.position.y -= controllableParams.speed;
                // controllableParams.speed = getSpeedBasedOnHeight()

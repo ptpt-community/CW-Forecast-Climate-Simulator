@@ -162,6 +162,10 @@
 <script>
 
 
+    window.onload =()=>{
+        window.camera.lookAt(-12,3,-450);
+    }
+
     function getTemperatureDifference(year) {
         return (.000000001 * ((year - 1823) ** 4)) - 1
     }
