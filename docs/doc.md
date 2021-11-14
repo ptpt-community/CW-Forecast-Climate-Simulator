@@ -1,4 +1,4 @@
-# CW-Forecast Climate Simulator
+# Climate Simulator
 ## Task Plan
 
 #### Objective:
