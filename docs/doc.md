@@ -100,6 +100,7 @@ To keep things usable and development friendly, we have used some optimization t
 The resources near to camera gets better resolution and more resources. To implement this we used the data structure named Quad Tree. It simply takes position of the camera and decides whether a chunk should get more resources based on the distance to the camera.
 
 ![image](https://user-images.githubusercontent.com/55809005/141684214-4d2990ba-ebed-4c82-b030-7ca99e66f74a.png)
+
 <sub>Camera at CR8</sub>
 
 To keep the calculation easier for the CPU we moved the showing of the terrain to GPU. Since GPU can do same type of calculation at once which is exactly what we need.
