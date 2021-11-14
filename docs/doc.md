@@ -31,9 +31,6 @@ In depth view of the terrain generator:
 We generate the random numbers (noise) for each x and y around the camera. Then we use a kernel of 3x3 to find a filtered value to define the terrain. The filtered value smoothens the randomness. Therefore it looks more terrainlike.
 
 
-[Picture: Unfiltered Noise]
-[Picture: 3x3 Kernel]
-
 ### Ground: 
 Note that we are allowed to decide how far we want to reach with our 3x3 kernel. This is our wavelength. The less we reach with the kernel the less random it will be. 
 
